@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-summernote = "*"
+django-compressor = "*"
+django-taggit = "*"
+django-3-jet = "*"
+pillow = "*"
+django-redis = "*"
+django-filter = "*"
+gunicorn = "*"
+python-decouple = "*"
+argon2-cffi = "*"
+django-widget-tweaks = "*"
+django-import-export = "*"
+whitenoise = {extras = ["brotli"], version = "*"}
+qrcode = {extras = ["pil"], version = "*"}
+django = "==3.2"
+django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
+
+[dev-packages]
+flake8 = "*"
+autopep8 = "*"
+pytest-django = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.8"
