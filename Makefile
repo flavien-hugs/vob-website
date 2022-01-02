@@ -22,9 +22,12 @@ migrate: ## Make and run migrations
 collectstatic: ## Run collectstatic
 	$(MANAGE) collectstatic --noinput
 
+changepassword: ## Change password superuser
+	$(MANAGE) changepassword flavien-hugs
+
 .PHONY: test
 test: ## Run tests
 	$(MANAGE) --verbosity=0 --parallel --failfast
 
 createsuperuser: ## Run the Django server
-	$(MANAGE) createsuperuser --email="valereobei@pm.me"
+	$(MANAGE) createsuperuser --username="valereobei@pm.me" --email="valereobei@pm.me"
