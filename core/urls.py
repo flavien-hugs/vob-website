@@ -30,6 +30,8 @@ def handler500(request, template_name='500.html'):
     return render(request, template_name, context, status=500)
 
 urlpatterns = [
+    path('blog/', include('blog.urls', namespace="blog")),
+    
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('jet/', include('jet.urls', 'jet')),
     path('summernote/', include('django_summernote.urls')),

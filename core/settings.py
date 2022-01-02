@@ -14,20 +14,19 @@ from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: don't run with debug turned on in production!
+
+DEBUG = config('DEBUG', default=True, cast=bool)
+TEMPLATE_DEBUG = DEBUG
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 
 if DEBUG:
     SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 else:
     SECRET_KEY = config('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-
-DEBUG = config('DEBUG', default=True, cast=bool)
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
@@ -54,6 +53,7 @@ PACKAGE_APPS = [
     'django_summernote',
     'django.contrib.admin',
 
+    'taggit',
     'import_export',
     'widget_tweaks',
     'django_filters',
@@ -62,9 +62,10 @@ PACKAGE_APPS = [
 ]
 
 CUSTOM_APPS = [
+    'blog.apps.BlogConfig'
 ]
 
-INSTALLED_APPS += PACKAGE_APPS
+INSTALLED_APPS += CUSTOM_APPS + PACKAGE_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -298,8 +299,8 @@ SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
     'iframe': True,
     'summernote': {
-        'airMode': True,
-        'width': '75%',
+        'airMode': False,
+        'width': '90%',
         'height': '300',
         'toolbar': [
             [
