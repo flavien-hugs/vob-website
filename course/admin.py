@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
-from course.models import Course, Livre
+from course.models import Course, Book
 from django_summernote.admin import SummernoteModelAdmin
 
 
@@ -68,9 +68,9 @@ class CourseAdmin(SummernoteModelAdmin):
         return response
 
 
-@admin.register(Livre)
-class LivreAdmin(SummernoteModelAdmin):
-    model = Livre
+@admin.register(Book)
+class BookAdmin(SummernoteModelAdmin):
+    model = Book
     list_per_page = 10
     date_hierarchy = "created_at"
     fieldsets = (

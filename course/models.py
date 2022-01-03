@@ -142,7 +142,7 @@ class Course(UUIDSlugMixin, BaseTimeStampModel):
 
 
 
-class Livre(UUIDSlugMixin, BaseTimeStampModel):
+class Book(UUIDSlugMixin, BaseTimeStampModel):
 
     P = 'Publié'
     E = 'En attente'
