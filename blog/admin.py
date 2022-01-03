@@ -1,5 +1,7 @@
 # blog.admin.py
 
+from django.db import models
+
 from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib.auth.models import Group
@@ -36,6 +38,16 @@ class CategoryAdmin(SummernoteModelAdmin):
     search_fields = (
         "name",
     )
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(
+            _post_count=models.Count("post", distinct=True)
+        )
+        return queryset
+    
+    def post_count(self, instance):
+        return instance._post_count
 
 
 @admin.register(Post)

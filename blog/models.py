@@ -38,14 +38,9 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
         help_text="Définir le type de catégorie de l'article.",
         **NULL_AND_BLANK
     )
-    published = models.DateTimeField(
-        auto_now_add=False, auto_now=False,
-        verbose_name='date et de publication',
-        help_text="Programmé la date et l'heure de publication"
-    )
 
     class Meta:
-        ordering = ['-published']
+        ordering = ['-name']
         verbose_name_plural = 'catégories'
         indexes = [models.Index(fields=['uuid'])]
 
