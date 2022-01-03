@@ -62,6 +62,7 @@ PACKAGE_APPS = [
 ]
 
 CUSTOM_APPS = [
+    'course.apps.CourseConfig',
     'blog.apps.BlogConfig'
 ]
 
