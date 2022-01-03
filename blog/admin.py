@@ -10,8 +10,9 @@ from django_summernote.admin import SummernoteModelAdmin
 
 admin.site.unregister(Group)
 
+
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(SummernoteModelAdmin):
     model = Category
     list_per_page = 10
     date_hierarchy = "created_at"
@@ -47,7 +48,7 @@ class PostAdmin(SummernoteModelAdmin):
             'Article', {
                 'fields': (
                     "category",
-                    "title",
+                    "name",
                     "subtitle",
                     'body',
                     'tags',
@@ -59,7 +60,7 @@ class PostAdmin(SummernoteModelAdmin):
     )
     list_display = [
         "category",
-        "title",
+        "name",
         "view",
         "reading",
         "status",
@@ -67,7 +68,7 @@ class PostAdmin(SummernoteModelAdmin):
         "created_at",
     ]
     list_display_links = [
-        'title',
+        'name',
         'category'
     ]
     list_filter = (
@@ -79,7 +80,7 @@ class PostAdmin(SummernoteModelAdmin):
         "status",
     )
     search_fields = (
-        "title",
+        "name",
         "status",
         "reading",
     )

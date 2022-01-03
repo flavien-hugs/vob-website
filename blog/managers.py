@@ -10,26 +10,26 @@ class PostQuerySet(models.QuerySet):
     def published(self):
         return self.filter(
             status='Publié',
-            created_at__lte=timezone.now()
+            published__lte=timezone.now()
         )
     
     def paid(self):
         return self.filter(
             status='Publié',
             reading='Payant',
-            created_at__lte=timezone.now()
+            published__lte=timezone.now()
         )
     
     def free(self):
         return self.filter(
             status='Publié',
             reading='Gratuit',
-            created_at__lte=timezone.now()
+            published__lte=timezone.now()
         )
 
     def search(self, query):
         lookup = (
-            Q(title__icontains=query)
+            Q(name__icontains=query)
             | Q(subtitle__icontains=query)
             | Q(body__icontains=query)
         )

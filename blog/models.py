@@ -38,9 +38,14 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
         help_text="Définir le type de catégorie de l'article.",
         **NULL_AND_BLANK
     )
+    published = models.DateTimeField(
+        auto_now_add=False, auto_now=False,
+        verbose_name='date et de publication',
+        help_text="Programmé la date et l'heure de publication"
+    )
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-published']
         verbose_name_plural = 'catégories'
         indexes = [models.Index(fields=['uuid'])]
 
@@ -100,7 +105,7 @@ class Post(UUIDSlugMixin, BaseTimeStampModel):
         verbose_name="catégorie",
         **NULL_AND_BLANK
     )
-    title = models.CharField(
+    name = models.CharField(
         unique=True,
         max_length=255,
     	verbose_name="titre de l'article",
@@ -141,19 +146,24 @@ class Post(UUIDSlugMixin, BaseTimeStampModel):
     	verbose_name="Option de lecture",
         help_text="définir l'option de lecture de cet article."
     )
+    published = models.DateTimeField(
+        auto_now_add=False, auto_now=False,
+        verbose_name='date et de publication',
+        help_text="Programmé la date et l'heure de publication"
+    )
 
     tags = TaggableManager(verbose_name="mots clés")
 
     objects = PostManager()
 
     class Meta:
-        ordering = ['-created_at']
-        get_latest_by = ['-created_at']
+        ordering = ['-published']
+        get_latest_by = ['-published']
         verbose_name_plural = 'articles'
         indexes = [models.Index(fields=['uuid'])]
     
     def _get_unique_slug(self):
-        slug = slugify(self.title)
+        slug = slugify(self.name)
         unique_slug = slug
         while Post.objects.filter(slug=unique_slug).exists():
             unique_slug = f"{slug}-{get_random_string(6)}".lower()
@@ -165,7 +175,7 @@ class Post(UUIDSlugMixin, BaseTimeStampModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.title
+        return self.name
     
     def readtime(self):
         readtime_post = readtime.of_text(self.body)
