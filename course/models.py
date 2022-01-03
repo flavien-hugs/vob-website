@@ -9,7 +9,7 @@ from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from course.managers import CourseManager
+from course.managers import CourseManager, LivreManager
 from common.models import BaseTimeStampModel, UUIDSlugMixin
 
 
@@ -47,10 +47,10 @@ class Course(UUIDSlugMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     price = models.PositiveIntegerField(
-        default=2000,
+        default=5000,
         verbose_name='côut de la formation',
         validators=[
-            MinValueValidator(2000),
+            MinValueValidator(5000),
             MaxValueValidator(1000000)
         ],
         help_text='Indiquer le côut de cette formation.'
@@ -139,3 +139,77 @@ class Course(UUIDSlugMixin, BaseTimeStampModel):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
+
+
+
+class Livre(UUIDSlugMixin, BaseTimeStampModel):
+
+    P = 'Publié'
+    E = 'En attente'
+
+    STATUS_CHOICES = (
+        (P, 'Publié'),
+        (E, 'En attente')
+    )
+
+    name = models.CharField(
+        max_length=200,
+        verbose_name="titre du livre",
+        help_text='Saisir le titre du livre (200 caractères maximum).'
+    )
+    price = models.PositiveIntegerField(
+        default=5000,
+        verbose_name="prix de cet article",
+        validators=[
+            MinValueValidator(5000),
+            MaxValueValidator(1000000)
+        ],
+        help_text='Indiquer le prix de cet article.'
+    )
+    resume = models.TextField(
+        max_length=500,
+        verbose_name='résumé du livre',
+        help_text='faire un petit résumé de ce document (maximum 500 caractère)',
+        **NULL_AND_BLANK
+    )
+    cover = models.ImageField(
+        upload_to="formation/",
+        verbose_name="ajouter une image de couverture",
+        help_text="ajouter une image de couverture de ce livre.",
+        **NULL_AND_BLANK
+    )
+    status = models.CharField(
+        default=E,
+        max_length=10,
+    	verbose_name="status",
+    	choices=STATUS_CHOICES,
+        help_text="status de publication du livre."
+    )
+    view = models.PositiveIntegerField(
+        default=0,
+        editable=False,
+        verbose_name="nombre de vues"
+    )
+
+    objects = LivreManager()
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name_plural = 'livres'
+        indexes = [models.Index(fields=['uuid'])]
+
+    def __str__(self):
+        return self.name
+    
+    def _get_unique_slug(self):
+        slug = slugify(self.name)
+        unique_slug = slug
+        while Livre.objects.filter(slug=unique_slug).exists():
+            unique_slug = f"{slug}-{get_random_string(6)}".lower()
+        return unique_slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+

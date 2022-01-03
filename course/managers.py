@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.utils import timezone
 
 
-class CourseQuerySet(models.QuerySet):
+class ObjectQuerySet(models.QuerySet):
     
     def published(self):
         return self.filter(
@@ -25,7 +25,21 @@ class CourseQuerySet(models.QuerySet):
 class CourseManager(models.Manager):
     
     def get_queryset(self):
-        return CourseQuerySet(self.model, using=self._db)
+        return ObjectQuerySet(self.model, using=self._db)
+
+    def published(self):
+        return self.get_queryset().published()
+
+    def search(self, query=None):
+        if query is None:
+            return self.get_queryset().none()
+        return self.get_queryset().published().search(query)
+
+
+class LivreManager(models.Manager):
+    
+    def get_queryset(self):
+        return ObjectQuerySet(self.model, using=self._db)
 
     def published(self):
         return self.get_queryset().published()
