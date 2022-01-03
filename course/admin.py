@@ -1,5 +1,6 @@
 # course.admin.py
 
+from typing import Set
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
@@ -66,6 +67,41 @@ class CourseAdmin(SummernoteModelAdmin):
         url = instance.get_absolute_url()
         response = format_html(f"""<a target="_blank" href="{url}">{url}</a>""")
         return response
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        is_superuser = request.user.is_superuser
+        disabled_fields = Set()
+        
+        if is_superuser:
+            disabled_fields |= {
+                'email',
+                'username',
+                'is_active',
+                'is_staff',
+                'is_superuser',
+                'user_permissions',
+            }
+
+        if (
+            not is_superuser
+            and obj is not None
+            and obj == request.user
+        ):
+            disabled_fields |= {
+                'groups',
+                'is_staff',
+                'is_superuser',
+                'user_permissions',
+            }
+
+        for f in disabled_fields:
+            if f in form.base_fields:
+                form.base_fields[f].disabled = True
+        return form
 
 
 @admin.register(Book)
