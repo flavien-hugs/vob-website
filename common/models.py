@@ -4,6 +4,7 @@ import uuid
 
 from django.db import models
 from django.contrib import admin
+from django.utils import timezone
 
 
 NULL_AND_BLANK = {
@@ -13,7 +14,7 @@ NULL_AND_BLANK = {
 
 class BaseTimeStampModel(models.Model):
     
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(db_index=True, default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
