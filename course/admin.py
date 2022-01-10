@@ -77,11 +77,10 @@ class BookAdmin(SummernoteModelAdmin):
         (
             "Descrire l'article", {
                 'fields': (
-                    "name",
-                    "price",
+                    ("name", "price"),
                     "resume",
                     "cover",
-                    "status",
+                    ("published", "status"),
                 )
             }
         ),
@@ -91,8 +90,8 @@ class BookAdmin(SummernoteModelAdmin):
         "price",
         "status",
         "view",
+        "published",
         "show_item_url",
-        "created_at",
     ]
     list_display_links = [
         'name',
