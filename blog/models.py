@@ -8,7 +8,9 @@ from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 
 from blog.managers import PostManager
-from common.models import BaseTimeStampModel, UUIDSlugMixin
+
+from common.utilitary import img_url
+from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
 
 import readtime
 from taggit.managers import TaggableManager
@@ -74,17 +76,7 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
         return self.posts().count()
 
 
-class Post(UUIDSlugMixin, BaseTimeStampModel):
-    
-    P = 'Publié'
-    B = 'Brouillon'
-    R = 'Relecture'
-
-    STATUS_CHOICES = (
-        (P, 'Publié'),
-        (B, 'Brouillon'),
-        (R, 'Relecture')
-    )
+class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     G = 'Gratuit'
     Y = 'Payant'
@@ -94,6 +86,8 @@ class Post(UUIDSlugMixin, BaseTimeStampModel):
         (Y, 'Payant')
     )
     
+    file_prepend = "article/upload/"
+
     category = models.ForeignKey(
         to=Category,
         on_delete=models.SET_NULL,
@@ -117,7 +111,7 @@ class Post(UUIDSlugMixin, BaseTimeStampModel):
         help_text="Éditer le contenu de l'article."
     )
     cover = models.ImageField(
-        upload_to="post/",
+        upload_to=img_url,
         verbose_name="ajouter une image",
         help_text="ajouter une image descriptive de l'article.",
         **NULL_AND_BLANK
@@ -127,24 +121,12 @@ class Post(UUIDSlugMixin, BaseTimeStampModel):
         editable=False,
         verbose_name="nombre de vues"
     )
-    status = models.CharField(
-        default=B,
-        max_length=10,
-    	verbose_name="status",
-    	choices=STATUS_CHOICES,
-        help_text="définir le status de l'article."
-    )
     reading = models.CharField(
         default=G,
         max_length=10,
     	choices=PAID_CHOICES,
     	verbose_name="Option de lecture",
         help_text="définir l'option de lecture de cet article."
-    )
-    published = models.DateTimeField(
-        auto_now_add=False, auto_now=False,
-        verbose_name='date et de publication',
-        help_text="Programmé la date et l'heure de publication"
     )
 
     tags = TaggableManager(verbose_name="mots clés")
