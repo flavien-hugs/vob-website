@@ -64,6 +64,7 @@ PACKAGE_APPS = [
 CUSTOM_APPS = [
     'blog.apps.BlogConfig',
     'course.apps.CourseConfig',
+    'checkout.apps.CheckoutConfig',
 ]
 
 INSTALLED_APPS += CUSTOM_APPS + PACKAGE_APPS
