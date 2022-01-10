@@ -10,25 +10,16 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from course.managers import CourseManager, BookManager
-from common.models import BaseTimeStampModel, UUIDSlugMixin
+from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
 
 
 NULL_AND_BLANK = {'null': True, 'blank': True}
 
 
-class Course(UUIDSlugMixin, BaseTimeStampModel):
-
-    P = 'Publié'
-    B = 'Brouillon'
-    R = 'Relecture'
+class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     T = 'En Ligne'
     O = 'En Présentiel'
-
-    STATUS_CHOICES = (
-        (P, 'Publié'),
-        (B, 'Brouillon')
-    )
 
     OPTION_COURSE_CHOICES = (
         (T, 'En Ligne'),
@@ -94,18 +85,6 @@ class Course(UUIDSlugMixin, BaseTimeStampModel):
     	choices=OPTION_COURSE_CHOICES,
         help_text="Option de la formation"
     )
-    status = models.CharField(
-        default=B,
-        max_length=10,
-    	verbose_name="status",
-    	choices=STATUS_CHOICES,
-        help_text="status de la formation."
-    )
-    published = models.DateTimeField(
-        auto_now_add=False, auto_now=False,
-        verbose_name='date et de publication',
-        help_text="Programmé la date et l'heure de la formation."
-    )
 
     objects = CourseManager()
 
@@ -116,17 +95,6 @@ class Course(UUIDSlugMixin, BaseTimeStampModel):
 
     def __str__(self):
         return self.name
-
-    def clean(self):
-        if (
-            self.published >= self.date_of_course
-        ):
-            raise ValidationError(
-                {
-                    "published": "La date de publication ne doit pas \
-                    être supérieure ou égale à la date de début de formation."
-                }
-            )
     
     def _get_unique_slug(self):
         slug = slugify(self.name)
@@ -140,17 +108,11 @@ class Course(UUIDSlugMixin, BaseTimeStampModel):
             self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
 
+    def course_absolute_url(self):
+    	return reverse("course:course_detail", kwargs={"slug": str(self.slug)})
 
 
-class Book(UUIDSlugMixin, BaseTimeStampModel):
-
-    P = 'Publié'
-    E = 'En attente'
-
-    STATUS_CHOICES = (
-        (P, 'Publié'),
-        (E, 'En attente')
-    )
+class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     name = models.CharField(
         max_length=200,
@@ -177,13 +139,6 @@ class Book(UUIDSlugMixin, BaseTimeStampModel):
         verbose_name="ajouter une image de couverture",
         help_text="ajouter une image de couverture de ce livre.",
         **NULL_AND_BLANK
-    )
-    status = models.CharField(
-        default=E,
-        max_length=10,
-    	verbose_name="status",
-    	choices=STATUS_CHOICES,
-        help_text="status de publication du livre."
     )
     view = models.PositiveIntegerField(
         default=0,
@@ -213,3 +168,5 @@ class Book(UUIDSlugMixin, BaseTimeStampModel):
             self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
 
+    def book_absolute_url(self):
+    	return reverse("book:book_detail", kwargs={"slug": str(self.slug)})
