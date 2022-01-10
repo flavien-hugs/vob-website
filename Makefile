@@ -29,5 +29,12 @@ changepassword: ## Change password superuser
 test: ## Run tests
 	$(MANAGE) --verbosity=0 --parallel --failfast
 
+.PHONY: createsuperuser
 createsuperuser: ## Run the Django server
 	$(MANAGE) createsuperuser --username="valereobei@pm.me" --email="valereobei@pm.me"
+
+.PHONY: coverage
+coverage: ## Test with coverage and generate htmlcov
+	coverage run --source "blog,course" manage.py test -v 2
+	coverage report
+	coverage html
