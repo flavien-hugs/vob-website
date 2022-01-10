@@ -36,7 +36,7 @@ class CourseManager(models.Manager):
         return self.get_queryset().published().search(query)
 
 
-class LivreManager(models.Manager):
+class BookManager(models.Manager):
     
     def get_queryset(self):
         return ObjectQuerySet(self.model, using=self._db)

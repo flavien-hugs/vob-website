@@ -31,6 +31,7 @@ def handler500(request, template_name='500.html'):
 
 urlpatterns = [
     path('blog/', include('blog.urls', namespace="blog")),
+    path('book/', include('course.urls', namespace="course")),
     
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('jet/', include('jet.urls', 'jet')),

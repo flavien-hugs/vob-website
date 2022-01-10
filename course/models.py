@@ -9,7 +9,7 @@ from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from course.managers import CourseManager, LivreManager
+from course.managers import CourseManager, BookManager
 from common.models import BaseTimeStampModel, UUIDSlugMixin
 
 
@@ -191,7 +191,7 @@ class Book(UUIDSlugMixin, BaseTimeStampModel):
         verbose_name="nombre de vues"
     )
 
-    objects = LivreManager()
+    objects = BookManager()
 
     class Meta:
         ordering = ['-created_at']
