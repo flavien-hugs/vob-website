@@ -110,6 +110,14 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
+    
+    @admin.display(description="côut")
+    def course_price(self):
+        return f"{self.price} Fr/CFA"
+    
+    @admin.display(description="nombre de vues")
+    def course_count_viewed(self):
+        return f"{self.view} vues"
 
     def course_absolute_url(self):
     	return reverse("course:course_detail", kwargs={"slug": str(self.slug)})
@@ -164,7 +172,7 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def _get_unique_slug(self):
         slug = slugify(self.name)
         unique_slug = slug
-        while Livre.objects.filter(slug=unique_slug).exists():
+        while Book.objects.filter(slug=unique_slug).exists():
             unique_slug = f"{slug}-{get_random_string(6)}".lower()
         return unique_slug
 
@@ -172,6 +180,14 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
+    
+    @admin.display(description="côut")
+    def book_price(self):
+        return f"{self.price} Fr/CFA"
+    
+    @admin.display(description="nombre de vues")
+    def book_count_viewed(self):
+        return f"{self.view} vues"
 
     def book_absolute_url(self):
     	return reverse("book:book_detail", kwargs={"slug": str(self.slug)})

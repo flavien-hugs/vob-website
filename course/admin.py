@@ -37,11 +37,12 @@ class CourseAdmin(SummernoteModelAdmin):
     )
     list_display = [
         "name",
-        "view",
+        "course_price",
+        "course_count_viewed",
         "status",
         "option",
         "show_course_url",
-        "created_at",
+        "published",
     ]
     list_display_links = [
         'name',
@@ -87,11 +88,9 @@ class BookAdmin(SummernoteModelAdmin):
     )
     list_display = [
         "name",
-        "price",
-        "status",
-        "view",
-        "published",
-        "show_item_url",
+        "book_price",
+        "book_count_viewed",
+        "status", "published", "show_item_url",
     ]
     list_display_links = [
         'name',
