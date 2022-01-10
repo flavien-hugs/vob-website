@@ -18,7 +18,7 @@ django-widget-tweaks = "*"
 django-import-export = "*"
 whitenoise = {extras = ["brotli"], version = "*"}
 qrcode = {extras = ["pil"], version = "*"}
-django = "==3.2"
+django = "==3.2.10"
 django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 readtime = "*"
 
