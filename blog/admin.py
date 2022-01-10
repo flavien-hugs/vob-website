@@ -60,7 +60,7 @@ class PostAdmin(SummernoteModelAdmin):
             'Article', {
                 'fields': (
                     "category",
-                    "name",
+                    ("name", "price"),
                     "subtitle",
                     'body',
                     'tags',
@@ -73,11 +73,11 @@ class PostAdmin(SummernoteModelAdmin):
     list_display = [
         "category",
         "name",
-        "view",
-        "reading",
-        "status",
+        "post_price",
+        "post_count_viewed",
+        "status", "reading",
         "show_post_url",
-        "created_at",
+        "published",
     ]
     list_display_links = [
         'name',

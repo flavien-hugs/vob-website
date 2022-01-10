@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from blog.managers import PostManager
 
@@ -110,6 +111,15 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         verbose_name="Contenu de l'article",
         help_text="Éditer le contenu de l'article."
     )
+    price = models.PositiveIntegerField(
+        default=0,
+        verbose_name="prix de cet article",
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(1000000)
+        ],
+        help_text='Si cet article est payant, indiquer le prix.'
+    )
     cover = models.ImageField(
         upload_to=img_url,
         verbose_name="ajouter une image",
@@ -119,7 +129,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     view = models.PositiveIntegerField(
         default=0,
         editable=False,
-        verbose_name="nombre de vues"
+        verbose_name="nombre de lecture"
     )
     reading = models.CharField(
         default=G,
@@ -153,7 +163,18 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def __str__(self):
         return self.name
+
+    @admin.display(description="côut")
+    def post_price(self):
+        if self.price > 0:
+            return f"{self.price} Fr/CFA"
+        return "article gratuit"
     
+    @admin.display(description="nombre de lecture")
+    def post_count_viewed(self):
+        return f"{self.view} lecture"
+    
+    @admin.display(description="temps de lecture")
     def readtime(self):
         readtime_post = readtime.of_text(self.body)
         return readtime_post
