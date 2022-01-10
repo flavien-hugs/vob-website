@@ -39,3 +39,41 @@ class UUIDSlugMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class StatusAndPublishedMixin(models.Model):
+    
+    P = 'Publié'
+    E = 'En Attente'
+
+    STATUS_CHOICES = (
+        (P, 'Publié'),
+        (E, 'En Attente')
+    )
+
+    status = models.CharField(
+        default=E,
+        max_length=10,
+    	verbose_name="status",
+    	choices=STATUS_CHOICES,
+        help_text="status."
+    )
+    published = models.DateTimeField(
+        auto_now_add=False, auto_now=False,
+        verbose_name='date et de publication',
+        help_text="Programmé la date et l'heure de la formation."
+    )
+
+    class Meta:
+        abstract = True
+
+    def clean(self):
+        if (
+            self.published >= self.date_of_course
+        ):
+            raise ValidationError(
+                {
+                    "published": "La date de publication ne doit pas \
+                    être supérieure ou égale à la date de début de formation."
+                }
+            )
