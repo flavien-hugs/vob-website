@@ -13,7 +13,7 @@ on:
       - "**.md"
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -33,6 +33,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -47,28 +48,19 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
           ${{ runner.os }}-
-
-  installation:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Dependencies
-        uses: actions/cache@v2
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
     
-      - name: Run Migrations
-        uses: actions/cache@v2
-        run: |
-          python manage.py migrate
-  
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Tests
-        uses: actions/cache@v2
-        run: |
-          python manage.py test
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run Migrations
+      run: |
+        python manage.py migrate
+    
+    - name: Run Tests
+      run: |
+        python manage.py test
   
   security:
     runs-on: ubuntu-latest
