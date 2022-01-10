@@ -30,22 +30,19 @@ def handler500(request, template_name='500.html'):
     return render(request, template_name, context, status=500)
 
 urlpatterns = [
+    path('book/', include('course.urls')),
     path('blog/', include('blog.urls', namespace="blog")),
-    path('book/', include('course.urls', namespace="course")),
     
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('jet/', include('jet.urls', 'jet')),
     path('summernote/', include('django_summernote.urls')),
     path(settings.ADMIN_URL, admin.site.urls),
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = handler404
 handler500 = handler500
 
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
     urlpatterns += [
         path('404/', handler404, {'exception': Exception("Page non trouvée !")}),
         path('500/', handler500),

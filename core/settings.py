@@ -328,26 +328,25 @@ SUMMERNOTE_CONFIG = {
     },
 }
 
-if not DEBUG:
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {
-            "file": {
-                "level": "INFO",
-                "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": os.path.join(BASE_DIR, "logs/logs.log"),
-                "when": "D",
-                "interval": 1,
-                "backupCount": 100,
-            }
-        },
-        "loggers": {
-            "django": {"handlers": ["file"], "level": "INFO", "propagate": True},
-            "project": {"handlers": ["file"], "level": "INFO", "propagate": True},
-            "": {"handlers": ["file"], "level": "INFO", "propagate": True},
-        },
-    }
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/debug.log"),
+            "when": "D",
+            "interval": 1,
+            "backupCount": 100,
+        }
+    },
+    "loggers": {
+        "django": {"handlers": ["file"], "level": "INFO", "propagate": True},
+        "project": {"handlers": ["file"], "level": "INFO", "propagate": True},
+        "": {"handlers": ["file"], "level": "INFO", "propagate": True},
+    },
+}
 
 # Configure as cache backend
 # https://pypi.org/project/django-redis/
