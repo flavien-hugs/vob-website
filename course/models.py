@@ -10,6 +10,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from course.managers import CourseManager, BookManager
+
+from common.utilitary import img_url
 from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
 
 
@@ -25,6 +27,7 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         (T, 'En Ligne'),
         (O, 'En Présentiel')
     )
+    file_prepend = "course/upload/"
 
     name = models.CharField(
         max_length=200,
@@ -68,7 +71,7 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     cover = models.ImageField(
-        upload_to="formation/",
+        upload_to=img_url,
         verbose_name="ajouter une image",
         help_text="ajouter une image descriptive de l'article.",
         **NULL_AND_BLANK
@@ -114,6 +117,8 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
 class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
+    file_prepend = "book/upload/"
+
     name = models.CharField(
         max_length=200,
         verbose_name="titre du livre",
@@ -135,7 +140,7 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     cover = models.ImageField(
-        upload_to="formation/",
+        upload_to=img_url,
         verbose_name="ajouter une image de couverture",
         help_text="ajouter une image de couverture de ce livre.",
         **NULL_AND_BLANK
