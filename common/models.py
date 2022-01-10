@@ -5,6 +5,7 @@ import uuid
 from django.db import models
 from django.contrib import admin
 from django.utils import timezone
+from django.core.validators import RegexValidator
 
 
 NULL_AND_BLANK = {
@@ -77,3 +78,63 @@ class StatusAndPublishedMixin(models.Model):
                     être supérieure ou égale à la date de début de formation."
                 }
             )
+
+
+class UserBaseInfo(models.Model):
+
+    class Meta:
+        abstract = True
+
+    email = models.EmailField(
+        max_length=80,
+        verbose_name='adresse de messagerie',
+        **NULL_AND_BLANK
+    )
+    first_name = models.CharField(
+        verbose_name='nom',
+        max_length=80
+    )
+    last_name = models.CharField(
+        verbose_name='prénom',
+        max_length=80
+    )
+    phone = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex='^\+?1?\d{9,15}$',
+                message="Le numéro de téléphone doit être saisi dans le format\
+                '+225'. Jusqu'à 10 chiffres sont autorisés.",
+                code='invalid_phone_number'
+            ),
+        ],
+        verbose_name='téléphone',
+    )
+    phone_two = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex='^\+?1?\d{9,15}$',
+                message="Le numéro de téléphone doit être saisi dans le format\
+                '+225'. Jusqu'à 10 chiffres sont autorisés.",
+                code='invalid_phone_number'
+            ),
+        ],
+        verbose_name='téléphone 2 (facultatif)',
+        **NULL_AND_BLANK
+    )
+    city = models.CharField(
+        default="Bouaké",
+        verbose_name='ville',
+        max_length=80
+    )
+    country = models.CharField(
+        default="Côte d'Ivoire",
+        verbose_name='pays',
+        max_length=80,
+        **NULL_AND_BLANK
+    )
+    address = models.CharField(
+        verbose_name='adresse de livraison',
+        max_length=180,
+    )
