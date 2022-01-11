@@ -29,7 +29,16 @@ def handler500(request, template_name='500.html'):
     }
     return render(request, template_name, context, status=500)
 
+
+class HomeView(generic.TemplateView):
+    template_name = 'index.html'
+
+home_view = HomeView.as_view()
+
+
 urlpatterns = [
+    path(route='', view=home_view, name='home'),
+
     path('book/', include('course.urls')),
     path('blog/', include('blog.urls', namespace="blog")),
     

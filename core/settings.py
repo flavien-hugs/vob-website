@@ -99,6 +99,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'common.context.context_processor',
             ],
 
             'debug': DEBUG,
@@ -331,23 +333,6 @@ SUMMERNOTE_CONFIG = {
 
 # Configure as cache backend
 # https://pypi.org/project/django-redis/
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "PICKLE_VERSION": -1,
-            "SOCKET_CONNECT_TIMEOUT": 5,
-            "SOCKET_TIMEOUT": 5,
-            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
-            "CONNECTION_POOL_KWARGS": {
-                "max_connections": 100, "retry_on_timeout": True
-            }
-        }
-    }
-}
 
 CACHE_TTL = 60 * 15
 CACHE_TIMEOUT = 60 * 60
