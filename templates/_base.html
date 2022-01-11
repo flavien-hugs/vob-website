@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        {% load static %}{% get_static_prefix as STATIC_PREFIX %}
+
+        {% include "includes/__meta__.html" %}
+        {% include "includes/__stylesheet__.html" %}
+        
+        <title>
+            {% block head_title %}
+                {% if page_title %}
+                    {{ page_title|capfirst }}
+                {% else %}
+                    {{ description|capfirst }}
+                {% endif %}
+            {% endblock head_title %} &smid; {{ title|upper }}
+        </title>
+    </head>
+
+    <body>
+        {% block __navbar__ %}
+        
+        {% endblock __navbar__ %}
+
+        <main>
+            {% block __body__ %}
+            
+            {% endblock __body__ %}
+        </main>
+
+        {% block __footer__ %}
+
+        {% endblock __footer__ %}
+
+        {% include "includes/__javascript__.html" %}
+    </body>
+</html>
