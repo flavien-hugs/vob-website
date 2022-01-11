@@ -1,0 +1,9 @@
+
+{% load compress %}
+
+{% compress css %}
+    <link type="text/css" href="{{ STATIC_PREFIX }}fonts/feather/feather.css" rel="stylesheet"/>
+    <link type="text/css" href="{{ STATIC_PREFIX }}css/libs/materialdesignicons.min.css" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_PREFIX }}css/libs/tiny-slider.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_PREFIX }}css/theme.min.css"/>
+{% endcompress css %}
