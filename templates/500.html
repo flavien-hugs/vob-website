@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+
+{% block head_title %}
+    {{ page_title|capfirst }}
+    {{ block.super }}
+{% endblock head_title %}
+
+{% block __body__ %}
+    {% url 'home' as home_url %}
+
+    <div class="container d-flex flex-column">
+        <div class="row align-items-center justify-content-center no-gutters min-vh-100">
+            <div class="offset-lg-1 col-lg-4 col-md-12 col-12 text-center text-lg-left">
+                <div class="py-2">
+                    <a href="{{ home_url }}">
+                        <img src="{{ STATIC_PREFIX }}img/logo.svg" alt="{{ title }}">
+                    </a>
+                </div>
+                
+                <h1 class="display-1 mb-3">Oops!</h1>
+                <h3>Désolé, nous n'avons pas pu trouver la page que vous cherchiez.</h3>
+                <p class="mb-4 small">Code d'erreur: 500. Erreur interne.</p>
+                <a href="{{ home_url }}" class="btn btn-primary mr-2">
+                    Retour à la page d'accueil
+                </a>
+            </div>
+
+            <div class="offset-lg-1 col-lg-6 col-md-12 col-12">
+                <img src="{{ STATIC_PREFIX }}img/error.svg" alt="{{ page_title }}" class="w-100"/>
+            </div>
+        </div>
+    </div>
+{% endblock __body__ %}
