@@ -96,13 +96,12 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     name = models.CharField(
-        unique=True,
-        max_length=255,
+        max_length=225,
     	verbose_name="titre de l'article",
     	help_text="Définir le titre de l'article."
     )
     subtitle = models.CharField(
-        max_length=255,
+        max_length=225,
     	verbose_name="sous-titre",
     	help_text="Définir un sous-titre de l'article.",
         **NULL_AND_BLANK
@@ -114,11 +113,8 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     price = models.PositiveIntegerField(
         default=0,
         verbose_name="prix de cet article",
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(1000000)
-        ],
-        help_text='Si cet article est payant, indiquer le prix.'
+        help_text='Si cet article est payant, indiquer le prix.',
+        blank=True
     )
     cover = models.ImageField(
         upload_to=img_url,
@@ -138,8 +134,6 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     	verbose_name="Option de lecture",
         help_text="définir l'option de lecture de cet article."
     )
-
-    tags = TaggableManager(verbose_name="mots clés")
 
     objects = PostManager()
 
@@ -178,10 +172,6 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def readtime(self):
         readtime_post = readtime.of_text(self.body)
         return readtime_post
-
-    @admin.display(description="mots clés")
-    def tag_list(self):
-        return u", ".join(o.name for o in self.tags.all())
 
     def post_absolute_url(self):
     	return reverse("blog:post_detail", kwargs={"slug": str(self.slug)})

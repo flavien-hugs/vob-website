@@ -63,8 +63,8 @@ class PostAdmin(SummernoteModelAdmin):
                     ("name", "price"),
                     "subtitle",
                     'body',
-                    'tags',
                     'cover',
+                    'published',
                     ('status', 'reading'),
                 )
             }
@@ -100,6 +100,6 @@ class PostAdmin(SummernoteModelAdmin):
     @mark_safe
     @admin.display(description="Voir l'article")
     def show_post_url(self, instance):
-        url = instance.get_absolute_url()
+        url = instance.post_absolute_url()
         response = format_html(f"""<a target="_blank" href="{url}">{url}</a>""")
         return response
