@@ -68,17 +68,6 @@ class StatusAndPublishedMixin(models.Model):
     class Meta:
         abstract = True
 
-    def clean(self):
-        if (
-            self.published >= self.date_of_course
-        ):
-            raise ValidationError(
-                {
-                    "published": "La date de publication ne doit pas \
-                    être supérieure ou égale à la date de début de formation."
-                }
-            )
-
 
 class UserBaseInfo(models.Model):
 
