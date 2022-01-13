@@ -1,4 +1,5 @@
 {% url "home" as home %}
+{% url 'blog:post_list' as post_list_url %}
 
 <footer class="pt-lg-6 pt-5 footer bg-white">
     <div class="container">
@@ -8,11 +9,11 @@
                     <img src="{{ STATIC_PREFIX }}img/logo.svg" alt="{{ title }}">
                     
                     <div class="mt-4">
-                        <p>Geek is feature-rich components and beautifully Bootstrap UIKit for developers</p>
+                        <p>{{ site_desc }}</p>
                         <div class="fs-4 mt-4">
                             <a href="#"><i class="mdi mdi-facebook h1 me-3"></i></a>
                             <a href="#"><i class="mdi mdi-twitter h1 me-3"></i></a>
-                            <a href="#"> <i class="mdi mdi-linkedin h1"></i></a>
+                            <a href="#"><i class="mdi mdi-linkedin h1"></i></a>
                         </div>
                     </div>
                 </div>
@@ -20,9 +21,9 @@
             
             <div class="offset-lg-1 col-lg-2 col-md-3 col-6">
                 <div class="mb-4">
-                    <h3 class="fw-bold mb-3">Company</h3>
+                    <h3 class="fw-bold mb-3">Découvrir</h3>
                     <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
-                        <li><a href="#" class="nav-link">Blog</a></li>
+                        <li><a href="{{ post_list_url }}" class="nav-link">Blog</a></li>
                         <li><a href="#" class="nav-link">Formation</a></li>
                         <li><a href="#" class="nav-link">Contact</a></li>
                     </ul>
@@ -33,7 +34,6 @@
                 <div class="mb-4">
                     <h3 class="fw-bold mb-3">Liens Utils</h3>
                     <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
-                        <li><a href="#" class="nav-link">About</a></li>
                         <li><a href="#" class="nav-link">Qui suis-je ?</a></li>
                         <li><a href="#" class="nav-link">FAQ’s</a></li>
                     </ul>
@@ -43,6 +43,7 @@
 
             <div class="col-lg-3 col-md-12">
                 <div class="mb-4">
+                    <h3 class="fw-bold mb-3">Contactez moi</h3>
                     <p>339 McDermott Points Hettingerhaven, NV 15283</p>
                     <p class="mb-1">Email: <a href="mailto:{{ addr_email }}">{{ addr_email }}</a></p>
                     <p>
@@ -56,9 +57,9 @@
         <div class="row align-items-center g-0 border-top py-2 mt-2">
             <div class="col-lg-4 col-md-5 col-12">
                 <span>
-                    &copy; {% now "F Y" %}
+                    &copy; {% now "Y" %}
                     <a class="font-weight-bold" href="{{ home }}">{{ title }}</a>
-                    All Rights Reserved.
+                    Tous droits réservés.
                 </span>
             </div>
 

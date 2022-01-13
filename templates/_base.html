@@ -11,9 +11,9 @@
                 {% if page_title %}
                     {{ page_title|capfirst }}
                 {% else %}
-                    {{ description|capfirst }}
+                    {{ site_desc|capfirst }}
                 {% endif %}
-            {% endblock head_title %} &smid; {{ title|upper }}
+            {% endblock head_title %} &smid; {{ title|title }}
         </title>
     </head>
 
