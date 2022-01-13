@@ -21,6 +21,11 @@ qrcode = {extras = ["pil"], version = "*"}
 django = "==3.2.10"
 django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 readtime = "*"
+django-embed-video = "*"
+pyzstd = "*"
+mysqlclient = "*"
+psycopg2-binary = "*"
+psycopg2 = "*"
 
 [dev-packages]
 flake8 = "*"
