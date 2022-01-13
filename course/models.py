@@ -96,6 +96,17 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         verbose_name_plural = 'formations'
         indexes = [models.Index(fields=['uuid'])]
 
+    def clean(self):
+        if (
+            self.published >= self.date_of_course
+        ):
+            raise ValidationError(
+                {
+                    "published": "La date de publication ne doit pas \
+                    être supérieure ou égale à la date de début de formation."
+                }
+            )
+
     def __str__(self):
         return self.name
     
