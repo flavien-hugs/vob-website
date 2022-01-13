@@ -1,0 +1,69 @@
+{% extends "index.html" %}
+
+{% block head_title %}
+    {{ block.super }}
+{% endblock head_title %}
+
+{% block __body__ %}
+    <section class="py-4 py-lg-8 pb-14">
+        <article class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8 col-md-12 col-12 mb-2">
+                    <div class="text-center mb-4">
+                        <a title="{{ object.category.name|capfirst|safe }}" href="{{ object.category.category_absolute_url }}" class="fs-5 fw-semi-bold d-block mb-4 text-primary">{{ object.category.name|capfirst|safe }}</a>
+                        <h1 class="display-3 fw-bold mb-4">{{ object.name|capfirst|safe }}</h1>
+                        <span class="mb-3 d-inline-block">{{ object.readtime }}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <div class="d-flex align-items-center">
+                            <div class="ms-2 lh-1">
+                                <h5 class="mb-1">{{ request.user.get_full_name }}</h5>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="ms-2 text-muted">Partager</span>
+                            <a href="#" class="ms-2 text-muted"><i class="mdi mdi-linkedin"></i></a>
+                            <a href="#" class="ms-2 text-muted"><i class="mdi mdi-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-lg-10 col-md-12 col-12 mb-6">
+                    <img src="{{ object.cover.url }}" alt="{{ object.name|slugify }}" class="img-fluid rounded-3">
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8 col-md-12 col-12 mb-2">
+                    <div>
+                        <div class="mb-4">
+                            <p class="lead text-dark">
+                                {{ object.subtitle|capfirst|safe }}
+                            </p>
+                            <p>
+                                {{ object.body|safe }}
+                            </p>
+                        </div>
+                    </div>
+                    <hr class="mt-8 mb-5">
+
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <div class="d-flex align-items-center">
+                            <div class="ms-2 lh-1">
+                                <h5 class="mb-1">{{ request.user.get_full_name }}</h5>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="ms-2 text-muted">Partager sur</span>
+                            <a href="#" class="ms-2 text-muted"><i class="mdi mdi-linkedin"></i></a>
+                            <a href="#" class="ms-2 text-muted "><i class="mdi mdi-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+{% endblock __body__ %}
