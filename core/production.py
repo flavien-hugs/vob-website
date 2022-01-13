@@ -5,6 +5,7 @@ from core.settings import * # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production
 
+PREPEND_WWW = True
 DEBUG = TEMPLATE_DEBUG = False
 
 # https://docs.djangoproject.com/en/4.0/ref/settings/#allowed-hosts
@@ -12,22 +13,24 @@ DEBUG = TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = [
     '*.valereobei.com',
     'valereobei.com',
-    'www.pretacomed.com'
+    'www.valereobei.com'
 ]
 
 # https://docs.djangoproject.com/fr/4.0/ref/settings/
 # Let's Encrypt ssl/tls https
 
-X_FRAME_OPTIONS = "DENY"
-SECURE_SSL_REDIRECT = True
 SECURE_HSTS_SECONDS = 86400
 SECURE_HSTS_PRELOAD = True
-SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+SECURE_SSL_REDIRECT = True
+SECURE_REDIRECT_URLS = ['^']
+SECURE_SSL_HOST = ["www.madeingbeke.com"]
+
 SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_NAME = '__smi__'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 CSRF_USE_SESSIONS = True

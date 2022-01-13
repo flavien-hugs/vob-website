@@ -3,8 +3,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import os, re
-import logging.config
+import os
+import re
 from pathlib import Path
 from decouple import config
 from django.contrib.messages import constants as messages
@@ -33,9 +33,8 @@ ALLOWED_HOSTS = []
 ADMIN_URL = 'admin/'
 APPEND_SLASH = True
 THOUSAND_SEPARATOR = ' '
-SITE_NAME = 'Valère Obei'
 USE_THOUSAND_SEPARATOR = True
-DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'flavienhugs@pm.me'
+DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'valereobei@pm.me'
 
 # Application definition
 
@@ -54,6 +53,7 @@ PACKAGE_APPS = [
     'django.contrib.admin',
 
     'taggit',
+    'embed_video',
     'import_export',
     'widget_tweaks',
     'django_filters',
@@ -110,16 +110,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
-SESSION_COOKIE_HTTPONLY = True
+# https://docs.djangoproject.com/en/dev/ref/settings/
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = True
-
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-browser-xss-filter
 SECURE_BROWSER_XSS_FILTER = True
-
-# https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # Database
@@ -138,25 +132,17 @@ if os.environ.get('GITHUB_WORKFLOW'):
         }
     }
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': "django.db.backends.postgresql",
+        'NAME': 'vobapp',
+        'USER': 'vobapp',
+        'PASSWORD': 'vobapp',
+        'HOST': '127.0.0.1',
+        'PORT': 5432,
+        'ATOMIC_REQUESTS': True
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': "django.db.backends.mysql",
-            'NAME': config('DATABASE_NAME'),
-            'USER': config('DATABASE_USER'),
-            'PASSWORD': config('DATABASE_PASSWORD'),
-            'HOST': config('DATABASE_HOST'),
-            'PORT': config('DATABASE_PORT'),
-            'ATOMIC_REQUESTS': True
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -334,7 +320,24 @@ SUMMERNOTE_CONFIG = {
 # Configure as cache backend
 # https://pypi.org/project/django-redis/
 
-CACHE_TTL = 60 * 15
-CACHE_TIMEOUT = 60 * 60
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "COMPRESSOR": "django_redis.compressors.zstd.ZStdCompressor",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 100,
+                "retry_on_timeout": True
+            },
+            "PICKLE_VERSION": -1,
+            "IGNORE_EXCEPTIONS": True,
+            "SOCKET_CONNECT_TIMEOUT": 5,
+            "SOCKET_TIMEOUT": 5,
+        }
+    }
+}
+
 DJANGO_REDIS_IGNORE_EXCEPTIONS = True
 DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
