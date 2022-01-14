@@ -15,4 +15,5 @@ urlpatterns = [
         ])
     ),
     path(route='categorie/<slug>/', view=views.category_list, name='category_list'),
+    path(route='/post/more/', view=views.loading_post, name='loading_post'),
 ]

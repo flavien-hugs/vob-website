@@ -50,6 +50,10 @@ class PostManager(models.Manager):
     def free(self):
         return self.get_queryset().free()
 
+    def related(self, instance):
+        post = self.published().filter(category=instance.category)
+        return (post).exclude(pk=instance.pk).distinct()
+
     def search(self, query=None):
         if query is None:
             return self.get_queryset().none()
