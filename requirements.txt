@@ -45,7 +45,7 @@ phonenumbers==8.12.41
 pillow==9.0.0
 psycopg2-binary==2.9.3
 pycparser==2.21
-pyparsing==3.0.6; python_version >= '3.6'
+pyparsing==3.0.7; python_version >= '3.6'
 pyquery==1.4.3
 python-decouple==3.5
 pytz==2021.3
