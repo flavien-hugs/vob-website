@@ -41,7 +41,7 @@ mysqlclient==2.1.0
 odfpy==1.4.1
 openpyxl==3.0.9
 packaging==21.3; python_version >= '3.6'
-phonenumbers==8.12.42
+phonenumbers==8.12.43
 pillow==9.0.0
 psycopg2-binary==2.9.3
 pycparser==2.21
