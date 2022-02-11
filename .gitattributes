@@ -1,6 +1,7 @@
-*.js linguist-language=Python
+# Auto detect text files and perform LF normalization
+
 *.py linguist-detectable=true
-*.js linguist-detectable=false
-*.css linguist-detectable=false
-*.html linguist-detectable=false
+*.js linguist-detectable=true
+*.css linguist-detectable=true
+*.html linguist-detectable=true
 *.xml linguist-detectable=false
