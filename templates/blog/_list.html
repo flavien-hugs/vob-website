@@ -1,0 +1,75 @@
+{% extends "index.html" %}
+
+{% block head_title %}
+    {{ block.super }}
+{% endblock head_title %}
+
+{% block __body__ %}
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="offset-xl-2 col-xl-8 offset-lg-1 col-lg-10 col-md-12 col-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 fw-bold">{{ page_title|title }}</h1>
+                        <p class="lead">
+                            Our features, journey, tips and us being us. Lorem ipsum dolor sit amet, accumsan in,
+                            tempor dictum neque.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pb-5">
+        <div class="container">
+            <div class="row">
+                {% for post in object_list %}
+                    {% if forloop.first and not request.resolver_match.url_name == 'category_list' %}
+                        <article class="col-12">
+                            <div class="card mb-4 shadow-lg">
+                                <div class="row g-0">
+                                    <a href="{{ post.post_absolute_url }}" class="col-lg-8 col-md-12 col-12 bg-cover img-left-rounded" style="background-image:url('{{ post.cover.url }}');">
+                                        <img src="{{ post.cover.url }}" class="img-fluid d-lg-none invisible" alt="{{ post.name|slugify }}">
+                                    </a>
+                                    <div class="col-lg-4 col-md-12 col-12">
+                                        <div class="card-body">
+                                            <a href="{{ post.category.category_absolute_url }}" class="fs-5 mb-3 fw-semi-bold d-block">
+                                                {{ post.category.name|capfirst|safe }}
+                                            </a>
+
+                                            <h2 class="mb-2 mb-lg-4">
+                                                <a href="{{ post.post_absolute_url }}" class="text-inherit">
+                                                    {{ post.name|capfirst|safe }}
+                                                </a>
+                                            </h2>
+                                            <p>{{ post.post_excerpt|truncatewords:25|striptags|safe }}</p>
+
+                                            <div class="row align-items-center g-0 mt-lg-7 mt-4">
+                                                <div class="col lh-1">
+                                                    <h5 class="mb-1">{{ request.user.get_full_name }}</h5>
+                                                    <p class="fs-6 mb-0">
+                                                        <i class="fe fe-clock mr-1"></i>
+                                                        {{ post.published|date }}
+                                                    </p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <p class="fs-6 mb-0">{{ post.readtime }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    {% else %}
+                        {% include "blog/paths/__post_card.html" with object=post %}
+                    {% endif %}
+                {% empty %}
+                    <p class="text-center display-3">Aucun article disponible.</p>
+                {% endfor %}
+                {% include "paths/__paginate.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock __body__ %}

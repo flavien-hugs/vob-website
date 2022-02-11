@@ -12,11 +12,11 @@
 
                 <h3>
                     <a href="{{ object.post_absolute_url }}" class="text-inherit">
-                        {{ object.name|capfirst|safe }}
+                        {{ object.post_name|capfirst|safe }}
                     </a>
                 </h3>
 
-                <p>{{ object.subtitle|striptags|truncatewords:8 }}</p>
+                <p>{{ object.post_excerpt|striptags|truncatewords:8 }}</p>
 
                 <div class="row align-items-center g-0 mt-4">
                     <div class="col lh-1">
