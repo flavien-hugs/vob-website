@@ -29,8 +29,8 @@ class CourseAdmin(SummernoteModelAdmin):
                     "resume",
                     "description",
                     "cover",
-                    ("option", "status"),
-                    "published"
+                    "option",
+                    "published",
                 )
             }
         ),
@@ -39,7 +39,6 @@ class CourseAdmin(SummernoteModelAdmin):
         "name",
         "course_price",
         "course_count_viewed",
-        "status",
         "option",
         "show_course_url",
         "published",
@@ -48,16 +47,13 @@ class CourseAdmin(SummernoteModelAdmin):
         'name',
     ]
     list_filter = (
-        "status",
         "option",
     )
     list_editable = (
         "option",
-        "status",
     )
     search_fields = (
         "name",
-        "status",
         "option",
     )
     
@@ -81,7 +77,7 @@ class BookAdmin(SummernoteModelAdmin):
                     ("name", "price"),
                     "resume",
                     "cover",
-                    ("published", "status"),
+                    "published",
                 )
             }
         ),
@@ -90,20 +86,13 @@ class BookAdmin(SummernoteModelAdmin):
         "name",
         "book_price",
         "book_count_viewed",
-        "status", "published", "show_item_url",
+        "published", "show_item_url",
     ]
     list_display_links = [
         'name',
     ]
-    list_filter = (
-        "status",
-    )
-    list_editable = (
-        "status",
-    )
     search_fields = (
         "name",
-        "status",
     )
     
     @mark_safe

@@ -7,11 +7,11 @@ from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import FileExtensionValidator
 
 from course.managers import CourseManager, BookManager
 
-from common.utilitary import img_url
+from common.utilitary import upload_image_to, unique_slug_generator
 from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
 
 
@@ -21,32 +21,28 @@ NULL_AND_BLANK = {'null': True, 'blank': True}
 class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     T = 'En Ligne'
-    O = 'En Présentiel'
+    P = 'En Présentiel'
 
     OPTION_COURSE_CHOICES = (
         (T, 'En Ligne'),
-        (O, 'En Présentiel')
+        (P, 'En Présentiel')
     )
     file_prepend = "course/upload/"
 
     name = models.CharField(
-        max_length=200,
-        verbose_name="titre",
-        help_text='Saisir le titre de cette formation (200 caractères maximum).'
+        max_length=180,
+        verbose_name="titre du cours",
+        help_text='Saisir le titre de cette formation (180 caractères maximum).'
     )
     subtitle = models.CharField(
         verbose_name='sous-titre',
-        max_length=180,
+        max_length=200,
         help_text='Saisir le sous-titre de cette formation (200 caractères maximum).',
         **NULL_AND_BLANK
     )
     price = models.PositiveIntegerField(
         default=5000,
         verbose_name='côut de la formation',
-        validators=[
-            MinValueValidator(5000),
-            MaxValueValidator(1000000)
-        ],
         help_text='Indiquer le côut de cette formation.'
     )
     date_of_course = models.DateTimeField(
@@ -71,8 +67,11 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     cover = models.ImageField(
-        upload_to=img_url,
+        upload_to=upload_image_to,
         verbose_name="ajouter une image",
+        validators=[
+            FileExtensionValidator(['jpeg', 'jpg', 'png'])
+        ],
         help_text="ajouter une image descriptive de l'article.",
         **NULL_AND_BLANK
     )
@@ -82,7 +81,7 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         verbose_name="nombre de vues"
     )
     option = models.CharField(
-        default=O,
+        default=P,
         max_length=13,
     	verbose_name="Option de la formation",
     	choices=OPTION_COURSE_CHOICES,
@@ -93,6 +92,7 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     class Meta:
         ordering = ['-published']
+        get_latest_by = ['-published']
         verbose_name_plural = 'formations'
         indexes = [models.Index(fields=['uuid'])]
 
@@ -110,21 +110,9 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def __str__(self):
         return self.name
     
-    def _get_unique_slug(self):
-        slug = slugify(self.name)
-        unique_slug = slug
-        while Course.objects.filter(slug=unique_slug).exists():
-            unique_slug = f"{slug}-{get_random_string(6)}".lower()
-        return unique_slug
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self._get_unique_slug()
-        super().save(*args, **kwargs)
-    
     @admin.display(description="côut")
     def course_price(self):
-        return f"{self.price} Fr/CFA"
+        return f"{self.price} frcfa".upper()
     
     @admin.display(description="nombre de vues")
     def course_count_viewed(self):
@@ -146,10 +134,6 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     price = models.PositiveIntegerField(
         default=5000,
         verbose_name="prix de cet article",
-        validators=[
-            MinValueValidator(5000),
-            MaxValueValidator(1000000)
-        ],
         help_text='Indiquer le prix de cet article.'
     )
     resume = models.TextField(
@@ -159,8 +143,11 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     cover = models.ImageField(
-        upload_to=img_url,
+        upload_to=upload_image_to,
         verbose_name="ajouter une image de couverture",
+        validators=[
+            FileExtensionValidator(['jpeg', 'jpg', 'png'])
+        ],
         help_text="ajouter une image de couverture de ce livre.",
         **NULL_AND_BLANK
     )
@@ -174,6 +161,7 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     class Meta:
         ordering = ['-created_at']
+        get_latest_by = ['-created_at']
         verbose_name_plural = 'livres'
         indexes = [models.Index(fields=['uuid'])]
 
@@ -194,7 +182,7 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     
     @admin.display(description="côut")
     def book_price(self):
-        return f"{self.price} Fr/CFA"
+        return f"{self.price} frcfa".upper()
     
     @admin.display(description="nombre de vues")
     def book_count_viewed(self):
@@ -202,3 +190,22 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def book_absolute_url(self):
     	return reverse("book:book_detail", kwargs={"slug": str(self.slug)})
+
+
+@receiver([models.signals.pre_save], sender=Book)
+@receiver([models.signals.pre_save], sender=Course)
+def slug_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+@receiver([models.signals.pre_save], sender=Book)
+@receiver([models.signals.pre_save], sender=Course)
+def delete_old_cover(sender, instance, *args, **kwargs):
+    if instance.pk:
+        try:
+            Klass = instance.__class__
+            old_cover = Klass.objects.get(pk=instance.pk).cover
+            if old_cover and old_cover.url != instance.cover.url:
+                old_cover.delete(save=False)
+        except: pass

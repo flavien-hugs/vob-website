@@ -9,7 +9,6 @@ class ObjectQuerySet(models.QuerySet):
     
     def published(self):
         return self.filter(
-            status='Publié',
             published__lte=timezone.now()
         )
 
