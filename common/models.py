@@ -15,11 +15,18 @@ NULL_AND_BLANK = {
 
 class BaseTimeStampModel(models.Model):
     
-    created_at = models.DateTimeField(db_index=True, default=timezone.now)
+    created_at = models.DateTimeField(
+        verbose_name='date de création',
+        db_index=True, default=timezone.now
+    )
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
+
+    @admin.display(description="date d'ajout")
+    def date(self):
+        return self.created_at.date()
 
 
 class UUIDSlugMixin(models.Model):
@@ -33,6 +40,7 @@ class UUIDSlugMixin(models.Model):
     slug = models.SlugField(
         unique=True,
         editable=False,
+        max_length=225,
         verbose_name='slug',
         help_text='Automatiquement formé à partir du nom.',
         **NULL_AND_BLANK
@@ -43,22 +51,7 @@ class UUIDSlugMixin(models.Model):
 
 
 class StatusAndPublishedMixin(models.Model):
-    
-    P = 'Publié'
-    E = 'En Attente'
 
-    STATUS_CHOICES = (
-        (P, 'Publié'),
-        (E, 'En Attente')
-    )
-
-    status = models.CharField(
-        default=E,
-        max_length=10,
-    	verbose_name="status",
-    	choices=STATUS_CHOICES,
-        help_text="status."
-    )
     published = models.DateTimeField(
         auto_now_add=False, auto_now=False,
         verbose_name='date et de publication',

@@ -1,16 +1,37 @@
 # common.utilitary.py
 
-import hashlib
+import os
 from datetime import datetime
 
+from django.utils.text import slugify
+from django.utils.crypto import get_random_string
 
-def img_url(self, filename):
-    # hash_ = hashlib.md5()
-    # hash_.update(str(filename).encode("utf-8") + str(datetime.now()).encode("utf-8"))
-    # file_hash = hash_.hexdigest()
 
-    if self.__class__.__name__ == "Post":
-        filename = self.slug + "." + str(filename.split(".")[-1])
+def upload_image_to(instance, filename):
+    ext = filename.split(".")[-1]
+    if instance.name:
+        filename = f"{instance.name}.{ext}".lower()
+    return os.path.join(instance.file_prepend, filename)
+
+
+def unique_slug_generator(instance, new_slug=None):
+    if new_slug is not None:
+        slug = new_slug
     else:
-        filename = filename
-    return f"{self.file_prepend}/{filename}"
+        slug = slugify(instance.name.replace(' ', '-'))
+
+    Klass = instance.__class__
+
+    while Klass.objects.filter(slug=slug).exists():
+        new_slug = f"{slug}-{get_random_string(6)}".lower()
+        return unique_slug_generator(instance, new_slug=new_slug)
+    return slug
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR', None)
+    return ip
