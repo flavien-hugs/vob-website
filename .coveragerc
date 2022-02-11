@@ -1,9 +1,7 @@
 [run]
     omit=
-        */__init__.py
-        */logs/*
-        */static/*
-        */templates/*
-        */migrations/*
-        */staticfiles/*
+        */__init__.py,*/logs/*,*/static/*,
+        */templates/*, */migrations/*,*/staticfiles/*
 
+[report]
+precision = 2
