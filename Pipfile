@@ -32,7 +32,7 @@ flake8 = "*"
 autopep8 = "*"
 pytest-django = "*"
 pytest = "*"
-coverage = "*"
+coverage = {extras = ["toml"], version = "*"}
 psycopg2 = "*"
 
 [requires]
