@@ -30,7 +30,7 @@ django-redis==5.2.0
 django-summernote==0.8.20.0
 django-taggit==2.1.0
 django-widget-tweaks==1.4.12
-django==3.2
+django==3.2.12
 et-xmlfile==1.1.0; python_version >= '3.6'
 gunicorn==20.1.0
 idna==3.3; python_version >= '3'
