@@ -44,6 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.humanize',
+
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+    'django.contrib.sitemaps',
 ]
 
 PACKAGE_APPS = [
@@ -59,15 +65,20 @@ PACKAGE_APPS = [
     'django_filters',
     'phonenumber_field',
     'compressor',
+
+    'sorl.thumbnail',
 ]
 
-CUSTOM_APPS = [
+LOCAL_APPS = [
     'blog.apps.BlogConfig',
     'course.apps.CourseConfig',
     'checkout.apps.CheckoutConfig',
+    'page.apps.PageConfig',
 ]
 
-INSTALLED_APPS += CUSTOM_APPS + PACKAGE_APPS
+INSTALLED_APPS += LOCAL_APPS + PACKAGE_APPS
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,6 +90,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
@@ -135,9 +147,9 @@ if os.environ.get('GITHUB_WORKFLOW'):
 DATABASES = {
     'default': {
         'ENGINE': "django.db.backends.postgresql",
-        'NAME': 'vobapp',
-        'USER': 'vobapp',
-        'PASSWORD': 'vobapp',
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': '127.0.0.1',
         'PORT': 5432,
         'ATOMIC_REQUESTS': True
@@ -182,7 +194,17 @@ USE_TZ = False
 TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'fr'
 USE_I18N = USE_L10N = True
+LANGUAGE_COOKIE_SECURE = True
 DATE_INPUT_FORMATS = ('%d/%m/%Y', '%d-%m-%Y')
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # staticfiles finders
 # See: https://docs.djangoproject.com/en/4.0/ref/contrib/staticfiles/#staticfiles-finders
@@ -195,6 +217,9 @@ STATICFILES_FINDERS = [
     'compressor.finders.CompressorFinder',
 ]
 
+# https://warehouse.python.org/project/whitenoise/
+
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # https://docs.djangoproject.com/fr/4.0/ref/settings/#message-tags
@@ -208,25 +233,10 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR / 'media'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Phone Number Config
-# https://pypi.org/project/django-phonenumber-field/
-
-PHONENUMBER_DEFAULT_REGION = "CI"
-PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 
 # Django-compressor config
 # https://django-compressor.readthedocs.io/en/stable/settings/#settings
@@ -285,12 +295,11 @@ JET_CHANGE_FORM_SIBLING_LINKS = True
 # Show summernote with Bootstrap4
 
 SUMMERNOTE_THEME = 'bs4'
-
 SUMMERNOTE_CONFIG = {
     'iframe': True,
     'summernote': {
         'airMode': False,
-        'width': '90%',
+        'width': '100%',
         'height': '300',
         'toolbar': [
             [
@@ -320,6 +329,9 @@ SUMMERNOTE_CONFIG = {
 # Configure as cache backend
 # https://pypi.org/project/django-redis/
 
+CACHE_TTL = 60 * 15
+CACHE_TIMEOUT = 60 * 60
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -341,3 +353,7 @@ CACHES = {
 
 DJANGO_REDIS_IGNORE_EXCEPTIONS = True
 DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
+
+# https://django-taggit.readthedocs.io/en/latest/getting_started.html
+
+TAGGIT_CASE_INSENSITIVE = True

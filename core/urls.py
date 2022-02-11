@@ -39,19 +39,30 @@ home_view = HomeView.as_view()
 urlpatterns = [
     path(route='', view=home_view, name='home'),
 
-    path('book/', include('course.urls')),
-    path('blog/', include('blog.urls', namespace="blog")),
-    
+    path("blog/", include('blog.urls')),
+    path("", include('course.urls')),
+    path("", include("page.urls", namespace="page")),
+
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('jet/', include('jet.urls', 'jet')),
     path('summernote/', include('django_summernote.urls')),
     path(settings.ADMIN_URL, admin.site.urls),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path(
+        route='robots.txt',
+        view=generic.TemplateView.as_view(
+            template_name='robots.txt',
+            content_type='text/plain'
+        )
+    )
+]
 
 handler404 = handler404
 handler500 = handler500
 
 if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
     urlpatterns += [
         path('404/', handler404, {'exception': Exception("Page non trouvée !")}),
         path('500/', handler500),
