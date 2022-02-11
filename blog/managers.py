@@ -9,20 +9,17 @@ class PostQuerySet(models.QuerySet):
     
     def published(self):
         return self.filter(
-            status='Publié',
             published__lte=timezone.now()
         )
     
     def paid(self):
         return self.filter(
-            status='Publié',
             reading='Payant',
             published__lte=timezone.now()
         )
     
     def free(self):
         return self.filter(
-            status='Publié',
             reading='Gratuit',
             published__lte=timezone.now()
         )

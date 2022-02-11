@@ -5,23 +5,26 @@ import random
 from django.urls import reverse
 from django.views import generic
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 from blog.models import Post, Category
 
 
-class CategoryListView(generic.ListView):
-    model = Category
+class CategoryListView(
+    generic.ListView,
+    generic.list.MultipleObjectMixin
+):
+    model = Post
     paginate_by = 10
-    template_name = "blog/post_list.html"
+    template_name = "blog/_list.html"
 
     def get_queryset(self):
-        category = self.model.objects.get(slug=self.kwargs['slug'])
-        post_in_category = Post.objects.filter(category=category).published()
+        self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
+        post_in_category = self.model.objects.filter(category=self.category).published()
         return post_in_category
 
     def get_context_data(self, **kwargs):
-        category = self.model.objects.get(slug=self.kwargs['slug'])
-        kwargs['page_title'] = f"{category.name}".capitalize()
+        kwargs['page_title'] = f"{self.category.name}".capitalize()
         return super().get_context_data(**kwargs)
 
 
@@ -31,7 +34,7 @@ category_list = CategoryListView.as_view()
 class PostListView(generic.ListView):
     paginate_by = 10
     queryset = Post.objects.published()
-    template_name = "blog/post_list.html"
+    template_name = "blog/_list.html"
 
 
 post_list_view = PostListView.as_view(
@@ -42,7 +45,7 @@ post_list_view = PostListView.as_view(
 class PostFreeListView(generic.ListView):
     paginate_by = 10
     queryset = Post.objects.free()
-    template_name = "blog/post_list.html"
+    template_name = "blog/_list.html"
 
 
 post_free_list_view = PostFreeListView.as_view(
@@ -53,7 +56,7 @@ post_free_list_view = PostFreeListView.as_view(
 class PostPaidListView(generic.ListView):
     paginate_by = 10
     queryset = Post.objects.paid()
-    template_name = "blog/post_list.html"
+    template_name = "blog/_list.html"
 
 
 post_paid_list_view = PostPaidListView.as_view(
@@ -65,7 +68,7 @@ class PostDetailView(generic.DetailView):
     model = Post
     slug_field = "slug"
     slug_url_kwarg = "slug"
-    template_name = "blog/post_detail.html"
+    template_name = "blog/_detail.html"
 
     def get_context_data(self, **kwargs):
         post = self.get_object()

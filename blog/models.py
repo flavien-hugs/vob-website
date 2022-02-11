@@ -1,20 +1,20 @@
 # blog.models.py
 
+from itertools import chain
+
 from django.db import models
 from django.urls import reverse
 from django.contrib import admin
 from django.dispatch import receiver
-from django.utils.text import slugify
-from django.utils.crypto import get_random_string
-from django.core.validators import MaxValueValidator, MinValueValidator
-
-from blog.managers import PostManager
-
-from common.utilitary import img_url
-from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
+from django.utils.text import Truncator
+from django.core.validators import FileExtensionValidator
 
 import readtime
+from blog.managers import PostManager
 from taggit.managers import TaggableManager
+
+from common.utilitary import upload_image_to, unique_slug_generator
+from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
 
 
 NULL_AND_BLANK = {'null': True, 'blank': True}
@@ -26,6 +26,8 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
     S = 'Spiritualité'
     E = 'Business & Entrepreneuriat'
 
+    file_prepend = "categorie/upload/"
+
     CATEGORIE_CHOICES = (
         (M, 'Motivation'),
         (S, 'Spiritualité'),
@@ -35,44 +37,45 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
     name = models.CharField(
         default=E,
         unique=True,
-        max_length=30,
+        max_length=180,
         choices=CATEGORIE_CHOICES,
         verbose_name="type de catégorie d'article",
         help_text="Définir le type de catégorie de l'article.",
+    )
+    cover = models.ImageField(
+        upload_to=upload_image_to,
+        verbose_name="ajouter une image",
+        validators=[
+            FileExtensionValidator(['jpeg', 'jpg', 'png'])
+        ],
+        help_text="ajouter une image descriptive de cette catégorie.",
         **NULL_AND_BLANK
     )
 
     class Meta:
-        ordering = ['-name']
+        ordering = ['-created_at']
         verbose_name_plural = 'catégories'
         indexes = [models.Index(fields=['uuid'])]
 
     def __str__(self):
         return self.name
+    
+    def get_image_url(self):
+        if self.cover:
+            return self.cover.url
+        return 'https://via.placeholder.com/300'
 
     @admin.display(description="catégorie")
     def category_name(self):
         return self.name
 
-    def _get_unique_slug(self):
-        slug = slugify(self.name)
-        unique_slug = slug
-        while Category.objects.filter(slug=unique_slug).exists():
-            unique_slug = f"{slug}-{get_random_string(6)}".lower()
-        return unique_slug
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self._get_unique_slug()
-        super().save(*args, **kwargs)
-
     def category_absolute_url(self):
-        return reverse('blog:category_list', kwargs={"slug": self.slug})
+        return reverse('categorie:category_list', kwargs={"slug": self.slug})
 
     def posts(self):
         return Post.objects.filter(category=self)
 
-    @admin.display(description="nombre d'articles dans cette catégorie")
+    @admin.display(description="nombre d'articles")
     def post_count(self):
         return self.posts().count()
 
@@ -96,7 +99,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     name = models.CharField(
-        max_length=225,
+        max_length=180,
     	verbose_name="titre de l'article",
     	help_text="Définir le titre de l'article."
     )
@@ -117,10 +120,12 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         blank=True
     )
     cover = models.ImageField(
-        upload_to=img_url,
+        upload_to=upload_image_to,
         verbose_name="ajouter une image",
+        validators=[
+            FileExtensionValidator(['jpeg', 'jpg', 'png'])
+        ],
         help_text="ajouter une image descriptive de l'article.",
-        **NULL_AND_BLANK
     )
     view = models.PositiveIntegerField(
         default=0,
@@ -142,26 +147,19 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         get_latest_by = ['-published']
         verbose_name_plural = 'articles'
         indexes = [models.Index(fields=['uuid'])]
-    
-    def _get_unique_slug(self):
-        slug = slugify(self.name)
-        unique_slug = slug
-        while Post.objects.filter(slug=unique_slug).exists():
-            unique_slug = f"{slug}-{get_random_string(6)}".lower()
-        return unique_slug
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self._get_unique_slug()
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+    
+    def get_image_url(self):
+        if self.cover:
+            return self.cover.url
+        return 'https://via.placeholder.com/300'
 
     @admin.display(description="côut")
     def post_price(self):
         if self.price > 0:
-            return f"{self.price} Fr/CFA"
+            return f"{self.price} frcfa".upper()
         return "article gratuit"
     
     @admin.display(description="nombre de lecture")
@@ -172,16 +170,41 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def readtime(self):
         readtime_post = readtime.of_text(self.body)
         return readtime_post
+    
+    def post_name(self):
+        truncated_name = Truncator(self.name)
+        return truncated_name.words(10)
+    
+    def post_excerpt(self):
+        truncated_subtitle = Truncator(self.subtitle)
+        return truncated_subtitle.words(20)
 
     def post_absolute_url(self):
-    	return reverse("blog:post_detail", kwargs={"slug": str(self.slug)})
+    	return reverse(
+            "post:post_detail",
+            kwargs={
+                "category_slug": str(self.category.slug),
+                "slug": str(self.slug)
+            }
+        )
 
 
 @receiver([models.signals.pre_save], sender=Post)
+@receiver([models.signals.pre_save], sender=Category)
+def slug_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+@receiver([models.signals.pre_save], sender=Post)
+@receiver([models.signals.pre_save], sender=Category)
 def delete_old_cover(sender, instance, *args, **kwargs):
     if instance.pk:
         try:
-            old_cover = Post.objects.get(pk=instance.pk).cover
+            Klass = instance.__class__
+            old_cover = Klass.objects.get(pk=instance.pk).cover
             if old_cover and old_cover.url != instance.cover.url:
                 old_cover.delete(save=False)
         except: pass
+
+

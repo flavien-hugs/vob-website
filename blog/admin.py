@@ -20,20 +20,20 @@ class CategoryAdmin(SummernoteModelAdmin):
     date_hierarchy = "created_at"
     fieldsets = (
         ('Category', {
-            'fields': ("name",)
+            'fields': ("name", "cover",)
             }
         ),
     )
     list_display = (
         "category_name",
         "post_count",
+        "date",
     )
     list_display_links = [
         'category_name',
     ]
     list_filter = (
         "name",
-        "created_at",
     )
     search_fields = (
         "name",
@@ -46,6 +46,7 @@ class CategoryAdmin(SummernoteModelAdmin):
         )
         return queryset
     
+    @admin.display(description="nombre d'articles")
     def post_count(self, instance):
         return instance._post_count
 
@@ -59,41 +60,35 @@ class PostAdmin(SummernoteModelAdmin):
         (
             'Article', {
                 'fields': (
-                    "category",
-                    ("name", "price"),
-                    "subtitle",
-                    'body',
-                    'cover',
-                    'published',
-                    ('status', 'reading'),
+                    "category", "name",
+                    ('reading', "price"),
+                )
+            }
+        ),
+        (
+            "Description de l'article", {
+                'fields': (
+                    "subtitle", 'body',
+                    'cover', 'published',
                 )
             }
         ),
     )
     list_display = [
-        "category",
-        "name",
-        "post_price",
+        "category", "post_name",
         "post_count_viewed",
-        "status", "reading",
-        "show_post_url",
+        "post_price", "show_post_url",
         "published",
     ]
     list_display_links = [
-        'name',
+        'post_name',
         'category'
     ]
     list_filter = (
-        "status",
-        "reading",
-    )
-    list_editable = (
-        "reading",
-        "status",
+        "published",
     )
     search_fields = (
         "name",
-        "status",
         "reading",
     )
     
@@ -101,5 +96,5 @@ class PostAdmin(SummernoteModelAdmin):
     @admin.display(description="Voir l'article")
     def show_post_url(self, instance):
         url = instance.post_absolute_url()
-        response = format_html(f"""<a target="_blank" href="{url}">{url}</a>""")
+        response = format_html(f"""<a target="_blank" href="{url}">Voir l'article</a>""")
         return response
