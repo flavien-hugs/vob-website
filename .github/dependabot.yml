@@ -1,8 +1,11 @@
 version: 2
 updates:
-  - package-ecosystem: pip
+  - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: daily
-      time: "10:00"
-    open-pull-requests-limit: 10
+      interval: "monthly"
+      time: "00:00"
+    allow:
+      - dependency-name: "django*"
+        dependency-type: "direct"
+    open-pull-requests-limit: 1
