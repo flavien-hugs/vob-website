@@ -47,10 +47,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    - name: Run Migrations
-      run: |
-        python manage.py migrate
-    
     - name: Upload coverage data
       uses: actions/upload-artifact@v2
       with:
