@@ -18,14 +18,14 @@ django-widget-tweaks = "*"
 django-import-export = "*"
 whitenoise = {extras = ["brotli"], version = "*"}
 qrcode = {extras = ["pil"], version = "*"}
-django = "==4.0.2"
+django = "==3.2"
 django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 readtime = "*"
 django-embed-video = "*"
 pyzstd = "*"
 mysqlclient = "*"
 psycopg2-binary = "*"
-psycopg2 = "*"
+sorl-thumbnail = "*"
 
 [dev-packages]
 flake8 = "*"
@@ -33,6 +33,7 @@ autopep8 = "*"
 pytest-django = "*"
 pytest = "*"
 coverage = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"
