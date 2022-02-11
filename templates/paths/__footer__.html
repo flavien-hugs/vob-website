@@ -1,5 +1,7 @@
 {% url "home" as home %}
-{% url 'blog:post_list' as post_list_url %}
+{% url 'post:post_list' as post_list_url %}
+{% url 'book:book_list' as book_list_url %}
+{% url 'course:course_list' as course_list_url %}
 
 <footer class="pt-lg-6 pt-5 footer bg-white">
     <div class="container">
@@ -24,8 +26,8 @@
                     <h3 class="fw-bold mb-3">Découvrir</h3>
                     <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
                         <li><a href="{{ post_list_url }}" class="nav-link">Blog</a></li>
-                        <li><a href="#" class="nav-link">Formation</a></li>
-                        <li><a href="#" class="nav-link">Contact</a></li>
+                        <li><a href="{{ course_list_url }}" class="nav-link">Formations</a></li>
+                        <li><a href="{{ book_list_url }}" class="nav-link">Mes Livres</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,8 +36,9 @@
                 <div class="mb-4">
                     <h3 class="fw-bold mb-3">Liens Utils</h3>
                     <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
-                        <li><a href="#" class="nav-link">Qui suis-je ?</a></li>
                         <li><a href="#" class="nav-link">FAQ’s</a></li>
+                        <li><a href="#" class="nav-link">Qui suis-je ?</a></li>
+                        <li><a href="#" class="nav-link">Contactez-moi !</a></li>
                     </ul>
 
                 </div>

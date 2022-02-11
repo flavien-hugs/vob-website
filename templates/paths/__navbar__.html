@@ -1,5 +1,7 @@
 {% url 'home' as home_url %}
-{% url 'blog:post_list' as post_list_url %}
+{% url 'post:post_list' as post_list_url %}
+{% url 'book:book_list' as book_list_url %}
+{% url 'course:course_list' as course_list_url %}
 
 <nav class="navbar navbar-expand-lg navbar-default sticky-top">
     <div class="container px-0">
@@ -26,29 +28,32 @@
                 </span>
                 <input autocomplete="False" role="search" type="search"
                 class="form-control pl-6 rounded-0 shadow-none"
-                placeholder="Search articles"/>
+                placeholder="Je cherche ..."/>
             </form>
 
             <div class="ms-auto mt-3 mt-lg-0">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="/course/" class="nav-link text-capitalize">
+                        <a href="{{ course_list_url }}" class="nav-link text-capitalize">
                             formation
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ teacher_list_view }}" class="nav-link text-capitalize">
+                        <a href="{{ book_list_url }}" class="nav-link text-capitalize">
                             livre
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link nav-link text-capitalize" href="{{ post_list_url }}">blog</a>
+                        <a class="nav-link nav-link text-capitalize" href="{{ post_list_url }}">
+                            blog
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link text-capitalize" href="/contact">
-                        contact </a>
+                        <a class="nav-link nav-link text-capitalize" href="/contact/">
+                            contact
+                        </a>
                     </li>
                 </ul>
             </div>
