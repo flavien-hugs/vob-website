@@ -33,8 +33,13 @@ test: ## Run tests
 createsuperuser: ## Run the Django server
 	$(MANAGE) createsuperuser --username="valereobei@pm.me" --email="valereobei@pm.me"
 
+.PHONY: tox-test
+tox-test: ## test with tox
+	flake8 core --ignore=E501
+	coverage run --branch --source=core $(MANAGE) test --settings=core.settings core
+
 .PHONY: coverage
 coverage: ## Test with coverage and generate htmlcov
 	coverage run --source "blog,course" manage.py test -v 2
-	coverage report
 	coverage html
+	coverage report
