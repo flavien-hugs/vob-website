@@ -22,13 +22,29 @@
 
         <div class="collapse navbar-collapse" id="navbar-default">
             
-            <form class="mt-3 mt-lg-0 mx-lg-5 d-flex align-items-center w-100">
-                <input autocomplete="false" role="search" type="search"
-                class="form-control ps-6 rounded-0 shadow-none"
-                placeholder="Je cherche ..." required>
+            <form
+                id="search-form"
+                method="POST" action="{% url 'search' %}"
+                class="mt-3 mt-lg-0 mx-lg-5 d-flex align-items-center w-100">
+                
+                {% csrf_token %}
+                
+                <input
+                    id="search"
+                    role="search" type="text" name="search"
+                    class="form-control ps-6 shadow-none"
+                    placeholder="Rechercher un contenu ..."
+                    aria-label="Rechercher un contenu ..."
+                    required>
+
                 <span class="position-absolute ps-3 search-icon">
                     <i class="fe fe-search"></i>
                 </span>
+
+                <div class="search-suggest shadow-lg">
+                    <div class="search-result-article" id="search-results-list">
+                    </div>
+                </div>
             </form>
 
             <ul class="navbar-nav navbar-right-wrap">
