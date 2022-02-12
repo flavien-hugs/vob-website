@@ -11,6 +11,9 @@ from django.core.validators import FileExtensionValidator
 
 from course.managers import CourseManager, BookManager
 
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill, Adjust
+
 from common.utilitary import upload_image_to, unique_slug_generator
 from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
 
@@ -73,7 +76,15 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             FileExtensionValidator(['jpeg', 'jpg', 'png'])
         ],
         help_text="ajouter une image descriptive de l'article.",
-        **NULL_AND_BLANK
+    )
+    formatted_cover = ImageSpecField(
+        source='cover',
+        processors=[
+            Adjust(contrast=1.2, sharpness=1.1),
+            ResizeToFill(923, 498)
+        ],
+        format='JPEG',
+        options={'quality': 90}
     )
     view = models.PositiveIntegerField(
         default=0,
@@ -109,6 +120,11 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def __str__(self):
         return self.name
+
+    def get_image_url(self):
+        if self.formatted_cover:
+            return self.formatted_cover.url
+        return 'https://via.placeholder.com/300'
     
     @admin.display(description="côut")
     def course_price(self):
@@ -149,7 +165,15 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             FileExtensionValidator(['jpeg', 'jpg', 'png'])
         ],
         help_text="ajouter une image de couverture de ce livre.",
-        **NULL_AND_BLANK
+    )
+    formatted_cover = ImageSpecField(
+        source='cover',
+        processors=[
+            Adjust(contrast=1.2, sharpness=1.1),
+            ResizeToFill(923, 498)
+        ],
+        format='JPEG',
+        options={'quality': 90}
     )
     view = models.PositiveIntegerField(
         default=0,
@@ -167,18 +191,11 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def __str__(self):
         return self.name
-    
-    def _get_unique_slug(self):
-        slug = slugify(self.name)
-        unique_slug = slug
-        while Book.objects.filter(slug=unique_slug).exists():
-            unique_slug = f"{slug}-{get_random_string(6)}".lower()
-        return unique_slug
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self._get_unique_slug()
-        super().save(*args, **kwargs)
+    def get_image_url(self):
+        if self.formatted_cover:
+            return self.formatted_cover.url
+        return 'https://via.placeholder.com/300'
     
     @admin.display(description="côut")
     def book_price(self):
@@ -206,6 +223,10 @@ def delete_old_cover(sender, instance, *args, **kwargs):
         try:
             Klass = instance.__class__
             old_cover = Klass.objects.get(pk=instance.pk).cover
+            
             if old_cover and old_cover.url != instance.cover.url:
                 old_cover.delete(save=False)
+
+            if old_formatted_cover and old_formatted_cover.url != instance.formatted_cover.url:
+                old_formatted_cover.delete(save=False)
         except: pass
