@@ -8,39 +8,7 @@
             </div>
 
             {% for post in post_similary %}
-                <article class="col-xl-4 col-lg-4 col-md-6 col-12">
-                    <div class="card mb-4 shadow-lg ">
-                        <a href="{{ post.post_absolute_url }}" class="card-img-top">
-                            <img src="{{ post.cover.url }}" class="card-img-top rounded-top-md" alt="{{ post.name|slugify }}">
-                        </a>
-
-                        <div class="card-body">
-                            <a href="{{ post.category.category_absolute_url }}" class="fs-5 fw-semi-bold d-block mb-3 text-info">
-                                {{ post.category.name|safe|capfirst }}
-                            </a>
-                            <h3>
-                                <a href="{ post.post_absolute_url }}" class="text-inherit">
-                                    {{ post.name|capfirst|safe }}
-                                </a>
-                            </h3>
-                            <p>{{ object.subtitle|striptags|truncatewords:8 }}</p>
-
-                            <div class="row align-items-center g-0 mt-4">
-                                <div class="col lh-1">
-                                    <h5 class="mb-1">{{ request.user.get_full_name }}</h5>
-                                    <i class="fe fe-clock mr-1"></i>
-                                    {{ object.published|date }}
-                                </div>
-
-                                <div class="col-auto">
-                                    <p class="fs-6 mb-0">
-                                        {{ object.readtime }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>    
+                {% include "blog/paths/__post_card.html" with object=post %}    
             {% endfor %}
         </div>
     </section>

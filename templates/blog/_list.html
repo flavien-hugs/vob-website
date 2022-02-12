@@ -29,9 +29,10 @@
                         <article class="col-12">
                             <div class="card mb-4 shadow-lg">
                                 <div class="row g-0">
-                                    <a href="{{ post.post_absolute_url }}" class="col-lg-8 col-md-12 col-12 bg-cover img-left-rounded" style="background-image:url('{{ post.cover.url }}');">
+                                    <a href="{{ post.get_absolute_url }}" class="col-lg-8 col-md-12 col-12 bg-cover img-left-rounded" style="background-image:url('{{ post.cover.url }}');">
                                         <figure class="mb-0">
                                             <img
+                                                loading="lazy"
                                                 src="{{ post.cover.url }}"
                                                 class="img-fluid d-lg-none invisible"
                                                 alt="{{ post.name|slugify }}">
@@ -39,7 +40,7 @@
                                     </a>
                                     <div class="col-lg-4 col-md-12 col-12">
                                         <div class="card-body">
-                                            <a href="{{ post.category.category_absolute_url }}" class="fs-5 mb-3 fw-semi-bold d-block">
+                                            <a href="{{ post.category.get_absolute_url }}" class="fs-5 mb-3 fw-semi-bold d-block">
                                                 {{ post.category.name|capfirst|safe }}
                                             </a>
 

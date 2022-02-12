@@ -10,7 +10,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-8 col-md-12 col-12 mb-2">
                     <div class="text-center mb-4">
-                        <a title="{{ object.category.name|capfirst|safe }}" href="{{ object.category.category_absolute_url }}" class="fs-5 fw-semi-bold d-block mb-4 text-primary">{{ object.category.name|capfirst|safe }}</a>
+                        <a title="{{ object.category.name|capfirst|safe }}" href="{{ object.category.get_absolute_url }}" class="fs-5 fw-semi-bold d-block mb-4 text-primary">{{ object.category.name|capfirst|safe }}</a>
                         <h1 class="display-3 fw-bold mb-4">{{ object.name|capfirst|safe }}</h1>
                         <span class="mb-3 d-inline-block">{{ object.readtime }}</span>
                     </div>
@@ -34,10 +34,10 @@
                 <div class="col-xl-10 col-lg-10 col-md-12 col-12 mb-6">
                     <figure>
                         <img
+                            loading="lazy"
                             src="{{ object.cover.url }}"
                             alt="{{ object.name|slugify }}"
-                            class="img-fluid rounded-3"
-                        >
+                            class="img-fluid rounded-3">
                     </figure>
                 </div>
             </div>
