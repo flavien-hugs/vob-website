@@ -134,7 +134,7 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def course_count_viewed(self):
         return f"{self.view} vues"
 
-    def course_absolute_url(self):
+    def get_absolute_url(self):
     	return reverse("course:course_detail", kwargs={"slug": str(self.slug)})
 
 
@@ -205,7 +205,7 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def book_count_viewed(self):
         return f"{self.view} vues"
 
-    def book_absolute_url(self):
+    def get_absolute_url(self):
     	return reverse("book:book_detail", kwargs={"slug": str(self.slug)})
 
 

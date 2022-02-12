@@ -93,7 +93,7 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
     def category_name(self):
         return self.name
 
-    def category_absolute_url(self):
+    def get_absolute_url(self):
         return reverse('categorie:category_list', kwargs={"slug": self.slug})
 
     def posts(self):
@@ -214,7 +214,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         truncated_subtitle = Truncator(self.subtitle)
         return truncated_subtitle.words(20)
 
-    def post_absolute_url(self):
+    def get_absolute_url(self):
     	return reverse(
             "post:post_detail",
             kwargs={
