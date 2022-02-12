@@ -63,10 +63,11 @@ PACKAGE_APPS = [
     'import_export',
     'widget_tweaks',
     'django_filters',
-    'phonenumber_field',
-    'compressor',
+
+    'haystack',
 
     'imagekit',
+    'compressor',
 ]
 
 LOCAL_APPS = [
@@ -76,7 +77,7 @@ LOCAL_APPS = [
     'page.apps.PageConfig',
 ]
 
-INSTALLED_APPS += LOCAL_APPS + PACKAGE_APPS
+INSTALLED_APPS += PACKAGE_APPS + LOCAL_APPS
 
 SITE_ID = 1
 
@@ -357,3 +358,12 @@ DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
 # https://django-taggit.readthedocs.io/en/latest/getting_started.html
 
 TAGGIT_CASE_INSENSITIVE = True
+
+# https://django-haystack.readthedocs.io/en/master/tutorial.html#installation
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
