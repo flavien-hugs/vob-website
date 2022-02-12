@@ -19,13 +19,14 @@ django-import-export = "*"
 whitenoise = {extras = ["brotli"], version = "*"}
 qrcode = {extras = ["pil"], version = "*"}
 django = "==3.2.12"
-django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 readtime = "*"
 django-embed-video = "*"
 pyzstd = "*"
 mysqlclient = "*"
 psycopg2-binary = "*"
 django-imagekit = "*"
+django-haystack = {extras = ["elasticsearch"], version = "*"}
+whoosh = "*"
 
 [dev-packages]
 flake8 = "*"
