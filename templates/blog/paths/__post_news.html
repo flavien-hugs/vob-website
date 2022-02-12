@@ -1,0 +1,16 @@
+{% if article_object_list %}
+    <section class="pt-lg-5 pb-lg-3 pt-5 pb-4">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2 class="mb-0">Articles récemment ajoutés</h2>
+                </div>
+            </div>
+            <div class="row">
+                {% for object in article_object_list %}
+                    {% include "blog/paths/__post_card.html" with object=object %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
