@@ -5,14 +5,16 @@
 <article id="article" class="col-xl-4 col-lg-4 col-md-6 col-6">
     <div class="card mb-4 card-hover">
         <a href="{{ object.post_absolute_url }}" class="card-img-top">
-            <img
-                src="{{ object.get_image_url }}"
-                class="card-img-top rounded-top"
-                alt="{{ object.name|slugify }}">
+            <figure class="mb-0">
+                <img
+                    src="{{ object.get_image_url }}"
+                    class="card-img-top rounded-top"
+                    alt="{{ object.name|slugify }}">
+            </figure>
         </a>
 
         <div class="card-body">
-            <a href="{{ object.category.category_absolute_url }}" class="fs-5 mb-2 fw-semi-bold d-block text-success">
+            <a rel="noopener" href="{{ object.category.category_absolute_url }}" class="fs-5 mb-2 fw-semi-bold d-block text-success">
                 {{ object.category.name|capfirst|safe }}
              </a>
 

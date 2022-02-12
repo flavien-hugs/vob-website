@@ -32,7 +32,13 @@
 
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-lg-10 col-md-12 col-12 mb-6">
-                    <img src="{{ object.cover.url }}" alt="{{ object.name|slugify }}" class="img-fluid rounded-3">
+                    <figure>
+                        <img
+                            src="{{ object.cover.url }}"
+                            alt="{{ object.name|slugify }}"
+                            class="img-fluid rounded-3"
+                        >
+                    </figure>
                 </div>
             </div>
 

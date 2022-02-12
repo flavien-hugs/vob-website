@@ -30,7 +30,12 @@
                             <div class="card mb-4 shadow-lg">
                                 <div class="row g-0">
                                     <a href="{{ post.post_absolute_url }}" class="col-lg-8 col-md-12 col-12 bg-cover img-left-rounded" style="background-image:url('{{ post.cover.url }}');">
-                                        <img src="{{ post.cover.url }}" class="img-fluid d-lg-none invisible" alt="{{ post.name|slugify }}">
+                                        <figure class="mb-0">
+                                            <img
+                                                src="{{ post.cover.url }}"
+                                                class="img-fluid d-lg-none invisible"
+                                                alt="{{ post.name|slugify }}">
+                                        </figure>
                                     </a>
                                     <div class="col-lg-4 col-md-12 col-12">
                                         <div class="card-body">
