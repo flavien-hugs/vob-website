@@ -6,6 +6,19 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 
 from page.forms import ContactForm
+from haystack.query import SearchQuerySet
+
+
+def search(request):
+    posts = SearchQuerySet().autocomplete(
+        name=request.POST.get('search', '')
+    )
+    context = {'posts': posts}
+    html_template = loader.get_template("search/search.html")
+    return HttpResponse(html_template.render(context, request))
+
+
+search_view = search
 
 
 def contact_view(request):
