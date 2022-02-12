@@ -1,36 +1,38 @@
 {% if request.resolver_match.url_name == 'post_list' or request.resolver_match.url_name == 'post_free_list' or request.resolver_match.url_name == 'category_list' or request.resolver_match.url_name == 'post_paid_list' %}
-    <article id="article" class="col-xl-4 col-lg-4 col-md-6 col-12">
-        <div class="card mb-4 shadow-lg">
-            <a href="{{ object.post_absolute_url }}" class="card-img-top">
-                <img src="{{ object.cover.url }}" class="card-img-top rounded-top" alt="{{ object.name|slugify }}">
-            </a>
-            
-            <div class="card-body">
-                <a href="{{ object.category.category_absolute_url }}" class="fs-5 mb-2 fw-semi-bold d-block text-success">
-                   {{ object.category.name|capfirst|safe }}
+    
+{% endif %}
+
+<article id="article" class="col-xl-4 col-lg-4 col-md-6 col-6">
+    <div class="card mb-4 card-hover">
+        <a href="{{ object.post_absolute_url }}" class="card-img-top">
+            <img src="{{ object.cover.url }}" class="card-img-top rounded-top" alt="{{ object.name|slugify }}">
+        </a>
+
+        <div class="card-body">
+            <a href="{{ object.category.category_absolute_url }}" class="fs-5 mb-2 fw-semi-bold d-block text-success">
+                {{ object.category.name|capfirst|safe }}
+             </a>
+
+            <h3>
+                <a href="{{ object.post_absolute_url }}" class="text-inherit">
+                    {{ object.post_name|capfirst|safe }}
                 </a>
+            </h3>
 
-                <h3>
-                    <a href="{{ object.post_absolute_url }}" class="text-inherit">
-                        {{ object.post_name|capfirst|safe }}
-                    </a>
-                </h3>
+            <p>{{ object.post_excerpt|striptags}}</p>
 
-                <p>{{ object.post_excerpt|striptags|truncatewords:8 }}</p>
-
-                <div class="row align-items-center g-0 mt-4">
-                    <div class="col lh-1">
-                        <h5 class="mb-1">{{ request.user.get_full_name }}</h5>
-                        <p class="fs-6 mb-0">
-                            <i class="fe fe-clock mr-1"></i>
-                            {{ object.published|date }}
-                        </p>
-                    </div>
-                    <div class="col-auto">
-                        <p class="fs-6 mb-0">{{ object.readtime }}</p>
-                    </div>
+            <div class="row align-items-center g-0 mt-4">
+                <div class="col lh-1">
+                    <h5 class="mb-1">{{ request.user.get_full_name }}</h5>
+                    <p class="fs-6 mb-0">
+                        <i class="fe fe-clock mr-1"></i>
+                        {{ object.published|date }}
+                    </p>
+                </div>
+                <div class="col-auto">
+                    <p class="fs-6 mb-0">{{ object.readtime }}</p>
                 </div>
             </div>
         </div>
-    </article>
-{% endif %}
+    </div>
+</article>
