@@ -7,11 +7,17 @@ from django.urls import reverse
 from django.contrib import admin
 from django.dispatch import receiver
 from django.utils.text import Truncator
-from django.core.validators import FileExtensionValidator
+from django.core.validators import(
+    MaxLengthValidator, MinLengthValidator,
+    FileExtensionValidator
+)
 
 import readtime
 from blog.managers import PostManager
 from taggit.managers import TaggableManager
+
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill, Adjust
 
 from common.utilitary import upload_image_to, unique_slug_generator
 from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
@@ -19,6 +25,15 @@ from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugM
 
 NULL_AND_BLANK = {'null': True, 'blank': True}
 
+name_validator = MaxLengthValidator(
+    limit_value=180,
+    message="Le titre de l'article doit être inférieur ou égal à 180 caractères !"
+)
+
+subtitle_validator = MaxLengthValidator(
+    limit_value=225,
+    message="Le titre de l'article doit être inférieur ou égal à 225 caractères !"
+)
 
 class Category(UUIDSlugMixin, BaseTimeStampModel):
 
@@ -51,6 +66,15 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
         help_text="ajouter une image descriptive de cette catégorie.",
         **NULL_AND_BLANK
     )
+    formatted_cover = ImageSpecField(
+        source='cover',
+        processors=[
+            Adjust(contrast=1.2, sharpness=1.1),
+            ResizeToFill(923, 498)
+        ],
+        format='JPEG',
+        options={'quality': 90}
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -61,8 +85,8 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
         return self.name
     
     def get_image_url(self):
-        if self.cover:
-            return self.cover.url
+        if self.formatted_cover:
+            return self.formatted_cover.url
         return 'https://via.placeholder.com/300'
 
     @admin.display(description="catégorie")
@@ -100,12 +124,14 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     )
     name = models.CharField(
         max_length=180,
+        validators=[name_validator],
     	verbose_name="titre de l'article",
     	help_text="Définir le titre de l'article."
     )
     subtitle = models.CharField(
         max_length=225,
     	verbose_name="sous-titre",
+        validators=[name_validator],
     	help_text="Définir un sous-titre de l'article.",
         **NULL_AND_BLANK
     )
@@ -126,6 +152,15 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             FileExtensionValidator(['jpeg', 'jpg', 'png'])
         ],
         help_text="ajouter une image descriptive de l'article.",
+    )
+    formatted_cover = ImageSpecField(
+        source='cover',
+        processors=[
+            Adjust(contrast=1.2, sharpness=1.1),
+            ResizeToFill(923, 498)
+        ],
+        format='JPEG',
+        options={'quality': 90}
     )
     view = models.PositiveIntegerField(
         default=0,
@@ -152,8 +187,8 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         return self.name
     
     def get_image_url(self):
-        if self.cover:
-            return self.cover.url
+        if self.formatted_cover:
+            return self.formatted_cover.url
         return 'https://via.placeholder.com/300'
 
     @admin.display(description="côut")
@@ -205,6 +240,9 @@ def delete_old_cover(sender, instance, *args, **kwargs):
             old_cover = Klass.objects.get(pk=instance.pk).cover
             if old_cover and old_cover.url != instance.cover.url:
                 old_cover.delete(save=False)
+
+            if old_formatted_cover and old_formatted_cover.url != instance.formatted_cover.url:
+                old_formatted_cover.delete(save=False)
         except: pass
 
 

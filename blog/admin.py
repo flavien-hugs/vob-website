@@ -8,6 +8,7 @@ from django.contrib.auth.models import Group
 from django.utils.safestring import mark_safe
 
 from blog.models import Category, Post
+from imagekit.admin import AdminThumbnail
 from django_summernote.admin import SummernoteModelAdmin
 
 admin.site.unregister(Group)
@@ -38,6 +39,7 @@ class CategoryAdmin(SummernoteModelAdmin):
     search_fields = (
         "name",
     )
+    category_cover = AdminThumbnail(image_field='formatted_cover')
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -77,7 +79,8 @@ class PostAdmin(SummernoteModelAdmin):
     list_display = [
         "category", "post_name",
         "post_count_viewed",
-        "post_price", "show_post_url",
+        "post_price",
+        "show_post_url",
         "published",
     ]
     list_display_links = [
@@ -91,6 +94,7 @@ class PostAdmin(SummernoteModelAdmin):
         "name",
         "reading",
     )
+    post_cover = AdminThumbnail(image_field='formatted_cover')
     
     @mark_safe
     @admin.display(description="Voir l'article")
