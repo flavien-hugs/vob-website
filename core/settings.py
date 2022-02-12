@@ -66,7 +66,7 @@ PACKAGE_APPS = [
     'phonenumber_field',
     'compressor',
 
-    'sorl.thumbnail',
+    'imagekit',
 ]
 
 LOCAL_APPS = [
