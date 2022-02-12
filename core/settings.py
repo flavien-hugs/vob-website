@@ -64,6 +64,7 @@ PACKAGE_APPS = [
     'widget_tweaks',
     'django_filters',
 
+    'whoosh',
     'haystack',
 
     'imagekit',
@@ -361,9 +362,16 @@ TAGGIT_CASE_INSENSITIVE = True
 
 # https://django-haystack.readthedocs.io/en/master/tutorial.html#installation
 
+WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh/')
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+        'PATH': WHOOSH_INDEX,
+        'STORAGE': 'file',
+        'POST_LIMIT': 128 * 1024 * 1024,
+        'INCLUDE_SPELLING': True,
+        'BATCH_SIZE': 100,
+        'SILENTLY_FAIL': True,
     },
 }

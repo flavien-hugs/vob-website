@@ -16,6 +16,9 @@ admin.site.site_header = admin.site.site_title = "Valere Obei"
 admin.site.index_title = "Bienvenu sur votre tableau d'administration".capitalize()
 
 
+from page.views import search_view
+
+
 def handler404(request, exception, template_name='404.html'):
     context = {
         'page_title': 'Page non trouvée',
@@ -38,7 +41,9 @@ home_view = HomeView.as_view()
 
 urlpatterns = [
     path(route='', view=home_view, name='home'),
-
+    path(route='q/', view=search_view, name='search'),
+    path('search/', include('haystack.urls')),
+    
     path("blog/", include('blog.urls')),
     path("", include('course.urls')),
     path("", include("page.urls", namespace="page")),
