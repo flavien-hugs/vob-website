@@ -1,5 +1,6 @@
 {% extends "_base.html" %}
 
+{% load blog_tags course_tags %}
 
 {% block __navbar__ %}
     {% include "paths/__navbar__.html" %}
@@ -7,6 +8,15 @@
 
 {% block __body__ %}
     {% include "paths/__hero__.html" %}
+
+    {% post_news_list 3 %}
+
+    {% include "paths/__cta__.html" %}
+
+    {% course_news_list 3 %}
+
+    {% include "book/paths/__book_news.html" %}
+
 {% endblock __body__ %}
 
 {% block __footer__ %}
