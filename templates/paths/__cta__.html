@@ -1,0 +1,41 @@
+
+{% url "book:book_list" as book_list_path %}
+
+<div class="position-relative bg-white">
+    <div class="container">
+        <div class="row align-items-center mb-6">
+            <div class="col-12 col-lg-7 order-md-2">
+                <div class="mb-2 mb-md-0">
+                    <img src="{{ STATIC_PREFIX }}img/graphics.svg" alt=""
+                    class="img-fluid mw-md-130">
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-5 order-md-1">
+                <h1 class="h2 mb-5 fw-bold">
+                    Découvrer mes livres pour booster vos ventes et votre vie professionnelle
+                </h1>
+                <ul class="list-unstyled fs-3 text-dark mb-6 fw-medium">
+                    <li class="mb-1 d-flex">
+                        <i class="mdi mdi-check-circle text-success me-2"></i>
+                        Simple to use, beautiful UI design
+                    </li>
+                    <li class="mb-1 d-flex">
+                        <i class="mdi mdi-check-circle text-success me-2"></i>
+                        Complete complex project with ease
+                    </li>
+                    <li class="mb-1 d-flex">
+                        <i class="mdi mdi-check-circle text-success me-2"></i>
+                        An intuitive admin app for developers
+                    </li>
+                </ul>
+
+                <div class="mb-5 mb-lg-0">
+                    <a href="{{ book_list_path }}" class="btn btn-primary me-3 mb-2 mb-lg-0 text-uppercase">
+                        acceder à mes livres
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
