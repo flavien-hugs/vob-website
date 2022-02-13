@@ -1,5 +1,6 @@
 # blog.views.py
 
+import json
 import random
 
 from django.urls import reverse
@@ -85,15 +86,3 @@ class PostDetailView(generic.DetailView):
 
 post_detail_view = PostDetailView.as_view()
 
-
-def loading_post_more(request):
-    offset = int(request.GET.get('offset'))
-    limit = 2
-    post_obj = list(Post.objects.published().values()[offset:offset+limit])
-    data = {
-        'posts': post_obj
-    }
-    return JsonResponse(data=data)
-
-
-loading_post = loading_post_more
