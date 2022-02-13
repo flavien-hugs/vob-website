@@ -11,8 +11,8 @@ urlpatterns = [
     ], 'blog'), namespace="categorie")),
     
     path("",  include(([
-        path(route='', view=views.post_list_view, name='post_list'),
-        path(route='<category_slug>/<slug>/', view=views.post_detail_view, name='post_detail'),
+        path(route='articles/', view=views.post_list_view, name='post_list'),
+        path(route='article/<category_slug>/<slug>/', view=views.post_detail_view, name='post_detail'),
         path(route='payant/', view=views.post_paid_list_view, name='post_paid_list'),
         path(route='gratuit/', view=views.post_free_list_view, name='post_free_list'),
     ], 'blog'), namespace="post")),
