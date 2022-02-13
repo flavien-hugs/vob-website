@@ -5,25 +5,28 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="title" content="{% if page_title %} {{ page_title }} {% else %} {{ title }} {% endif %}">
-<meta name="description" content="{% if object.description %} {{ object.description }} {% else %} {{ site_description }} {% endif %}">
+<meta name="description"
+    content="{% if object.body %} {{ object.body|striptags|safe }} {% else %} {{ site_desc }} {% endif %}">
 
 <meta name="distribution" content="Global">
 <meta name="revisit-after" content="10 days">
-<meta name="robots" content="follow, all">
-<meta name="keywords" content="{{ site_keywords }}">
+<meta name="robots" content="follow,all">
+<meta name="keywords" content="{{ keywords }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@publisher_handle">
 <meta name="twitter:creator" content="@flavien_hugs">
 <meta name="twitter:title" content="{% if page_title %} {{ page_title }} {% else %} {{ title }} {% endif %}">
-<meta name="twitter:description" content="{% if object.description %} {{ object.description }} {% else %} {{ site_description }} {% endif %}">
+<meta name="twitter:description"
+    content="{% if object.body %} {{ object.body|striptags|safe }} {% else %} {{ site_desc }} {% endif %}">
 <meta name="twitter:image" content="">
 <meta name="twitter:image:alt" content="{{ title }}">
 
 <meta property="og:site_name" content="{{ title }}">
 <meta property="og:title" content="{% if page_title %} {{ page_title }} {% else %} {{ title }} {% endif %}">
-<meta property="og:description" content="{% if object.description %} {{ object.description }} {% else %} {{ site_description }} {% endif %}">
+<meta property="og:description"
+    content="{% if object.body %} {{ object.body|striptags|safe }} {% else %} {{ site_desc }} {% endif %}">
 <meta property="og:type" content="article">
 <meta property="og:image" content="">
 <meta property="og:image:alt" content="image/png">
