@@ -70,7 +70,7 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
         source='cover',
         processors=[
             Adjust(contrast=1.2, sharpness=1.1),
-            ResizeToFill(923, 498)
+            ResizeToFill(120, 120)
         ],
         format='JPEG',
         options={'quality': 90}
@@ -91,7 +91,7 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
 
     @admin.display(description="catégorie")
     def category_name(self):
-        return self.name
+        return self.name.title()
 
     def get_absolute_url(self):
         return reverse('categorie:category_list', kwargs={"slug": self.slug})
