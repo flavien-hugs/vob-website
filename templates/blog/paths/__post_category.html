@@ -1,0 +1,44 @@
+{% load humanize %}
+
+{% if category_object_list %}
+    <section class="py-3 bg-white">
+        <div class="container">
+            <div class="row">
+                {% for object in category_object_list %}
+                    <article class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                        <div class="card mb-4 card-hover rounded-0">
+                            <div class="d-flex justify-content-between align-items-center p-4">
+                                <div class="d-flex">
+                                    <a href="{{ object.get_absolute_url }}">
+                                        <caption>
+                                            <img
+                                                src="{{ object.get_image_url }}"
+                                                alt="{{ object.name|safe }}"
+                                                class="avatar-md">
+                                        </caption>
+                                    </a>
+                                    <div class="ms-3">
+                                        <h4 class="mb-1">
+                                            <a href="{{ object.get_absolute_url }}" class="text-inherit">
+                                                {{ object.category_name|safe }}
+                                            </a>
+                                        </h4>
+                                            
+                                        <p class="mb-0 fs-6">
+                                            <span class="me-2">
+                                                <span class="text-dark fw-medium">
+                                                    {{ object.post_count|intword }}
+                                                </span>
+                                                article{{ object.post_count|pluralize }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
