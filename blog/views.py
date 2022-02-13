@@ -25,6 +25,7 @@ class CategoryListView(
         return post_in_category
 
     def get_context_data(self, **kwargs):
+        kwargs['object'] = self.category
         kwargs['page_title'] = f"{self.category.name}".capitalize()
         return super().get_context_data(**kwargs)
 
