@@ -58,6 +58,7 @@ PACKAGE_APPS = [
     'django_summernote',
     'django.contrib.admin',
 
+
     'taggit',
     'embed_video',
     'import_export',

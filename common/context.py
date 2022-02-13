@@ -11,6 +11,10 @@ def context_processor(request):
         Passion, Motivation, Business &amp; Entrepreneuriat
     """
 
+    KEYWORDS = """
+        Passion, Motivation, Business &amp; Entrepreneuriat
+    """
+
     LOCATION = """
         Air-france 2, Bouaké, Côte d'Ivoire
     """
@@ -23,6 +27,7 @@ def context_processor(request):
         'title': SITE_NAME,
         'addr_email': ADDR_EMAIL,
         'site_desc': DESCRIPRION,
+        'keywords': KEYWORDS,
         'addr_contact': ADDR_CONTACT_ONE,
         'request': request,
     }
