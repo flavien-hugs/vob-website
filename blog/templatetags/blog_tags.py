@@ -4,9 +4,16 @@ import random
 
 from django import template
 
-from blog.models import Post
+from blog.models import Category, Post
 
 register = template.Library()
+
+
+@register.inclusion_tag("blog/paths/__post_category.html")
+def post_category_list(count=6):
+    categories = Category.objects.all()[:count]
+    category_random = sorted(categories, key=lambda x: random.random())
+    return {'category_object_list': category_random}
 
 
 @register.inclusion_tag("blog/paths/__post_news.html")
