@@ -58,12 +58,11 @@ PACKAGE_APPS = [
     'django_summernote',
     'django.contrib.admin',
 
-
-    'taggit',
     'embed_video',
     'import_export',
     'widget_tweaks',
     'django_filters',
+    'tagulous',
 
     'whoosh',
     'haystack',
@@ -303,7 +302,7 @@ SUMMERNOTE_CONFIG = {
     'summernote': {
         'airMode': False,
         'width': '100%',
-        'height': '300',
+        'height': '500',
         'toolbar': [
             [
                 'font', [
@@ -357,9 +356,18 @@ CACHES = {
 DJANGO_REDIS_IGNORE_EXCEPTIONS = True
 DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
 
-# https://django-taggit.readthedocs.io/en/latest/getting_started.html
+# https://radiac.net/projects/django-tagulous/documentation/installation/
 
-TAGGIT_CASE_INSENSITIVE = True
+TAGULOUS_WEIGHT_MAX = 1
+TAGULOUS_NAME_MAX_LENGTH = 191
+TAGULOUS_SLUG_TRUNCATE_UNIQUE = 4
+TAGULOUS_SLUG_ALLOW_UNICODE = True
+SERIALIZATION_MODULES = {
+    'xml':    'tagulous.serializers.xml_serializer',
+    'json':   'tagulous.serializers.json',
+    'python': 'tagulous.serializers.python',
+    'yaml':   'tagulous.serializers.pyyaml',
+}
 
 # https://django-haystack.readthedocs.io/en/master/tutorial.html#installation
 
