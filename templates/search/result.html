@@ -1,6 +1,4 @@
-{% load humanize %}
-
-{% for object in items|slice:":5" %}
+{% for object in items %}
     <a class="single-result-article" href="{{ object.object.get_absolute_url }}">
         <div class="result-img">
             <img src="{{ object.object.get_image_url }}" alt="{{ object.object.name|slugify }}">
@@ -17,7 +15,3 @@
         Aucun object ne correspond à votre recherche.
     </p>
 {% endfor %}
-
-<div class="d-grid gap-2 d-md-flex justify-content-between p-3">
-    <span>{{ count_items|intword }} résultat{{ count_items|pluralize }}</span>
-</div>
