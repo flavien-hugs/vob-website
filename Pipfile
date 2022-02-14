@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django-summernote = "*"
 django-compressor = "*"
-django-taggit = "*"
 django-3-jet = "*"
 pillow = "*"
 django-redis = "*"
@@ -27,6 +26,7 @@ psycopg2-binary = "*"
 django-imagekit = "*"
 django-haystack = {extras = ["elasticsearch"], version = "*"}
 whoosh = "*"
+django-tagulous = "*"
 
 [dev-packages]
 flake8 = "*"

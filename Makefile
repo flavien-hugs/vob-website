@@ -38,6 +38,17 @@ tox-test: ## test with tox
 	flake8 core --ignore=E501
 	coverage run --branch --source=core $(MANAGE) test --settings=core.settings core
 
+dumpdata: ## dump data
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json sites.site > fixtures/site_domain.json
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json blog.category > fixtures/categories.json
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json blog.post > fixtures/articles.json
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json course.course > fixtures/courses.json
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json course.book > fixtures/books.json
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json flatpages.flatpage > fixtures/pages.json
+
+loaddata: ## load data
+	$(MANAGE) loaddata fixtures/*.json
+
 .PHONY: coverage
 coverage: ## Test with coverage and generate htmlcov
 	coverage run --source "blog,course" manage.py test -v 2
