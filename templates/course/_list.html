@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% load humanize %}
+
+{% block head_title %}
+    {{ block.super }}
+{% endblock head_title %}
+
+{% block __body__ %}
+
+    <div class="bg-primary">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div class="py-3 py-lg-4">
+                        <h1 class="mb-0 text-white display-4">
+                            {{ page_title|capfirst|safe }}
+                        </h1>
+                        <p class="text-white mb-0 lead">
+                            Commencez par apprendre dès aujourd'hui
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                {% for course in object_list %}
+                    {% include "course/paths/__course_card.html" with object=course %}
+                {% empty %}
+                    <p class="text-center display-3">Aucune formations pour le moment.</p>
+                {% endfor %}
+                {% include "paths/__paginate.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock __body__ %}

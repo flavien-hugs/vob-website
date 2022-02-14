@@ -1,0 +1,46 @@
+<article class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+    <div class="card mb-4 card-hover">
+        <a href="{{ object.get_absolute_url }}" class="card-img-top">
+            <figure class="mb-0">
+                <img
+                    loading="lazy"
+                    src="{{ object.get_image_url }}"
+                    class="card-img-top rounded-top"
+                    alt="{{ object.name|slugify }}">
+            </figure>
+        </a>
+
+        <div class="card-body">
+            <span class="fs-5 mb-2 d-block">
+                {% for tag in object.course_tags|slice:'0:2' %}
+                    <a
+                        href="{{ tag.get_absolute_url }}"
+                        class="fw-semi-bold text-primary">
+                        {{ tag.name|capfirst|safe }}
+                    </a>
+                {% endfor %}
+            </span>
+
+            <h3>
+                <a href="{{ object.get_absolute_url }}" class="text-inherit">
+                    {{ object.course_name_excerpt|capfirst|safe }}
+                </a>
+            </h3>
+
+            <p>{{ object.course_resume_excerpt|striptags }}</p>
+
+            <div class="row align-items-center g-0 mt-4">
+                <div class="col lh-1">
+                    <h5 class="mb-1">{{ request.user.get_full_name }}</h5>
+                    <p class="fs-6 mb-0">
+                        <i class="fe fe-clock mr-1"></i>
+                        {{ object.date_published }}
+                    </p>
+                </div>
+                <div class="col-auto">
+                    <p class="fs-6 mb-0">{{ object.readtime }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
