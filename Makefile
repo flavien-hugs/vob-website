@@ -49,6 +49,12 @@ dumpdata: ## dump data
 loaddata: ## load data
 	$(MANAGE) loaddata fixtures/*.json
 
+haystack-rebuild-index: ## haystack rebuild index
+	$(MANAGE) rebuild_index
+
+haystack-update-index: ## haystack update index
+	$(MANAGE) update_index
+
 .PHONY: coverage
 coverage: ## Test with coverage and generate htmlcov
 	coverage run --source "blog,course" manage.py test -v 2
