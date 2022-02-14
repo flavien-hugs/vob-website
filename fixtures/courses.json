@@ -1,0 +1,49 @@
+[
+{
+    "model": "course.course",
+    "pk": "a57fdf6c-7495-4cb9-8b84-6bcf796a7257",
+    "fields": {
+        "created_at": "2022-02-14T00:53:19.414",
+        "updated_at": "2022-02-14T02:40:52.923",
+        "slug": "sed-ut-perspiciatis-unde-omnis-iste-natus-error-sit-voluptatem",
+        "published": "2022-02-14T00:53:00",
+        "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem",
+        "subtitle": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,",
+        "price": 10000,
+        "date_of_course": "2022-02-14T00:52:00",
+        "location_of_course": "Boauké, Air-france 2",
+        "resume": "<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem \r\naccusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab\r\n illo inventore veritatis et quasi architecto beatae vitae dicta sunt \r\nexplicabo.</p>",
+        "description": "<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem \r\naccusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab\r\n illo inventore veritatis et quasi architecto beatae vitae dicta sunt \r\nexplicabo.Sed ut perspiciatis unde omnis iste natus error sit voluptatem \r\naccusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab\r\n illo inventore veritatis et quasi architecto beatae vitae dicta sunt \r\nexplicabo.Sed ut perspiciatis unde omnis iste natus error sit voluptatem \r\naccusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab\r\n illo inventore veritatis et quasi architecto beatae vitae dicta sunt \r\nexplicabo.Sed ut perspiciatis unde omnis iste natus error sit voluptatem \r\naccusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab\r\n illo inventore veritatis et quasi architecto beatae vitae dicta sunt \r\nexplicabo.Sed ut perspiciatis unde omnis iste natus error sit voluptatem \r\naccusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab\r\n illo inventore veritatis et quasi architecto beatae vitae dicta sunt \r\nexplicabo.Sed ut perspiciatis unde omnis iste natus error sit voluptatem \r\naccusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab\r\n illo inventore veritatis et quasi architecto beatae vitae dicta sunt \r\nexplicabo.</p>",
+        "cover": "course/upload/sed_ut_perspiciatis_unde_omnis_iste_natus_error_sit_voluptatem.jpg",
+        "view": 0,
+        "option": "En Présentiel",
+        "tags": [
+            "entrepreneuriat",
+            "investissement"
+        ]
+    }
+},
+{
+    "model": "course.course",
+    "pk": "b2f77294-9f42-4ad3-907a-6e48e2e3db0c",
+    "fields": {
+        "created_at": "2022-02-14T02:42:22.389",
+        "updated_at": "2022-02-14T02:43:35.596",
+        "slug": "sed-ut-perspiciatis-unde-omnis-iste-natus-error-sit-voluptatem-4cfnvv",
+        "published": "2022-02-14T02:42:00",
+        "name": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem",
+        "subtitle": "ed ut perspiciatis unde omnis iste natus error sit voluptatem",
+        "price": 15000,
+        "date_of_course": "2022-02-14T02:41:00",
+        "location_of_course": "Boauké, Air-france 2",
+        "resume": "<p>ed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error</p>",
+        "description": "<p>ed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatemed ut perspiciatis unde omnis iste natus error sit voluptatem</p>",
+        "cover": "course/upload/sed_ut_perspiciatis_unde_omnis_iste_natus_error_sit_voluptatem_YJkT7FZ.jpg",
+        "view": 0,
+        "option": "En Présentiel",
+        "tags": [
+            "entrepreneuriat"
+        ]
+    }
+}
+]
