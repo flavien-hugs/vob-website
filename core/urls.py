@@ -41,7 +41,7 @@ home_view = HomeView.as_view()
 
 urlpatterns = [
     path(route='', view=home_view, name='home'),
-    path(route='q/', view=search_view, name='search'),
+    path(route='search/', view=search_view, name='search'),
     path('search/', include('haystack.urls')),
     
     path("blog/", include('blog.urls')),

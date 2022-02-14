@@ -383,4 +383,13 @@ HAYSTACK_CONNECTIONS = {
         'BATCH_SIZE': 100,
         'SILENTLY_FAIL': True,
     },
+    'autocomplete': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': WHOOSH_INDEX,
+        'STORAGE': 'file',
+        'POST_LIMIT': 128 * 1024 * 1024,
+        'INCLUDE_SPELLING': True,
+        'BATCH_SIZE': 100,
+        'SILENTLY_FAIL': True,
+    },
 }
