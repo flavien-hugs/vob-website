@@ -6,15 +6,21 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 
 from page.forms import ContactForm
+from haystack.inputs import AutoQuery
 from haystack.query import SearchQuerySet
 
 
 def search(request):
-    posts = SearchQuerySet().autocomplete(
-        name=request.POST.get('search', '')
+    
+    suggestions = SearchQuerySet().filter(
+        name=AutoQuery(request.GET['search'])
     )
-    context = {'posts': posts}
+    context = {
+        'items': suggestions,
+        'count_items': suggestions.count()
+    }
     html_template = loader.get_template("search/search.html")
+
     return HttpResponse(html_template.render(context, request))
 
 
