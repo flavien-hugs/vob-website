@@ -26,7 +26,6 @@ class CourseAdmin(SummernoteModelAdmin):
         (
             'Description de la formation', {
                 'fields': (
-                    "resume",
                     "description",
                 )
             }

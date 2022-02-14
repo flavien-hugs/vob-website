@@ -28,11 +28,12 @@ class CourseTagListView(generic.ListView, generic.list.MultipleObjectMixin):
     def get_queryset(self):
         self.tags = self.model.tags.tag_model.objects.weight()
         self.tag = get_object_or_404(self.model.tags.tag_model, slug=self.kwargs['tag_slug'])
-        course_in_tag = self.model.objects.filter(tags=self.tag)
-        return course_in_tag
+        self.course_in_tag = self.model.objects.filter(tags=self.tag)
+        return self.course_in_tag
 
     def get_context_data(self, **kwargs):
-        kwargs['page_title'] = self.tag
+        kwargs['page_title'] = f"{self.tag}".title()
+        kwargs['object_list'] = self.course_in_tag
         return super().get_context_data(**kwargs)
 
 

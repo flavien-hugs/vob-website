@@ -58,16 +58,9 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         verbose_name='Lieux de formation',
         help_text="Définir le lieux de la formation (200 caractères maximum)"
     )
-    resume = models.TextField(
-        max_length=300,
-        verbose_name='résumé',
-        help_text='faire un petit résumé de cette formation (300 caractères maximum)',
-        **NULL_AND_BLANK
-    )
     description = models.TextField(
         verbose_name='description',
         help_text='décrire la formation, les rubriques et les objectifs.',
-        **NULL_AND_BLANK
     )
     cover = models.ImageField(
         upload_to=upload_image_to,
@@ -143,9 +136,9 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         truncated_subtitle = Truncator(self.subtitle)
         return truncated_subtitle.words(20)
 
-    def course_resume_excerpt(self):
-        truncated_resume = Truncator(self.resume)
-        return truncated_resume.words(15)
+    def course_excerpt(self):
+        truncated_resume = Truncator(self.description)
+        return truncated_resume.words(13)
 
     def course_tags(self):
         return self.tags.all()
@@ -153,10 +146,17 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     @admin.display(description="côut")
     def course_price(self):
         return f"{self.price} frcfa".upper()
+
+    @admin.display(description="date")
+    def course_date(self):
+        return f"Le {self.date_of_course.date()} à {self.date_of_course.time()}"
     
     @admin.display(description="nombre de vues")
     def course_count_viewed(self):
         return f"{self.view} vues"
+
+    def course_option(self):
+        return self.get_option_display()
 
     def get_absolute_url(self):
     	return reverse("course:course_detail", kwargs={"slug": str(self.slug)})
