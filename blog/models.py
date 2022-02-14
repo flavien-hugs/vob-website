@@ -14,7 +14,6 @@ from django.core.validators import(
 
 import readtime
 from blog.managers import PostManager
-from taggit.managers import TaggableManager
 
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, Adjust
@@ -34,6 +33,7 @@ subtitle_validator = MaxLengthValidator(
     limit_value=225,
     message="Le titre de l'article doit être inférieur ou égal à 225 caractères !"
 )
+
 
 class Category(UUIDSlugMixin, BaseTimeStampModel):
 

@@ -28,6 +28,7 @@ class CategoryAdmin(SummernoteModelAdmin):
     list_display = (
         "category_name",
         "post_count",
+        "show_cat_url",
         "date",
     )
     list_display_links = [
@@ -51,6 +52,13 @@ class CategoryAdmin(SummernoteModelAdmin):
     @admin.display(description="nombre d'articles")
     def post_count(self, instance):
         return instance._post_count
+
+    @mark_safe
+    @admin.display(description="Voir")
+    def show_cat_url(self, instance):
+        url = instance.get_absolute_url()
+        response = format_html(f"""<a target="_blank" href="{url}">Voir</a>""")
+        return response
 
 
 @admin.register(Post)
@@ -99,6 +107,6 @@ class PostAdmin(SummernoteModelAdmin):
     @mark_safe
     @admin.display(description="Voir l'article")
     def show_post_url(self, instance):
-        url = instance.post_absolute_url()
+        url = instance.get_absolute_url()
         response = format_html(f"""<a target="_blank" href="{url}">Voir l'article</a>""")
         return response
