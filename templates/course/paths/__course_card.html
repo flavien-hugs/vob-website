@@ -15,7 +15,7 @@
                 {% for tag in object.course_tags|slice:'0:2' %}
                     <a
                         href="{{ tag.get_absolute_url }}"
-                        class="fw-semi-bold text-primary">
+                        class="fw-semi-bold text-primary me-2">
                         {{ tag.name|capfirst|safe }}
                     </a>
                 {% endfor %}
@@ -27,7 +27,7 @@
                 </a>
             </h3>
 
-            <p>{{ object.course_resume_excerpt|striptags }}</p>
+            <p>{{ object.course_subtitle_excerpt|striptags }}</p>
 
             <div class="row align-items-center g-0 mt-4">
                 <div class="col lh-1">
