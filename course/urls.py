@@ -10,6 +10,7 @@ urlpatterns = [
     path("formations/", include(([
         path(route='', view=course.course_list_view, name='course_list'),
         path(route='detail/<slug>/', view=course.course_detail_view, name='course_detail'),
+        path(route='tag/<tag_slug>/', view=course.course_tag_view, name='course_tag_list'),
     ], 'course'), namespace='course')),
     
     # books urls

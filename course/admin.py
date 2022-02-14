@@ -28,9 +28,14 @@ class CourseAdmin(SummernoteModelAdmin):
                 'fields': (
                     "resume",
                     "description",
-                    "cover",
-                    "option",
-                    "published",
+                )
+            }
+        ),
+        (
+            'Information supplemenataire', {
+                'fields': (
+                    "cover", "option",
+                    "tags", "published",
                 )
             }
         ),
@@ -39,9 +44,8 @@ class CourseAdmin(SummernoteModelAdmin):
         "name",
         "course_price",
         "course_count_viewed",
-        "option",
         "show_course_url",
-        "published",
+        "date_published",
     ]
     list_display_links = [
         'name',
@@ -49,19 +53,22 @@ class CourseAdmin(SummernoteModelAdmin):
     list_filter = (
         "option",
     )
-    list_editable = (
-        "option",
-    )
     search_fields = (
         "name",
         "option",
     )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('tags')
+
+    def tag_list(self, instance):
+        return u", ".join(o.name for o in instance.tags.all())
     
     @mark_safe
-    @admin.display(description="Voir la formation")
+    @admin.display(description="Voir")
     def show_course_url(self, instance):
         url = instance.get_absolute_url()
-        response = format_html(f"""<a target="_blank" href="{url}">{url}</a>""")
+        response = format_html(f"""<a target="_blank" href="{url}">Voir</a>""")
         return response
 
 
@@ -96,8 +103,8 @@ class BookAdmin(SummernoteModelAdmin):
     )
     
     @mark_safe
-    @admin.display(description="Voir l'article")
+    @admin.display(description="Voir")
     def show_item_url(self, instance):
         url = instance.get_absolute_url()
-        response = format_html(f"""<a target="_blank" href="{url}">{url}</a>""")
+        response = format_html(f"""<a target="_blank" href="{url}">Voir</a>""")
         return response

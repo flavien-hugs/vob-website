@@ -4,13 +4,13 @@ from django.db import models
 from django.urls import reverse
 from django.contrib import admin
 from django.dispatch import receiver
-from django.utils.text import slugify
-from django.utils.crypto import get_random_string
+from django.utils.text import Truncator
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 
 from course.managers import CourseManager, BookManager
 
+import tagulous.models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, Adjust
 
@@ -33,13 +33,13 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     file_prepend = "course/upload/"
 
     name = models.CharField(
-        max_length=180,
-        verbose_name="titre du cours",
-        help_text='Saisir le titre de cette formation (180 caractères maximum).'
+        max_length=80,
+        verbose_name="titre de la formation",
+        help_text='Saisir le titre de cette formation (80 caractères maximum).'
     )
     subtitle = models.CharField(
-        verbose_name='sous-titre',
         max_length=200,
+        verbose_name='sous-titre',
         help_text='Saisir le sous-titre de cette formation (200 caractères maximum).',
         **NULL_AND_BLANK
     )
@@ -56,12 +56,12 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     location_of_course = models.CharField(
         max_length=200,
         verbose_name='Lieux de formation',
-        help_text="Définir le lieux de la formation."
+        help_text="Définir le lieux de la formation (200 caractères maximum)"
     )
     resume = models.TextField(
         max_length=300,
         verbose_name='résumé',
-        help_text='faire un petit résumé de cette formation.',
+        help_text='faire un petit résumé de cette formation (300 caractères maximum)',
         **NULL_AND_BLANK
     )
     description = models.TextField(
@@ -98,7 +98,16 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     	choices=OPTION_COURSE_CHOICES,
         help_text="Option de la formation"
     )
-
+    tags = tagulous.models.TagField(
+        verbose_name="mots clés",
+        force_lowercase=True,
+        max_count=2,
+        blank=True,
+        get_absolute_url=lambda tag: reverse(
+            "course:course_tag_list",
+            kwargs={'tag_slug': tag.slug}
+        ),
+    )
     objects = CourseManager()
 
     class Meta:
@@ -109,7 +118,7 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def clean(self):
         if (
-            self.published >= self.date_of_course
+            self.published <= self.date_of_course
         ):
             raise ValidationError(
                 {
@@ -125,6 +134,21 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         if self.formatted_cover:
             return self.formatted_cover.url
         return 'https://via.placeholder.com/300'
+
+    def course_name_excerpt(self):
+        truncated_name = Truncator(self.name)
+        return truncated_name.words(7)
+
+    def course_subtitle_excerpt(self):
+        truncated_subtitle = Truncator(self.subtitle)
+        return truncated_subtitle.words(20)
+
+    def course_resume_excerpt(self):
+        truncated_resume = Truncator(self.resume)
+        return truncated_resume.words(15)
+
+    def course_tags(self):
+        return self.tags.all()
     
     @admin.display(description="côut")
     def course_price(self):
