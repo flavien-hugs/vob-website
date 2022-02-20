@@ -1,40 +1,41 @@
 <section
-    id="carouselExampleFade"
+    id="carouselExampleCaptions"
     class="carousel slide"
     data-bs-ride="carousel"
 >
     <ol class="carousel-indicators">
-        <li
-            data-bs-target="#carouselExampleCaptions"
-            data-bs-slide-to="0"
-            class="active"
-        ></li>
-        <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></li>
-        <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></li>
+        {% for object in featured_courses %}
+            <li
+                data-bs-target="#carouselExampleCaptions"
+                data-bs-slide-to="{{ object.pk }}"
+                class="{% if forloop.counter == object.pk %}active{% endif %}"
+            ></li>
+        {% endfor %}
     </ol>
     <div class="carousel-inner">
         {% for course in featured_courses %}
-        <a href="{{ course.get_absolute_url }}">
-            <div
-                class="carousel-item {% if forloop.counter == 1 %}active{% endif %}"
-                data-bs-interval="3000"
-            >
-                <img
-                    src="{{ course.formatted_cover_featured.url }}"
-                    class="d-block w-100"
-                    alt="{{ course.name|slugify }}"
-                />
+            <a href="{{ course.get_absolute_url }}">
+                <div
+                    class="carousel-item {% if forloop.counter == 1 %}active{% endif %}"
+                    data-bs-interval="3000"
+                >
+                    <img
+                        src="{{ course.formatted_cover_featured.url }}"
+                        class="d-block w-100"
+                        alt="{{ course.name|slugify }}"
+                    />
 
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="display-4 text-white fw-bold">
-                        {{ course.course_name_excerpt }}
-                    </h1>
-                    <p class="mb-4 lead text-white">
-                        {{ course.course_excerpt|striptags }}
-                    </p>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1 class="display-4 text-white fw-bold">
+                            {{ course.course_name_excerpt }}
+                        </h1>
+                        <p class="mb-4 lead text-white">
+                            {{ course.course_excerpt|striptags }}
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </a>
-        {% empty %} {% endfor %}
+            </a>
+        {% empty %}
+        {% endfor %}
     </div>
 </section>
