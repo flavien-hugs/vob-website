@@ -1,4 +1,5 @@
 {% extends "index.html" %}
+{% load humanize embed_video_tags %}
 
 {% block head_title %}
     {{ block.super }}
@@ -50,6 +51,7 @@
             </div>
         </div>
     </section>
+
     <section class="pb-10">
         <div class="container">
             <div class="row">
@@ -84,17 +86,25 @@
                     <div class="card mb-3 mb-4">
                         <div class="p-1">
                             <div class="d-flex justify-content-center position-relative py-10 border-white border bg-cover" style="background-image: url({{ object.get_image_url }});">
-                                <a class="popup-youtube icon-shape rounded-circle btn-play icon-xl text-decoration-none" href="https://www.youtube.com/watch?v=JRzWRZahOVU">
-                                    <i class="fe fe-play"></i>
-                                </a>
+                                {% if object.video %}
+                                    <a
+                                        class="popup-youtube icon-shape rounded-circle btn-play icon-xl text-decoration-none"
+                                        href="{{ object.video }}">
+                                        <i class="fe fe-play"></i>
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <span class="text-dark fw-bold h2">{{ object.course_price }}</span>
+                                <span class="text-dark fw-bold h2 text-uppercase">
+                                    {{ object.price|intword }} frcfa
+                                </span>
                             </div>
                             <div class="d-grid">
-                            <a href="#" class="btn btn-primary mb-2">Je m'inscris</a>
+                            <button type="submit" class="btn btn-primary mb-2">
+                                Je m'inscris
+                            </button>
                         </div>
                         </div>
                     </div>
@@ -119,7 +129,7 @@
             </div>
         </div>
 
-        {% include "course/paths/__course_related.html" %}
+        {% include "course/paths/__course_related.html" with related_courses=object.related_courses %}
     </section>
 {% endblock __body__ %}
 
