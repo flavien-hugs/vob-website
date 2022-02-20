@@ -11,7 +11,7 @@ from haystack.query import SearchQuerySet
 
 
 def search(request):
-    
+
     suggestions = SearchQuerySet().filter(
         name=AutoQuery(request.GET['search'])
     )
@@ -28,12 +28,12 @@ search_view = search
 
 
 def contact_view(request):
-    
+
     form = ContactForm()
 
     if request.method == "POST" and request.is_ajax() :
         form = ContactForm(request.POST)
-        
+
         if form.is_valid():
             name = form.cleaned_data['name']
             form.save()
@@ -50,7 +50,7 @@ def contact_view(request):
         'form': form,
         'page_title': "contactez-nous"
     }
-    html_template = loader.get_template("flatpages/contact_page.html")
+    html_template = loader.get_template("flatpages/contact.html")
     return HttpResponse(html_template.render(context, request))
 
 
