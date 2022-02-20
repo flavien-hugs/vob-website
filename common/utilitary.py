@@ -1,7 +1,6 @@
 # common.utilitary.py
 
 import os
-from datetime import datetime
 
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string

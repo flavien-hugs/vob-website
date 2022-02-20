@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.utils import timezone
 from django.core.validators import RegexValidator
 
+from embed_video.fields import EmbedVideoField
 
 NULL_AND_BLANK = {
     'null': True,
@@ -14,7 +15,7 @@ NULL_AND_BLANK = {
 }
 
 class BaseTimeStampModel(models.Model):
-    
+
     created_at = models.DateTimeField(
         verbose_name='date de création',
         db_index=True, default=timezone.now
@@ -64,6 +65,18 @@ class StatusAndPublishedMixin(models.Model):
     @admin.display(description="publié le")
     def date_published(self):
         return self.published.date()
+
+
+class VideoDescription(models.Model):
+
+    video = EmbedVideoField(
+        verbose_name='vidéo (optionnelle)',
+        help_text="Ajouté un lien d'une vidéo.",
+        **NULL_AND_BLANK
+    )
+
+    class Meta:
+        abstract = True
 
 
 class UserBaseInfo(models.Model):
