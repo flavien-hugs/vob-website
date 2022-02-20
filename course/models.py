@@ -15,13 +15,19 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, Adjust
 
 from common.utilitary import upload_image_to, unique_slug_generator
-from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
+from common.models import(
+    StatusAndPublishedMixin, BaseTimeStampModel,
+    UUIDSlugMixin, VideoDescription
+)
 
 
 NULL_AND_BLANK = {'null': True, 'blank': True}
 
 
-class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
+class Course(
+    UUIDSlugMixin, StatusAndPublishedMixin,
+    VideoDescription, BaseTimeStampModel
+):
 
     T = 'En Ligne'
     P = 'En Présentiel'
@@ -79,10 +85,14 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         format='JPEG',
         options={'quality': 90}
     )
-    view = models.PositiveIntegerField(
-        default=0,
-        editable=False,
-        verbose_name="nombre de vues"
+    formatted_cover_featured = ImageSpecField(
+        source='cover',
+        processors=[
+            Adjust(contrast=1.2, sharpness=1.1),
+            ResizeToFill(1140, 350)
+        ],
+        format='JPEG',
+        options={'quality': 90}
     )
     option = models.CharField(
         default=P,
@@ -100,6 +110,16 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             "course:course_tag_list",
             kwargs={'tag_slug': tag.slug}
         ),
+    )
+    view = models.PositiveIntegerField(
+        default=0,
+        editable=False,
+        verbose_name="nombre de vues"
+    )
+    is_featured = models.BooleanField(
+        default=False,
+        verbose_name="Mettre en vedette",
+        help_text="Mettre en vedette"
     )
     objects = CourseManager()
 
@@ -142,15 +162,20 @@ class Course(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def course_tags(self):
         return self.tags.all()
-    
+
+    def related_courses(self):
+        return Course.objects.filter(
+            tags__in=self.course_tags()
+        ).exclude(pk=self.pk)
+
     @admin.display(description="côut")
     def course_price(self):
-        return f"{self.price} frcfa".upper()
+        return f"{int(self.price)} frcfa".upper()
 
     @admin.display(description="date")
     def course_date(self):
         return f"Le {self.date_of_course.date()} à {self.date_of_course.time()}"
-    
+
     @admin.display(description="nombre de vues")
     def course_count_viewed(self):
         return f"{self.view} vues"
@@ -220,11 +245,11 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         if self.formatted_cover:
             return self.formatted_cover.url
         return 'https://via.placeholder.com/300'
-    
+
     @admin.display(description="côut")
     def book_price(self):
         return f"{self.price} frcfa".upper()
-    
+
     @admin.display(description="nombre de vues")
     def book_count_viewed(self):
         return f"{self.view} vues"
@@ -247,7 +272,7 @@ def delete_old_cover(sender, instance, *args, **kwargs):
         try:
             Klass = instance.__class__
             old_cover = Klass.objects.get(pk=instance.pk).cover
-            
+
             if old_cover and old_cover.url != instance.cover.url:
                 old_cover.delete(save=False)
 

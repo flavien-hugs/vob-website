@@ -1,5 +1,7 @@
 # course.views.py
 
+import random
+
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.views.generic.detail import SingleObjectMixin
@@ -53,7 +55,7 @@ class CourseDetailView(SingleObjectMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = f"{self.object.name}"
         return super().get_context_data(**kwargs)
-    
+
     def get_queryset(self):
         return Course.objects.published()
 

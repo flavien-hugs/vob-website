@@ -6,10 +6,15 @@ from django.utils import timezone
 
 
 class ObjectQuerySet(models.QuerySet):
-    
+
     def published(self):
         return self.filter(
             published__lte=timezone.now()
+        )
+
+    def featured(self):
+        return self.published().filter(
+            is_featured=True
         )
 
     def search(self, query):
@@ -22,12 +27,15 @@ class ObjectQuerySet(models.QuerySet):
 
 
 class CourseManager(models.Manager):
-    
+
     def get_queryset(self):
         return ObjectQuerySet(self.model, using=self._db)
 
     def published(self):
         return self.get_queryset().published()
+
+    def featured(self):
+        return self.get_queryset().featured()
 
     def search(self, query=None):
         if query is None:
@@ -36,7 +44,7 @@ class CourseManager(models.Manager):
 
 
 class BookManager(models.Manager):
-    
+
     def get_queryset(self):
         return ObjectQuerySet(self.model, using=self._db)
 

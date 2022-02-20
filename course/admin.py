@@ -27,6 +27,7 @@ class CourseAdmin(SummernoteModelAdmin):
             'Description de la formation', {
                 'fields': (
                     "description",
+                    "video",
                 )
             }
         ),
@@ -35,6 +36,7 @@ class CourseAdmin(SummernoteModelAdmin):
                 'fields': (
                     "cover", "option",
                     "tags", "published",
+                    "is_featured"
                 )
             }
         ),
@@ -62,7 +64,7 @@ class CourseAdmin(SummernoteModelAdmin):
 
     def tag_list(self, instance):
         return u", ".join(o.name for o in instance.tags.all())
-    
+
     @mark_safe
     @admin.display(description="Voir")
     def show_course_url(self, instance):
@@ -100,7 +102,7 @@ class BookAdmin(SummernoteModelAdmin):
     search_fields = (
         "name",
     )
-    
+
     @mark_safe
     @admin.display(description="Voir")
     def show_item_url(self, instance):
