@@ -38,22 +38,23 @@
             </div>
         </div>
     {% else %}
-        <div class="py-5">
+        <div class="bg-primary">
             <div class="container">
-                <div class="row">
-                    <div class="offset-xl-2 col-xl-8 offset-lg-1 col-lg-10 col-md-12 col-12">
-                        <div class="text-center mb-5">
-                            <h1 class="display-2 fw-bold">{{ page_title|title }}</h1>
-                            <p class="lead">
-                                Our features, journey, tips and us being us. Lorem ipsum dolor sit amet, accumsan in,
-                                tempor dictum neque.
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                        <div class="py-3 py-lg-4">
+                            <h1 class="mb-0 text-white display-4">
+                                {{ page_title|capfirst|safe }}
+                            </h1>
+                            <p class="text-white mb-0 lead">
+                                Vous trouverez tous mes articles ici.
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    {% endif %} 
+    {% endif %}
 
     <div class="py-5">
         <div class="container">
