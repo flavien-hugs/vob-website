@@ -4,14 +4,10 @@ from django.db import models
 
 from django.contrib import admin
 from django.utils.html import format_html
-from django.contrib.auth.models import Group
 from django.utils.safestring import mark_safe
-
 from blog.models import Category, Post
 from imagekit.admin import AdminThumbnail
 from django_summernote.admin import SummernoteModelAdmin
-
-admin.site.unregister(Group)
 
 
 @admin.register(Category)
@@ -48,7 +44,7 @@ class CategoryAdmin(SummernoteModelAdmin):
             _post_count=models.Count("post", distinct=True)
         )
         return queryset
-    
+
     @admin.display(description="nombre d'articles")
     def post_count(self, instance):
         return instance._post_count
@@ -103,7 +99,7 @@ class PostAdmin(SummernoteModelAdmin):
         "reading",
     )
     post_cover = AdminThumbnail(image_field='formatted_cover')
-    
+
     @mark_safe
     @admin.display(description="Voir l'article")
     def show_post_url(self, instance):
