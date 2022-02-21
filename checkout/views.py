@@ -44,6 +44,7 @@ def checkout_view(request, slug):
 
     context = {
         'form': form,
+        'object': book,
         'page_title': book.name,
     }
     template = 'checkout/checkout_form.html'
