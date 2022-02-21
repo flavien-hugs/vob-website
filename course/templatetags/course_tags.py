@@ -12,7 +12,6 @@ register = template.Library()
 @register.inclusion_tag("paths/__hero__.html")
 def course_featured_list(count=4):
     courses = Course.objects.featured()[:count]
-    print(courses)
     return {'featured_courses': courses}
 
 
