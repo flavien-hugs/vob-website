@@ -1,7 +1,7 @@
 {% url "home" as home %}
 {% url 'post:post_list' as post_list_url %}
 {% url 'book:book_list' as book_list_url %}
-{% url 'course:course_list' as course_list_url %}
+{% url 'courses:course_list' as course_list_url %}
 
 <footer class="pt-lg-10 pt-5 footer bg-white">
     <div class="container">
@@ -9,7 +9,7 @@
             <div class="col-lg-4 col-md-6 col-12">
                 <div class="mb-4">
                     <img src="{{ STATIC_PREFIX }}img/logo.svg" alt="{{ title }}">
-                    
+
                     <div class="mt-4">
                         <p>{{ site_desc|safe }}</p>
                         <div class="fs-4 mt-4">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="offset-lg-1 col-lg-2 col-md-3 col-6">
                 <div class="mb-4">
                     <h3 class="fw-bold mb-3">Découvrir</h3>
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row align-items-center g-0 border-top py-2 mt-6">
             <div class="col-lg-4 col-md-5 col-12">
                 <span>
