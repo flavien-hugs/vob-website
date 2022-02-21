@@ -48,12 +48,12 @@ home_view = HomeView.as_view()
 urlpatterns = [
     path(route='', view=home_view, name='home'),
     path(route='search/', view=search_view, name='search'),
-    path('search/', include('haystack.urls')),
 
-    path("blog/", include('blog.urls')),
     path("", include('course.urls')),
-    path("", include("page.urls", namespace="page")),
+    path("blog/", include('blog.urls')),
+    path("ps/", include("page.urls", namespace="page")),
 
+    path('search/', include('haystack.urls')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('jet/', include('jet.urls', 'jet')),
     path('summernote/', include('django_summernote.urls')),
