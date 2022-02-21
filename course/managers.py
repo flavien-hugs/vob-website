@@ -34,6 +34,9 @@ class CourseManager(models.Manager):
     def published(self):
         return self.get_queryset().published()
 
+    def featured(self):
+        return self.get_queryset().featured()
+
     def search(self, query=None):
         if query is None:
             return self.get_queryset().none()
