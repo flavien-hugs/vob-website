@@ -54,6 +54,7 @@ class UUIDSlugMixin(models.Model):
 class StatusAndPublishedMixin(models.Model):
 
     published = models.DateTimeField(
+        default=timezone.now,
         auto_now_add=False, auto_now=False,
         verbose_name='date et de publication',
         help_text="Programmé la date et l'heure de la formation."
