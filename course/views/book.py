@@ -1,6 +1,11 @@
 # course.views.py
 
+from django.urls import reverse
 from django.views import generic
+from django.conf import settings
+from django.core.cache import cache
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.views.generic.detail import SingleObjectMixin
 
 from course.models import Book
