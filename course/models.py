@@ -262,7 +262,16 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         return f"{self.view} vues"
 
     def get_absolute_url(self):
-    	return reverse("book:book_detail", kwargs={"slug": str(self.slug)})
+    	return reverse(
+            "book:book_detail",
+            kwargs={"slug": str(self.slug)}
+        )
+
+    def get_checkout_url(self):
+    	return reverse(
+            "checkout:checkout_path",
+            kwargs={"slug": str(self.slug)}
+        )
 
 
 @receiver([models.signals.pre_save], sender=Book)
