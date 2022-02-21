@@ -1,24 +1,44 @@
 # checkout.models.py
 
 from django.contrib import admin
-
+from django.utils.html import format_html
 from checkout.models import Checkout
 
 
 @admin.register(Checkout)
 class CheckoutAdmin(admin.ModelAdmin):
     model = Checkout
-    raw_id_fields = ['book', 'post']
+    list_per_page = 10
+    date_hierarchy = 'created_at'
+    fieldsets = (
+        ('commandes',
+            {
+                'fields': (
+                    'book',
+                    ('first_name', 'last_name'),
+                    'email',
+                    ('phone', 'phone_two'),
+                    'address',
+                    ('city', 'country'),
+                    'ip_address',
+                )
+            }
+         ),
+    )
     list_display = [
-        'id_checkout',
-        'first_name', 'last_name',
-        'email', 'phone', 'book', 'post',
-        'city', 'created_at',
+        'id_checkout', 'full_name',
+        'book', 'get_book_cost',
+        'get_delivery', 'date',
     ]
     list_filter = ['created_at']
     search_fields = [
-        'id_checkout', 'email',
-        'phone', 'phone_two'
+        'id_checkout',
+        'phone',
     ]
-    list_display_links = ['id_checkout', 'first_name']
-
+    readonly_fields = [
+        'book',
+        'first_name', 'last_name', 'email',
+        'phone', 'phone_two', 'address',
+        'city', 'country', 'ip_address',
+    ]
+    list_display_links = ['id_checkout', 'full_name']
