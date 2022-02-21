@@ -214,6 +214,13 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         truncated_subtitle = Truncator(self.subtitle)
         return truncated_subtitle.words(20)
 
+    def comments(self):
+        return Comment.objects.filter(post=self)
+
+    @admin.display(description="nombre de commentaires")
+    def comment_count(self):
+        return self.comments().count()
+
     def get_absolute_url(self):
     	return reverse(
             "post:post_detail",
@@ -221,6 +228,44 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
                 "category_slug": str(self.category.slug),
                 "slug": str(self.slug)
             }
+        )
+
+
+class Comment(UUIDSlugMixin, BaseTimeStampModel):
+
+    email = models.EmailField(
+        max_length=80,
+        verbose_name='adresse de messagerie'
+    )
+    name = models.CharField(
+        verbose_name='nom & prénom',
+        max_length=80
+    )
+    content = models.TextField(
+        max_length=180,
+        verbose_name='message'
+    )
+    post = models.ForeignKey(
+        to=Post,
+        on_delete=models.CASCADE,
+        related_name="articles",
+        verbose_name="article"
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+        index_together = (('uuid'),)
+        get_latest_by = ['-created_at']
+        verbose_name_plural = 'commentaires'
+        indexes = [models.Index(fields=['uuid'])]
+
+    def __str__(self):
+        return f"{self.name} - {self.post.name}"
+
+    def get_absolute_url(self):
+        return reverse(
+            'comment:comment_list',
+            kwargs={'slug': str(self.post.slug)}
         )
 
 
