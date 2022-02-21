@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% load humanize %}
+
+{% block head_title %}
+    {{ block.super }}
+{% endblock head_title %}
+
+{% block __body__ %}
+
+    <div class="bg-primary">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div class="py-3 py-lg-4">
+                        <h1 class="mb-0 text-white display-4">
+                            {{ page_title|capfirst|safe }}
+                        </h1>
+                        <p class="text-white mb-0 lead">
+                           {{ object_list.count|intword }} livre{{ object_count.count|pluralize }} en vente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                {% for book in object_list %}
+                    {% include "book/paths/__book_card.html" with object=book %}
+                {% empty %}
+                    <p class="text-center display-3">Aucun livre en vente pour le moment.</p>
+                {% endfor %}
+                {% include "paths/__paginate.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock __body__ %}
