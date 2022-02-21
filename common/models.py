@@ -14,6 +14,7 @@ NULL_AND_BLANK = {
     'blank': True
 }
 
+
 class BaseTimeStampModel(models.Model):
 
     created_at = models.DateTimeField(
@@ -138,3 +139,11 @@ class UserBaseInfo(models.Model):
         verbose_name='adresse de livraison',
         max_length=180,
     )
+
+    @admin.display(description="nom & prénom")
+    def full_name(self):
+        return f"{self.first_name} {self.last_name} ({self.phone})"
+
+    @admin.display(description="livraison")
+    def get_delivery(self):
+        return f"{self.address}, {self.city}, {self.country}"
