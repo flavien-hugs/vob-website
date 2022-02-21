@@ -1,20 +1,144 @@
 {% extends 'index.html' %}
 
-{% load humanize %}
+{% load humanize widget_tweaks %}
 
 {% block head_title %}
     {{ block.super }}
 {% endblock head_title %}
 
 {% block __body__ %}
-    <form method="post">
+    <div class="py-lg-5 py-4 bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div>
+                        <h1 class="text-white display-4 mb-0">Paiement</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        {% csrf_token %}
-        
-        {{ form.as_p }}
+    <section class="py-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-12 col-12">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="mb-0">
+                                Finaliser votre commande
+                            </h3>
+                        </div>
 
-        <button type="submit" class="btn btn-success">
-            Commander
-        </button>
-    </form>
+                        <div class="card-body">
+                            <form class="row" method="post">
+
+                                {% csrf_token %}
+
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label" for="{{ form.first_name.id_for_label }}">
+                                        {{ form.first_name.label }}
+                                    </label>
+
+                                    {% render_field form.first_name placeholder=form.first_name.label %}
+                                </div>
+
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label" for="{{ form.last_name.id_for_label }}">
+                                        {{ form.last_name.label }}
+                                    </label>
+
+                                    {% render_field form.last_name placeholder=form.last_name.label %}
+                                </div>
+                                
+                                <div class="mb-3 col-12 col-md-12">
+                                    <label class="form-label" for="{{ form.email.id_for_label }}">
+                                        {{ form.email.label }}
+                                    </label>
+
+                                    {% render_field form.email placeholder=form.email.label %}
+                                </div>
+
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label" for="{{ form.phone.id_for_label }}">
+                                        {{ form.phone.label }}
+                                    </label>
+
+                                    {% render_field form.phone placeholder=form.phone.label %}
+                                </div>
+
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label" for="{{ form.phone_two.id_for_label }}">
+                                        {{ form.phone_two.label }}
+                                    </label>
+
+                                    {% render_field form.phone_two placeholder=form.phone_two.label %}
+                                </div>
+
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label" for="{{ form.city.id_for_label }}">
+                                        {{ form.city.label }}
+                                    </label>
+
+                                    {% render_field form.city placeholder=form.city.label %}
+                                </div>
+
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label" for="{{ form.country.id_for_label }}">
+                                        {{ form.country.label }}
+                                    </label>
+
+                                    {% render_field form.country placeholder=form.country.label %}
+                                </div>
+
+                                <div class="mb-3 col-12 col-md-12">
+                                    <label class="form-label" for="{{ form.address.id_for_label }}">
+                                        {{ form.address.label }}
+                                    </label>
+
+                                    {% render_field form.address placeholder=form.address.label %}
+                                </div>
+
+                                <div class="mb-4 col-md-12 col-12 d-grid gap-2">
+                                    <button type="submit" class="btn btn-md btn-block btn-danger text-uppercase shadow-none">
+                                        commander
+                                    </button>
+                                </div>
+                                
+                                <div class="col-md-12 col-12">
+                                    <small class="mb-0">
+                                        En cliquant sur commander, vous acceptez nos <a href="#">conditions d'utilisation et notre politique de confidentialité.</a>
+                                    </small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12 col-12">
+                    <div class="card border-0 mb-3">
+                        <figure class="mb-0">
+                            <img src="{{ object.get_image_url }}" class="card-img-top" alt="{{ object.name|slugify }}">
+                        </figure>
+
+                        <div class="p-4 text-center">
+                            <div class="d-flex justify-content-center">
+                                <div class="display-4 fw-bold text-danger">{{ object.price }}</div>
+                                <span class="h3 mb-0 fw-bold text-danger"> FrCFA</span>
+                            </div>
+
+                            <div class="mb-5 mt-3">
+                                <h1 class="h3 fw-bold">{{ object.book_name_excerpt }}</h1>
+                                <p class="mb-0">
+                                    <span class="text-dark fw-medium">
+                                        {{ object.book_resume_excerpt|striptags|safe }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock __body__%}
