@@ -1,4 +1,8 @@
-# [valereobei.com](https://github.com/flavien-hugs/vobapp/)&nbsp;
+## [valereobei.com](https://www.valereobei.com) - Le Site de Mr Valère Obéi, Entrepreneur, Coach en Entrepreneuriat.
+
+[![valereobei.com](https://img.shields.io/badge/build-website-brightgreen)](https://www.madeingbeke.com)
+[![Django Version](https://img.shields.io/badge/Django-Version3-success.svg)](https://www.djangoproject.com)
+[![Python Version](https://img.shields.io/badge/Python-3.6-brightgreen.svg)](https://www.python.com)
 
 ![valereobei.com](https://github.com/flavien-hugs/vobapp/blob/main/scrennshot.png)
 
