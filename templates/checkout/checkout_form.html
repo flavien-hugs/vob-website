@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+{% load humanize %}
+
+{% block head_title %}
+    {{ block.super }}
+{% endblock head_title %}
+
+{% block __body__ %}
+    <form method="post">
+
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-success">
+            Commander
+        </button>
+    </form>
+{% endblock __body__%}
