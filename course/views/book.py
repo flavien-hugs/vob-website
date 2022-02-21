@@ -7,9 +7,12 @@ from course.models import Book
 
 
 class BookListView(generic.ListView):
+    model = Book
     paginate_by = 6
-    queryset = Book.objects.published()
     template_name = "book/_list.html"
+
+    def get_queryset(self):
+        return Book.objects.published()
 
     def get_context_data(self, **kwargs):
         kwargs['page_title'] = "Livre en vente"
