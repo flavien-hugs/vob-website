@@ -88,7 +88,7 @@ class UserBaseInfo(models.Model):
 
     email = models.EmailField(
         max_length=80,
-        verbose_name='adresse de messagerie',
+        verbose_name='adresse email',
         **NULL_AND_BLANK
     )
     first_name = models.CharField(
