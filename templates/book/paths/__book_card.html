@@ -13,7 +13,11 @@
                 {{ object.book_resume_excerpt|striptags|safe }}
             </p>
 
-            <a href="{{ object.get_absolute_url }}" class="btn btn-sm btn-primary stretched-link">
+            <a href="{{ object.get_absolute_url }}" class="btn btn-sm btn-primary">
+                Voir
+            </a>
+
+            <a href="{{ object.get_checkout_url }}" class="btn btn-sm btn-primary">
                 Commander
             </a>
         </div>
