@@ -184,7 +184,7 @@ class Course(
         return self.get_option_display()
 
     def get_absolute_url(self):
-    	return reverse("course:course_detail", kwargs={"slug": str(self.slug)})
+    	return reverse("courses:course_detail", kwargs={"slug": str(self.slug)})
 
 
 class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
@@ -202,9 +202,8 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         help_text='Indiquer le prix de cet article.'
     )
     resume = models.TextField(
-        max_length=500,
         verbose_name='résumé du livre',
-        help_text='faire un petit résumé de ce document (maximum 500 caractère)',
+        help_text='faire un petit résumé de ce livre',
         **NULL_AND_BLANK
     )
     cover = models.ImageField(
@@ -245,6 +244,14 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         if self.formatted_cover:
             return self.formatted_cover.url
         return 'https://via.placeholder.com/300'
+
+    def book_name_excerpt(self):
+        truncated_name = Truncator(self.name)
+        return truncated_name.words(7)
+
+    def book_resume_excerpt(self):
+        truncated_name = Truncator(self.resume)
+        return truncated_name.words(15)
 
     @admin.display(description="côut")
     def book_price(self):
