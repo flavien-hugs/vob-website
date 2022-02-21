@@ -1,0 +1,17 @@
+<article class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+    <div class="card" style="width:20rem;">
+        <img src="{{ object.get_image_url }}" class="card-img-top" alt="{{ object.name|slugify }}">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ object.book_name_excerpt }}
+            </h5>
+            <p class="card-text">
+                {{ object.book_resume_excerpt|striptags|safe }}
+            </p>
+
+            <a href="{{ object.get_absolute_url }}" class="btn btn-primary">
+                Commander
+            </a>
+        </div>
+    </div>
+</article>
