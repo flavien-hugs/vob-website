@@ -1,6 +1,6 @@
 # [valereobei.com](https://github.com/flavien-hugs/vobapp/)&nbsp;
 
-![valereobei.com](https://github.com/flavien-hugs/vobapp/blob/main/screenshot.png "screenshot description")
+![valereobei.com](https://github.com/flavien-hugs/vobapp/blob/main/scrennshot.png)
 
 [valereobei.com](https://github.com/flavien-hugs/vobapp/) une application web de vente en ligne (ecommerce), de blogging et e-learning basé sur les framework [Django](https://docs.djangoproject.com/).
 
@@ -26,7 +26,7 @@ Comment contribuer
 
 Faites un Fork et travaillez sur votre propre branche, soumettez des améliorations.
 
-La principale branche de travail est [vobapp/main](https://github.com/flavien-hugs/vobappe/tree/main).
+La principale branche de travail est [vobapp/main](https://github.com/flavien-hugs/vobapp/tree/main).
 
 
 ### Credit
