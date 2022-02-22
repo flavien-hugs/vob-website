@@ -266,6 +266,12 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def book_count_viewed(self):
         return f"{self.view} vues"
 
+    def recommended_books(self):
+        from checkout.models import Checkout
+        checkout = Checkout.objects.all()
+        books = Book.objects.filter(books__in=checkout)
+        return books
+
     def get_absolute_url(self):
     	return reverse(
             "book:book_detail",
