@@ -1,5 +1,7 @@
 # course.models.py
 
+import datetime
+
 from django.db import models
 from django.urls import reverse
 from django.contrib import admin
@@ -54,15 +56,11 @@ class Course(
         verbose_name='côut de la formation',
         help_text='Indiquer le côut de cette formation.'
     )
-    date_of_course = models.DateTimeField(
+    date_of_course = models.DateField(
+        default=datetime.datetime.now,
         auto_now_add=False, auto_now=False,
         verbose_name='date & heure de la formation',
         help_text="Indiquer la date & l'heure de la formation"
-    )
-    location_of_course = models.CharField(
-        max_length=200,
-        verbose_name='Lieux de formation',
-        help_text="Définir le lieux de la formation (200 caractères maximum)"
     )
     description = models.TextField(
         verbose_name='description',
@@ -111,16 +109,23 @@ class Course(
             kwargs={'tag_slug': tag.slug}
         ),
     )
-    view = models.PositiveIntegerField(
-        default=0,
-        editable=False,
-        verbose_name="nombre de vues"
+    is_certificate = models.BooleanField(
+        default=False,
+        verbose_name="Certificat",
+        help_text="Certificat de formation inclus après la formation",
+
     )
     is_featured = models.BooleanField(
         default=False,
         verbose_name="Mettre en vedette",
         help_text="Mettre en vedette"
     )
+    view = models.PositiveIntegerField(
+        default=0,
+        editable=False,
+        verbose_name="nombre de vues"
+    )
+
     objects = CourseManager()
 
     class Meta:
@@ -131,7 +136,7 @@ class Course(
 
     def clean(self):
         if (
-            self.published <= self.date_of_course
+            self.published.date() <= self.date_of_course
         ):
             raise ValidationError(
                 {
@@ -174,7 +179,7 @@ class Course(
 
     @admin.display(description="date")
     def course_date(self):
-        return f"Le {self.date_of_course.date()} à {self.date_of_course.time()}"
+        return f"Le {self.date_of_course.date()}"
 
     @admin.display(description="nombre de vues")
     def course_count_viewed(self):
@@ -218,7 +223,7 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         source='cover',
         processors=[
             Adjust(contrast=1.2, sharpness=1.1),
-            ResizeToFill(923, 498)
+            ResizeToFill(923, 500)
         ],
         format='JPEG',
         options={'quality': 90}

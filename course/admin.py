@@ -19,7 +19,6 @@ class CourseAdmin(SummernoteModelAdmin):
                 'fields': (
                     "name", "subtitle",
                     "price", "date_of_course",
-                    'location_of_course',
                 )
             }
         ),
@@ -36,6 +35,7 @@ class CourseAdmin(SummernoteModelAdmin):
                 'fields': (
                     "cover", "option",
                     "tags", "published",
+                    "is_certificate",
                     "is_featured"
                 )
             }
