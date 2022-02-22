@@ -27,12 +27,6 @@
                             {% endif %}
                         </p>
                         <div class="d-flex align-items-center">
-                            <span class="text-white d-none d-md-block">
-                                <i class="fe fe-clock text-white me-2"></i>
-                                <span class="align-middle">
-                                    {{ object.course_date }}
-                                </span>
-                            </span>
                             <span class="text-white ms-3">
                                 <i class="fe fe-user text-white"></i>
                                 1200 inscrits
@@ -111,17 +105,25 @@
                     <div class="card mb-4">
                         <div>
                             <div class="card-header">
-                                <h4 class="mb-0">Ce qui est inclus</h4>
+                                <h4 class="mb-0">Infos sur la formation</h4>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-transparent">
-                                    <i class="fe fe-award me-2 align-middle text-success"></i>
-                                    Certificate
-                                </li>
-                                <li class="list-group-item bg-transparent">
-                                    <i class="fe fe-video align-middle me-2 text-secondary"></i>
-                                    {{ object.course_option }}
-                                </li>
+                                {% with list_class='list-group-item bg-transparent' i_class='align-middle me-2' %}
+                                    <li class="list-group-item bg-transparent">
+                                        <i class="fe fe-video {{ i_class }} text-secondary"></i>
+                                        {{ object.course_option }}
+                                    </li>
+                                    {% if object.is_certificate %}
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="fe fe-award {{ i_class }} text-primary"></i>
+                                                Certificat inclus
+                                        </li>
+                                    {% endif %}
+                                    <li class="{{ list_class }}">
+                                        <i class="fe fe-clock {{ i_class }} text-success"></i>
+                                        {{ object.date_of_course|date:"l t F o"|capfirst }}
+                                    </li>
+                                {% endwith %}
                             </ul>
                         </div>
                     </div>
