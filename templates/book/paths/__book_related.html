@@ -1,0 +1,15 @@
+{% if recommended_books %}
+    <section class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <div class="my-5">
+                    <h2>Mes livres les plus vendus</h2>
+                </div>
+            </div>
+
+            {% for book in recommended_books %}
+                {% include "book/paths/__book_card.html" with object=book %}    
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
