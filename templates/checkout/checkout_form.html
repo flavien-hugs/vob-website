@@ -7,6 +7,9 @@
 {% endblock head_title %}
 
 {% block __body__ %}
+
+    {% url "book:book_list" as book_list_path %}
+
     <div class="py-lg-5 py-4 bg-primary">
         <div class="container">
             <div class="row">
@@ -124,7 +127,7 @@
                         <div class="p-4 text-center">
                             <div class="d-flex justify-content-center">
                                 <div class="display-4 fw-bold text-danger">{{ object.price }}</div>
-                                <span class="h3 mb-0 fw-bold text-danger"> FrCFA</span>
+                                <span class="h3 mb-0 fw-bold text-danger"> FR CFA</span>
                             </div>
 
                             <div class="mb-5 mt-3">
@@ -136,6 +139,13 @@
                                 </p>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <a href="{{ book_list_path }}" class="btn btn-md btn-outline-primary mb-2">
+                            <i class="fe fe-arrow-left me-2 fw-bold"></i>
+                            Trouver un autre livre
+                        </a>
                     </div>
                 </div>
             </div>
