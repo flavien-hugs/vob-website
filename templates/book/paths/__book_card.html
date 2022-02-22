@@ -5,21 +5,24 @@
         </figure>
 
         <div class="card-body">
+
             <h1 class="card-title h3">
-                {{ object.book_name_excerpt }} - {{ object.book_price }}
+                {{ object.book_name_excerpt }}
             </h1>
+
+            <span class="fs-5 my-2 fw-semi-bold d-block text-danger">
+                {{ object.book_price }}
+            </span>
 
             <p class="card-text">
                 {{ object.book_resume_excerpt|striptags|safe }}
             </p>
 
-            <a href="{{ object.get_absolute_url }}" class="btn btn-sm btn-primary">
-                Voir
-            </a>
-
-            <a href="{{ object.get_checkout_url }}" class="btn btn-sm btn-primary">
-                Commander
-            </a>
+            <div class="d-grid">
+                <a href="{{ object.get_absolute_url }}" class="btn btn-sm btn-primary stretched-link shadow-none text-uppercase">
+                    détail du livre <i class="fe fe-arrow-right fw-bold ms-1"></i>
+                </a>
+            </div>
         </div>
     </div>
 </article>
