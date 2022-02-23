@@ -10,13 +10,12 @@ CHOICE_OBJECT_TYPES = (
     ("Mon article n'a pas été livré", "Mon article n'a pas été livré"),
     ("J'aimerais signaler une erreur", "J'aimerais signaler une erreur"),
     ("Rendre un témoignage sur l'achat", "Rendre un témoignage sur l'achat"),
-    ("J'ai un problème avec le paiement", "J'ai un problème avec le paiement"),
-    ("Je veux être un partenaire de Made In Gbeke.", "Je veux être un partenaire de Made In Gbeke."),
+    ("Autres", "Autres"),
 )
 
 
 class ContactForm(forms.ModelForm):
-    
+
     name = forms.CharField(
         max_length=150,
         required=True,
@@ -31,20 +30,20 @@ class ContactForm(forms.ModelForm):
     )
     reason = forms.ChoiceField(
         required=True,
+        label="Sujet",
         choices=CHOICE_OBJECT_TYPES,
         widget=forms.Select(),
     )
     message = forms.CharField(
         required=True,
-        label="Saisir votre message ici.",
-        widget=forms.Textarea(attrs={"rows": 5}),
+        label="Message",
+        widget=forms.Textarea(attrs={"rows": 2}),
     )
 
     class Meta:
         model = Contact
         fields = [
-            "name",
-            "email", "phone",
+            "name", "email",
             "reason", "message"
         ]
 
@@ -56,5 +55,5 @@ class ContactForm(forms.ModelForm):
 
             if self.fields['reason']:
                 self.fields['reason'].widget.attrs.update(
-                    {'class': 'form-control custom-select'}
+                    {'class': 'shadow-none form-select'}
                 )
