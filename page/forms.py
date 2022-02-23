@@ -28,7 +28,7 @@ class ContactForm(forms.ModelForm):
         label="Adresse e-mail",
         widget=forms.EmailInput(),
     )
-    reason = forms.ChoiceField(
+    subject = forms.ChoiceField(
         required=True,
         label="Sujet",
         choices=CHOICE_OBJECT_TYPES,
@@ -44,7 +44,7 @@ class ContactForm(forms.ModelForm):
         model = Contact
         fields = [
             "name", "email",
-            "reason", "message"
+            "subject", "message"
         ]
 
     def __init__(self, *args, **kwargs):
@@ -53,7 +53,7 @@ class ContactForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control shadow-none'
 
-            if self.fields['reason']:
-                self.fields['reason'].widget.attrs.update(
+            if self.fields['subject']:
+                self.fields['subject'].widget.attrs.update(
                     {'class': 'shadow-none form-select'}
                 )

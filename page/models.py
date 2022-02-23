@@ -43,7 +43,7 @@ class Contact(BaseTimeStampModel):
         verbose_name='téléphone',
         help_text="Entrer votre numéro de téléphone",
     )
-    reason = models.CharField(
+    subject = models.CharField(
         max_length=180,
         verbose_name="sujet",
         help_text="sujet du message"
