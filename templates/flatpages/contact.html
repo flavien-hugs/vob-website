@@ -57,18 +57,20 @@
                 <div class="px-4 px-xl-10 py-8 py-lg-0">
                     <div id="form">
                         <form method="POST" class="row">
-                            {% csrf_token %} {% for field in form %}
-                            <div class="col-12 col-md-12 mb-3">
-                                <label
-                                    class="form-label"
-                                    for="{{ field.id_for_label }}"
-                                >
-                                    {{ field.label }}
-                                </label>
-                                {% render_field field placeholder=field.label %}
-                            </div>
+
+                            {% for field in form %}
+                                <div class="col-12 col-md-12 mb-3">
+                                    <label
+                                        class="form-label"
+                                        for="{{ field.id_for_label }}"
+                                    >
+                                        {{ field.label }}
+                                    </label>
+                                    {% render_field field placeholder=field.label %}
+                                </div>
                             {% endfor %}
 
+                            {% csrf_token %}
                             <div class="col-12">
                                 <button
                                     type="submit"
