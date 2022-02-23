@@ -44,6 +44,8 @@ dumpdata: ## dump data
 	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json blog.post > fixtures/articles.json
 	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json course.course > fixtures/courses.json
 	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json course.book > fixtures/books.json
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json checkout.checkout > fixtures/checkout_book.json
+	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json checkout.registercourse > fixtures/register_course.json
 	$(MANAGE) dumpdata --indent=4 --natural-foreign --natural-primary -e contenttypes --format=json flatpages.flatpage > fixtures/pages.json
 
 loaddata: ## load data
