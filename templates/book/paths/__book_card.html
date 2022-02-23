@@ -7,7 +7,7 @@
         <div class="card-body">
 
             <h1 class="card-title h3">
-                {{ object.book_name_excerpt }}
+                {{ object.name_excerpt }}
             </h1>
 
             <span class="fs-5 my-2 fw-semi-bold d-block text-danger">
@@ -15,7 +15,7 @@
             </span>
 
             <p class="card-text">
-                {{ object.book_resume_excerpt|striptags|safe }}
+                {{ object.resume_excerpt|striptags|safe }}
             </p>
 
             <div class="d-grid">
