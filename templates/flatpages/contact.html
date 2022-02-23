@@ -1,0 +1,80 @@
+{% extends "_base.html" %}
+
+{% load widget_tweaks %}
+
+{% block __navbar__ %}
+{% endblock __navbar__ %}
+
+{% block class_body %}bg-white{% endblock class_body %}
+
+{% block __body__ %}
+    <section class="container-fluid">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6 col-md-12 col-12">
+                <div class="px-xl-20 px-md-8 px-4 py-8 py-lg-0">
+                    <div class="d-flex justify-content-between mb-7 align-items-center">
+                        <a href="/">
+                            <img src="{{ STATIC_PREFIX }}img/logo.svg" alt="{{ title|slugify }}">
+                        </a>
+                    </div>
+                    <div class="text-dark">
+                        <h1 class="display-4 fw-bold mb-3">
+                            Contactez-moi.
+                        </h1>
+                        <p class="lead text-dark">
+                            Remplissez le formulaire à droite pour me laisser un message, et je vous contacterai sous peu.
+                        </p>
+                        <div class="mt-5">
+                            <p class="fs-4">
+                                <i class="mdi mdi-phone text-primary me-2"></i>
+                                {{ addr_contact|safe }}
+                            </p>
+                            <p class="fs-4">
+                                <i class="mdi mdi-email text-primary me-2"></i>
+                                {{ addr_email|safe }}
+                            </p>
+                            <p class="fs-4 d-flex">
+                                <i class="mdi mdi-map-marker text-primary me-2"></i>
+                                {{ location|safe }}
+                            </p>
+                        </div>
+                        <div class="mt-10">
+                            <a href="#!" class="text-muted me-3">
+                                <i class="mdi mdi-facebook fs-3"></i>
+                            </a>
+                            <a href="#!" class="text-muted me-3">
+                                <i class="mdi mdi-linkedin fs-3"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 d-lg-flex align-items-center w-lg-50 min-vh-lg-100 position-fixed-lg bg-cover bg-light top-0 right-0">
+                <div class="px-4 px-xl-10 py-8 py-lg-0">
+                    <div id="form">
+                        <form method="POST" class="row">
+                            {% for field in form %}
+                                <div class="col-12 col-md-12 mb-3">
+                                    <label class="form-label" for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                    </label>
+                                    {% render_field field placeholder=field.label %}
+                                </div>
+                            {% endfor %}
+                            
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-block shadow-none">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock __body__ %}
+
+{% block __footer__ %}
+{% endblock __footer__ %}
