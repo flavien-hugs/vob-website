@@ -5,7 +5,10 @@
 {% block class_body %}bg-white{% endblock class_body %}
 
 {% block __body__ %}
-    <section class="container-fluid">
+
+    {% url 'page:contact' as contact_url %}
+
+    <section class="container-fluid w-auto">
         <div class="row align-items-center min-vh-100">
             <div class="col-lg-6 col-md-12 col-12">
                 <div class="px-xl-20 px-md-8 px-4 py-8 py-lg-0">
@@ -55,32 +58,34 @@
                 class="col-lg-6 d-lg-flex align-items-center w-lg-50 min-vh-lg-100 position-fixed-lg bg-cover bg-light top-0 right-0"
             >
                 <div class="px-4 px-xl-10 py-8 py-lg-0">
-                    <div id="form">
-                        <form method="POST" class="row">
 
-                            {% for field in form %}
-                                <div class="col-12 col-md-12 mb-3">
-                                    <label
-                                        class="form-label"
-                                        for="{{ field.id_for_label }}"
-                                    >
-                                        {{ field.label }}
-                                    </label>
-                                    {% render_field field placeholder=field.label %}
-                                </div>
-                            {% endfor %}
+                    <div id="message"></div>
 
-                            {% csrf_token %}
-                            <div class="col-12">
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary btn-block shadow-none"
+                    <form id="contact-form" action="{{ contact_url }}" method="POST" class="row">
+
+                        {% for field in form %}
+                            <div class="col-12 col-md-12 mb-3">
+                                <label
+                                class="form-label"
+                                for="{{ field.id_for_label }}"
                                 >
-                                    Envoyer
-                                </button>
+                                    {{ field.label }}
+                                </label>
+                            {% render_field field placeholder=field.label %}
                             </div>
-                        </form>
-                    </div>
+                        {% endfor %}
+
+                        {% csrf_token %}
+
+                        <div class="col-12">
+                            <button
+                            type="submit"
+                            class="btn btn-primary btn-block shadow-none" value="onClick:submitForm()"
+                            >
+                                Envoyer
+                            </button>
+                        </div>
+                </form>
                 </div>
             </div>
         </div>
@@ -88,4 +93,47 @@
 {% endblock __body__ %}
 
 {% block __footer__ %}
+    <script type="text/javascript">
+        const contactForm = document.getElementById("contact-form");
+
+        function handleSubmit(contactForm) {
+            contactForm.addEventListener("submit", e => {
+                e.preventDefault();
+
+                const formData = new FormData(contactForm);
+
+                fetch("{% url 'page:contact' %}", {
+                    method: "POST",
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    contactForm.reset();
+                    contactForm.style.display = "none";
+
+                    document.getElementById("message").innerHTML = `
+                        <div class="alert alert-dismissible fade show" role="alert">
+                            <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </symbol>
+                            </svg>
+
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img">
+                                <use xlink:href="#check-circle-fill"/>
+                            </svg>
+
+                            Hello <strong>${data.name}</strong>, merci de m'avoir contacté.\
+                            <br> Je vous contacterais bientôt !
+                        </div>
+                    `
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            })
+        }
+        handleSubmit(contactForm);
+    </script>
 {% endblock __footer__ %}
