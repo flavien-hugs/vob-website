@@ -9,7 +9,7 @@ urlpatterns = [
     # checkout book urls
     path("checkout/", include(([
         path(
-            route='course/<slug>/',
+            route='book/<slug>/',
             view=views.checkout_book_view,
             name='checkout_path'),
         path(
@@ -19,9 +19,9 @@ urlpatterns = [
     ], 'checkout'), namespace='checkout_book')),
 
     # courses register urls
-    path("inscription/", include(([
+    path("register/", include(([
         path(
-            route="formation/<slug>/",
+            route="course/<slug>/",
             view=views.course_register_view,
             name='register_course_path')
     ], 'checkout'), namespace='register_course')),
