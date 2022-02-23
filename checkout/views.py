@@ -35,7 +35,7 @@ def checkout_view(request, slug):
 
             return HttpResponseRedirect(
                 reverse(
-                    'checkout:checkout_success_path',
+                    'checkout_book:checkout_success_path',
                     kwargs={'id_checkout': checkout.id_checkout}
                 )
             )
@@ -79,8 +79,8 @@ def course_register_view(request, slug):
 
             return HttpResponseRedirect(
                 reverse(
-                    'checkout:checkout_success_path',
-                    kwargs={'id_register': register.id_register}
+                    'checkout_book:checkout_success_path',
+                    kwargs={'id_checkout': register.id_checkout}
                 )
             )
     else:

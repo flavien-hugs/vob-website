@@ -28,7 +28,8 @@ class CourseRegisterForm(forms.ModelForm):
         model = RegisterCourse
         exclude = [
             'course',
-            'id_register',
+            'address',
+            'id_checkout',
             'ip_address',
             'created_at',
         ]

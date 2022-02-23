@@ -15,7 +15,7 @@ from common.models import BaseTimeStampModel, UserBaseInfo
 NULL_AND_BLANK = {'null': True, 'blank': True}
 
 
-def random_order_code():
+def random_checkout_code():
     order_code = "".join(random.choices(string.digits, k=8))
     return order_code
 
@@ -46,7 +46,7 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         max_length=8,
         verbose_name='ID Commande',
         editable=False, unique=True,
-        default=random_order_code
+        default=random_checkout_code
     )
     book = models.ForeignKey(
         to=Book,
@@ -77,11 +77,11 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
 class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
-    id_register = models.CharField(
+    id_checkout = models.CharField(
         max_length=8,
         verbose_name='ID Inscription',
         editable=False, unique=True,
-        default=random_order_code
+        default=random_checkout_code
     )
     course = models.ForeignKey(
         to=Course,
@@ -97,7 +97,7 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
         indexes = [models.Index(fields=['uuid'])]
 
     def __str__(self):
-        return f"Inscription - {self.id_register}"
+        return f"Inscription - {self.id_checkout}"
 
     @admin.display(description="prix")
     def get_course_cost(self):
