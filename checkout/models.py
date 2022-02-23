@@ -56,7 +56,7 @@ class Checkout(UserBaseInfo, BaseTimeStampModel):
         indexes = [models.Index(fields=['uuid'])]
 
     def __str__(self):
-        return f"{self.first_name} - {self.phone}- {self.id_checkout}"
+        return f"Commande - {self.id_checkout}"
 
     @admin.display(description="prix")
     def get_book_cost(self):
