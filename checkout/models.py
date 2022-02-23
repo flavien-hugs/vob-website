@@ -9,8 +9,7 @@ from decimal import Decimal
 from django.db import models
 from django.urls import reverse
 from django.contrib import admin
-from blog.models import Post
-from course.models import Book
+from course.models import Course, Book
 from common.models import BaseTimeStampModel, UserBaseInfo
 
 NULL_AND_BLANK = {'null': True, 'blank': True}
@@ -21,7 +20,7 @@ def random_order_code():
     return order_code
 
 
-class Checkout(UserBaseInfo, BaseTimeStampModel):
+class ModelCheckoutRegisterMixin(models.Model):
 
     uuid = models.UUIDField(
         default=uuid.uuid4,
@@ -29,6 +28,20 @@ class Checkout(UserBaseInfo, BaseTimeStampModel):
         primary_key=True,
         verbose_name='uuid'
     )
+
+    ip_address = models.GenericIPAddressField(
+        max_length=180,
+        protocol='both',
+        unpack_ipv4=False,
+        verbose_name='adresse ip',
+        **NULL_AND_BLANK
+    )
+    class Meta:
+        abstract = True
+
+
+class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
+
     id_checkout = models.CharField(
         max_length=8,
         verbose_name='ID Commande',
@@ -40,13 +53,6 @@ class Checkout(UserBaseInfo, BaseTimeStampModel):
         on_delete=models.CASCADE,
         related_name='books',
         verbose_name='livre',
-    )
-    ip_address = models.GenericIPAddressField(
-        max_length=180,
-        protocol='both',
-        unpack_ipv4=False,
-        verbose_name='adresse ip',
-        **NULL_AND_BLANK
     )
 
     class Meta:
@@ -64,6 +70,41 @@ class Checkout(UserBaseInfo, BaseTimeStampModel):
 
     def get_absolute_url(self):
         return reverse(
-            "checkout:checkout_path",
+            "checkout_book:checkout_path",
+            kwargs={"slug": self.book.slug}
+        )
+
+
+class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
+
+    id_register = models.CharField(
+        max_length=8,
+        verbose_name='ID Inscription',
+        editable=False, unique=True,
+        default=random_order_code
+    )
+    course = models.ForeignKey(
+        to=Course,
+        on_delete=models.CASCADE,
+        related_name='courses',
+        verbose_name='course',
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+        get_latest_by = ['-created_at']
+        verbose_name_plural = "inscrptions"
+        indexes = [models.Index(fields=['uuid'])]
+
+    def __str__(self):
+        return f"Inscription - {self.id_register}"
+
+    @admin.display(description="prix")
+    def get_course_cost(self):
+        return f"{self.course.price} frcfa".upper()
+
+    def get_absolute_url(self):
+        return reverse(
+            "register_course:course_path",
             kwargs={"slug": self.book.slug}
         )

@@ -1,19 +1,28 @@
 # checkout.urls.py
 
-from django.urls import path
+from django.urls import path, include
 
 from checkout import views
 
 
-app_name='checkout'
 urlpatterns = [
-    path(
-        route='<slug>/',
-        view=views.checkout_book_view,
-        name='checkout_path'),
+    # checkout book urls
+    path("checkout/", include(([
+        path(
+            route='course/<slug>/',
+            view=views.checkout_book_view,
+            name='checkout_path'),
+        path(
+            route='success/<id_checkout>/',
+            view=views.checkout_success_view,
+            name='checkout_success_path'),
+    ], 'checkout'), namespace='checkout_book')),
 
-    path(
-        route='success/<id_checkout>/',
-        view=views.checkout_success_view,
-        name='checkout_success_path'),
+    # courses register urls
+    path("inscription/", include(([
+        path(
+            route="formation/<slug>/",
+            view=views.course_register_view,
+            name='register_course_path')
+    ], 'checkout'), namespace='register_course')),
 ]
