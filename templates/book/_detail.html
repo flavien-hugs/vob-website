@@ -6,7 +6,7 @@
 {% endblock head_title %}
 
 {% block __body__ %}
-    
+
     {% url "book:book_list" as book_list_path %}
 
     <section class="pt-lg-8 pb-lg-16 pt-8 pb-12 bg-primary">
@@ -81,15 +81,15 @@
                                 </span>
                             </div>
                             <div class="d-grid">
-                                <a href="{{ object.get_checkout_url }}" class="btn btn-sm btn-primary mb-2 text-uppercase">
-                                    Commander ce livre
+                                <a href="{{ object.get_checkout_url }}" class="btn btn-sm btn-primary mb-2 text-uppercase return_link">
+                                    commander ce livre
                                 </a>
                             </div>
                         </div>
                     </div>
 
                     <div class="d-grid">
-                        <a href="{{ book_list_path }}" class="btn btn-md btn-outline-primary mb-2">
+                        <a href="{{ book_list_path }}" class="btn btn-md btn-outline-primary mb-2 shadow-none">
                             <i class="fe fe-arrow-left me-2 fw-bold"></i>
                             Trouver un autre livre
                         </a>
