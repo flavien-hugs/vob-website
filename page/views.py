@@ -27,31 +27,33 @@ def search(request):
 search_view = search
 
 
-def contact_view(request):
+def contact_view(request, template="flatpages/contact.html"):
 
-    form = ContactForm()
-
-    if request.method == "POST" and request.is_ajax() :
-        form = ContactForm(request.POST)
-
+    if request.method == "POST":
+        form = ContactForm(request.POST or None)
         if form.is_valid():
             name = form.cleaned_data['name']
             form.save()
-            messages.add_message(
-                request, messages.SUCCESS,
-                "Merci ! Je vous contacterais bientôt."
+            message = messages.success(
+                request, f"Hello <strong>{name}</strong>, merci de m'avoir contacté.\
+                <br> Je vous contacterais bientôt !"
             )
-            return JsonResponse({"name": name}, status=200)
+            data = {"name": name, "message": message}
+            return JsonResponse(data, safe=False)
         else:
-            errors = form.errors.as_json()
-            return JsonResponse({"errors": errors}, status=400)
+            messages.error(
+                request, "Erreur !, veuillez vérifier les champs !"
+            )
+            messages.error(request, form.errors)
+    else:
+        form = ContactForm()
 
     context = {
         'form': form,
         'page_title': "contactez-moi"
     }
-    html_template = loader.get_template("flatpages/contact.html")
-    return HttpResponse(html_template.render(context, request))
+    
+    return render(request, template, context)
 
 
 contact_view = contact_view
