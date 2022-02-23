@@ -1,0 +1,23 @@
+<div class="col-lg-4 col-md-12 col-12">
+    <div class="card border-0 mb-3">
+        <figure class="mb-0">
+            <img src="{{ object.get_image_url }}" class="card-img-top" alt="{{ object.name|slugify }}">
+        </figure>
+
+        <div class="p-4 text-center">
+            <div class="d-flex justify-content-center">
+                <div class="display-4 fw-bold text-danger">{{ object.price }}</div>
+                <span class="h3 mb-0 fw-bold text-danger"> FR CFA</span>
+            </div>
+
+            <div class="mb-5 mt-3">
+                <h1 class="h3 fw-bold">{{ object.name_excerpt|capfirst|safe }}</h1>
+                <p class="mb-0">
+                    <span class="text-dark fw-medium">
+                        {{ object.resume_excerpt|striptags|safe }}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
