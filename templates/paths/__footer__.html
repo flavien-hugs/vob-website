@@ -3,6 +3,8 @@
 {% url 'book:book_list' as book_list_url %}
 {% url 'courses:course_list' as course_list_url %}
 
+{% url "page:contact" as contact_url %}
+
 <footer class="pt-lg-10 pt-5 footer bg-white">
     <div class="container">
         <div class="row">
@@ -14,8 +16,7 @@
                         <p>{{ site_desc|safe }}</p>
                         <div class="fs-4 mt-4">
                             <a href="#"><i class="mdi mdi-facebook text-muted me-2"></i></a>
-                            <a href="#"><i class="mdi mdi-twitter text-muted me-2"></i></a>
-                            <a href="#"><i class="mdi mdi-instagram text-muted"></i></a>
+                            <a href="#"><i class="mdi mdi-linkedin text-muted"></i></a>
                         </div>
                     </div>
                 </div>
@@ -38,7 +39,7 @@
                     <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
                         <li><a href="#" class="nav-link">FAQ’s</a></li>
                         <li><a href="#" class="nav-link">Qui suis-je ?</a></li>
-                        <li><a href="#" class="nav-link">Contactez-moi !</a></li>
+                        <li><a href="{{ contact_url }}" class="nav-link">Contactez-moi !</a></li>
                     </ul>
 
                 </div>

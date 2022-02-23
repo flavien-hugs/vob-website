@@ -4,10 +4,12 @@
 {% url 'book:book_list' as book_list_url %}
 {% url 'courses:course_list' as course_list_url %}
 
+{% url "page:contact" as contact_url %}
+
 <nav class="navbar navbar-expand-lg navbar-default sticky-top">
     <div class="container px-0">
         <a class="navbar-brand" href="{{ home_url }}">
-            <img src="{{ STATIC_PREFIX }}img/logo.svg" alt="{{ title }}"/>
+            <img src="{{ STATIC_PREFIX }}img/logo.svg" alt="{{ title|slugify }}"/>
         </a>
 
         <button
@@ -66,7 +68,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-capitalize" href="/contact/">
+                    <a class="nav-link text-capitalize" href="{{ contact_url }}">
                         contact
                     </a>
                 </li>
