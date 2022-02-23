@@ -53,7 +53,7 @@ class RegisterCourseAdmin(admin.ModelAdmin):
         ('commandes',
             {
                 'fields': (
-                    'book',
+                    'course',
                     ('first_name', 'last_name'),
                     'email',
                     ('phone', 'phone_two'),
@@ -67,9 +67,9 @@ class RegisterCourseAdmin(admin.ModelAdmin):
     list_display = [
         'id_checkout', 'full_name',
         'course', 'get_course_cost',
-        'get_delivery', 'date',
+        'city', 'date',
     ]
-    list_filter = ['created_at']
+    list_filter = ['course', 'created_at']
     search_fields = [
         'id_checkout',
         'phone',
