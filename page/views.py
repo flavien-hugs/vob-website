@@ -39,7 +39,7 @@ def contact_view(request):
             form.save()
             messages.add_message(
                 request, messages.SUCCESS,
-                "Merci ! Nous vous contacterons bientôt."
+                "Merci ! Je vous contacterais bientôt."
             )
             return JsonResponse({"name": name}, status=200)
         else:
@@ -48,7 +48,7 @@ def contact_view(request):
 
     context = {
         'form': form,
-        'page_title': "contactez-nous"
+        'page_title': "contactez-moi"
     }
     html_template = loader.get_template("flatpages/contact.html")
     return HttpResponse(html_template.render(context, request))
