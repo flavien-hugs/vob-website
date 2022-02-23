@@ -153,7 +153,7 @@ class Course(
             return self.formatted_cover.url
         return 'https://via.placeholder.com/300'
 
-    def course_name_excerpt(self):
+    def name_excerpt(self):
         truncated_name = Truncator(self.name)
         return truncated_name.words(7)
 
@@ -161,7 +161,7 @@ class Course(
         truncated_subtitle = Truncator(self.subtitle)
         return truncated_subtitle.words(20)
 
-    def course_excerpt(self):
+    def resume_excerpt(self):
         truncated_resume = Truncator(self.description)
         return truncated_resume.words(13)
 
@@ -182,7 +182,7 @@ class Course(
         return f"Le {self.date_of_course.date()}"
 
     @admin.display(description="nombre de vues")
-    def course_count_viewed(self):
+    def count_viewed(self):
         return f"{self.view} vues"
 
     def course_option(self):
@@ -256,20 +256,20 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             return self.formatted_cover.url
         return 'https://via.placeholder.com/300'
 
-    def book_name_excerpt(self):
+    def name_excerpt(self):
         truncated_name = Truncator(self.name)
         return truncated_name.words(7)
 
-    def book_resume_excerpt(self):
+    def resume_excerpt(self):
         truncated_name = Truncator(self.resume)
-        return truncated_name.words(15)
+        return truncated_name.words(13)
 
     @admin.display(description="côut")
     def book_price(self):
         return f"{self.price} frcfa".upper()
 
     @admin.display(description="nombre de vues")
-    def book_count_viewed(self):
+    def count_viewed(self):
         return f"{self.view} vues"
 
     def recommended_books(self):
