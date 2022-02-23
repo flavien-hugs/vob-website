@@ -51,7 +51,7 @@ urlpatterns = [
 
     path("", include('course.urls')),
     path("blog/", include('blog.urls')),
-    path("checkout/", include("checkout.urls", namespace="checkout")),
+    path("", include("checkout.urls")),
     path("ps/", include("page.urls", namespace="page")),
 
     path('search/', include('haystack.urls')),
