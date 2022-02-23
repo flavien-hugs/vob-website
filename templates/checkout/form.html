@@ -8,14 +8,14 @@
 
 {% block __body__ %}
 
-    {% url "book:book_list" as book_list_path %}
-
     <div class="py-lg-5 py-4 bg-primary">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                     <div>
-                        <h1 class="text-white display-4 mb-0">Paiement</h1>
+                        <h1 class="text-white display-4 mb-0">
+                            {{ breadcrumb_title|capfirst }}
+                        </h1>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
 
                                     {% render_field form.last_name placeholder=form.last_name.label %}
                                 </div>
-                                
+
                                 <div class="mb-3 col-12 col-md-12">
                                     <label class="form-label" for="{{ form.email.id_for_label }}">
                                         {{ form.email.label }}
@@ -107,7 +107,7 @@
                                         commander
                                     </button>
                                 </div>
-                                
+
                                 <div class="col-md-12 col-12">
                                     <small class="mb-0">
                                         En cliquant sur commander, vous acceptez nos <a href="#">conditions d'utilisation et notre politique de confidentialité.</a>
@@ -139,13 +139,6 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="d-grid">
-                        <a href="{{ book_list_path }}" class="btn btn-md btn-outline-primary mb-2">
-                            <i class="fe fe-arrow-left me-2 fw-bold"></i>
-                            Trouver un autre livre
-                        </a>
                     </div>
                 </div>
             </div>
