@@ -191,6 +191,12 @@ class Course(
     def get_absolute_url(self):
     	return reverse("courses:course_detail", kwargs={"slug": str(self.slug)})
 
+    def get_course_register_url(self):
+    	return reverse(
+            "register_course:register_course_path",
+            kwargs={"slug": self.slug}
+        )
+
 
 class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
@@ -280,8 +286,8 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def get_checkout_url(self):
     	return reverse(
-            "checkout:checkout_path",
-            kwargs={"slug": str(self.slug)}
+            "checkout_book:checkout_path",
+            kwargs={"slug": self.slug}
         )
 
 
