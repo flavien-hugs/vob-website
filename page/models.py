@@ -60,7 +60,7 @@ class Contact(BaseTimeStampModel):
         indexes = [models.Index(fields=['uuid'])]
 
     def __str__(self):
-        return f"{self.full_name} - {self.phone}"
+        return f"{self.name} - {self.phone}"
 
 
 class Testimonial(BaseTimeStampModel):

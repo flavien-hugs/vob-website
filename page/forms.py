@@ -36,8 +36,13 @@ class ContactForm(forms.ModelForm):
     )
     message = forms.CharField(
         required=True,
-        label="Message",
-        widget=forms.Textarea(attrs={"rows": 2}),
+        label="Votre message",
+        widget=forms.Textarea(
+            attrs={
+                "rows": "8vh",
+                'cols': '8vw',
+            }
+        ),
     )
 
     class Meta:
