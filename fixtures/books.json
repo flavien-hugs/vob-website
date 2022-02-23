@@ -1,2 +1,32 @@
 [
+{
+    "model": "course.book",
+    "pk": "1b02569b-0692-4e9d-a337-a5f578f9b20f",
+    "fields": {
+        "created_at": "2022-02-22T19:34:50.622",
+        "updated_at": "2022-02-22T19:34:50.658",
+        "slug": "le-lorem-ipsum-est-simplement-du-faux-texte-employe",
+        "published": "2022-02-22T19:33:46",
+        "name": "Le Lorem Ipsum est simplement du faux texte employé",
+        "price": 15000,
+        "resume": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim \r\nveniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea \r\ncommodo consequat. Duis aute irure dolor in reprehenderit in voluptate \r\nvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint \r\noccaecat cupidatat non proident, sunt in culpa qui officia deserunt \r\nmollit anim id est laborum.</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim \r\nveniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea \r\ncommodo consequat. Duis aute irure dolor in reprehenderit in voluptate \r\nvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint \r\noccaecat cupidatat non proident, sunt in culpa qui officia deserunt \r\nmollit anim id est laborum.</p>",
+        "cover": "book/upload/le_lorem_ipsum_est_simplement_du_faux_texte_employé.jpg",
+        "view": 0
+    }
+},
+{
+    "model": "course.book",
+    "pk": "289c830b-754f-4fe6-b31c-e6ee8f20e800",
+    "fields": {
+        "created_at": "2022-02-20T23:43:41.625",
+        "updated_at": "2022-02-22T18:25:15.393",
+        "slug": "le-lorem-ipsum-is-simply",
+        "published": "2022-02-20T23:42:14",
+        "name": "Le Lorem Ipsum is simply",
+        "price": 5000,
+        "resume": "<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and \r\ntypesetting industry. Lorem Ipsum has been the industry's standard dummy\r\n text ever since the 1500s, when an unknown printer took a galley of \r\ntype and scrambled it to make a type specimen book. It has survived not \r\nonly five centuries, but also the leap into electronic typesetting, \r\nremaining essentially unchanged. It was popularised in the 1960s with \r\nthe release of Letraset sheets containing Lorem Ipsum passages, and more\r\n recently with desktop publishing software like Aldus PageMaker \r\nincluding versions of Lorem Ipsum.</p>",
+        "cover": "book/upload/le_lorem_ipsum_is_simply.jpg",
+        "view": 0
+    }
+}
 ]
