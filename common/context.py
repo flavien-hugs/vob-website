@@ -28,6 +28,7 @@ def context_processor(request):
         'addr_email': ADDR_EMAIL,
         'site_desc': DESCRIPRION,
         'keywords': KEYWORDS,
+        'location': LOCATION,
         'addr_contact': ADDR_CONTACT_ONE,
         'request': request,
     }
