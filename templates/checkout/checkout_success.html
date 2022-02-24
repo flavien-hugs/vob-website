@@ -1,1 +1,36 @@
-{{ object }}
+{% extends "_base.html" %}
+
+{% load blog_tags course_tags %}
+
+{% block __navbar__ %}
+    {% include "paths/__navbar__.html" %}
+{% endblock __navbar__ %}
+
+{% block __body__ %}
+    <section class="my-10">
+    	<div class="container">
+    		<div class="row justify-content-center align-content-center">
+    			<div class="col-md-8">
+    				<div class="text-center">
+    					<div class="mb-5">
+    						<figure>
+    							<img class="mw-100" src="{{ STATIC_PREFIX }}img/success.png" alt="success-payment">
+    						</figure>
+    						<p class="mb-5">
+    							Merci de passer votre commande.
+    							{{ object }}
+    						</p>
+    						<a href="/" class="btn btn-md btn-outline-primary mb-2">
+                            	Aller à la page d'accueil
+                        	</a>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </section>
+{% endblock __body__ %}
+
+{% block __footer__ %}
+    {% include "paths/__footer__.html" %}
+{% endblock __footer__ %}
