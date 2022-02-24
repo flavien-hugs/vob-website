@@ -102,12 +102,13 @@ course_register_view = course_register_view
 
 def checkout_success(request, id_checkout):
 
-    id_checkout = request.session.get('id_checkout', 0)
-    checkout = Checkout.objects.filter(id_checkout=id_checkout)
+    checkout_id = request.session.get('id_checkout', 0)
+    checkout = Checkout.objects.filter(id_checkout=checkout_id).first()
+    print(checkout)
 
     context = {
         'object': checkout,
-        'page_title': 'Commande validé avec succès',
+        'page_title': 'Succès',
     }
     template = 'checkout/checkout_success.html'
     return render(request, template, context)
