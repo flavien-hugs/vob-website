@@ -1,0 +1,49 @@
+{% extends 'flatpages/default.html' %}
+
+{% block __body__ %}
+    
+    {% url "page:terms_page" as terms_page %}
+
+    <section class="py-10">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-12 col-12">
+                    <div class="text-center">
+                        <h1 class="display-3 fw-bold">Termes &amp; Conditions</h1>
+                        <p class="lead px-8">
+                            Lisez mes conditions ci-dessous pour en savoir plus sur vos
+                            droits et vos responsabilités en tant qu'utilisateur de mon site.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pb-10">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-12 col-12">
+                    
+                    {{ flatpage.content|striptags|safe }}
+                    <h2 class="fw-bold my-3">Modifications des conditions</h2>
+
+                    <p class="fs-4 my-2">
+                        Je prend très au sérieux la confidentialité de mes utilisateurs.
+                        Pour consulter la version actuelle de notre politique de confidentialité,
+                        veuillez cliquer <a href="{{ terms_page }}">ici</a>.
+                    </p>
+
+                    <p class="fs-4 my-2">
+                        Si je modifie mes conditions d'utilisation, je publierais ces modifications sur cette page. Les utilisateurs enregistrés recevront un courriel décrivant les changements apportés aux conditions d'utilisation.
+                    </p>
+
+                    <p class="fs-4 my-5">
+                        Vous avez des questions ? Veuillez m'envoyer un email à
+                        <a href="mailto:{{ addr_email|safe }}">{{ addr_email|safe }}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock __body__ %}
