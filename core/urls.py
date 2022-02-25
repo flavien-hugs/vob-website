@@ -52,7 +52,7 @@ urlpatterns = [
     path("", include('course.urls')),
     path("blog/", include('blog.urls')),
     path("", include("checkout.urls")),
-    path("ps/", include("page.urls", namespace="page")),
+    path("page/", include("page.urls", namespace="page")),
 
     path('search/', include('haystack.urls')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
