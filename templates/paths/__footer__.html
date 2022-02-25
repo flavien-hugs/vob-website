@@ -5,6 +5,11 @@
 
 {% url "page:contact" as contact_url %}
 
+{% url "page:faq_page" as faq_page %}
+{% url "page:terms_page" as cgu_page %}
+{% url "page:terms_page" as terms_page %}
+{% url "page:about_page" as about_page %}
+
 <footer class="pt-lg-10 pt-5 footer bg-white">
     <div class="container">
         <div class="row">
@@ -37,8 +42,8 @@
                 <div class="mb-4">
                     <h3 class="fw-bold mb-3">Liens Utils</h3>
                     <ul class="list-unstyled nav nav-footer flex-column nav-x-0">
-                        <li><a href="#" class="nav-link">FAQ’s</a></li>
-                        <li><a href="#" class="nav-link">Qui suis-je ?</a></li>
+                        <li><a href="{{ faq_page }}" class="nav-link">FAQ’s</a></li>
+                        <li><a href="{{ about_page }}" class="nav-link">Qui suis-je ?</a></li>
                         <li><a href="{{ contact_url }}" class="nav-link">Contactez-moi !</a></li>
                     </ul>
 
@@ -69,8 +74,8 @@
 
             <div class="col-12 col-md-7 col-lg-8 d-md-flex justify-content-end">
                 <nav class="nav nav-footer">
-                    <a class="nav-link ps-0" href="#">Politique de confidentialité</a>
-                    <a class="nav-link" href="#">Conditions d'utilisation</a>
+                    <a class="nav-link ps-0" href="{{ terms_page }}">Politique de confidentialité</a>
+                    <a class="nav-link" href="{{ cgu_page }}">Conditions d'utilisation</a>
                 </nav>
             </div>
         </div>
