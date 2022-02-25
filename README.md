@@ -13,16 +13,17 @@ La plateforme fournit les fonctionnalité comme :
 
     - Un moteur de recherche basé sur haystack
     - Un moteur de blogging
-    - Un mote de commerce electronique
-    - Un sustème de paiment
+    - Un moteur de commerce electronique
+    - Un système de paiement
     - Un système de récommandation
+
 ### Installation & Exécution du projet en local
 
     - git clone https://github.com/flavien-hugs/vobapp/
     - cd vobapp
     - Activer l'environnement virtuel puis installer les dépendances avec la commande `make install`
     - Faire la migrations de la base de données avec la commande `make migrate`
-    - Changer les données par défauts `make loaddata'
+    - Charger les données par défauts `make loaddata'
     - Enfin lancer le serveur interne de django avec `./manage runserver` puis naviguer jusqu'à `<http://localhost:8000>`
 
 Comment contribuer
