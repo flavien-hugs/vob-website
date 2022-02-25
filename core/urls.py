@@ -11,12 +11,12 @@ from django.views import generic
 from django.shortcuts import render
 from django.urls import path, include
 
-# from django.contrib.sites import Site
+from django.contrib.sites.models import Site
 from django.conf.urls.static import static
 from django.contrib.auth.models import Group
 
-# admin.site.unregister(Site)
-# admin.site.unregister(Group)
+admin.site.unregister(Site)
+admin.site.unregister(Group)
 
 admin.site.site_header = admin.site.site_title = "Valere Obei"
 admin.site.index_title = "Bienvenu sur votre tableau d'administration".capitalize()
