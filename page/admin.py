@@ -42,7 +42,7 @@ class FlatPageAdmin(SummernoteModelAdmin, FlatPageAdmin):
     )
     list_display_links = ['title']
     list_display = ("title", "url",)
-
+    list_filter = search_fields = []
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
