@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% block __body__ %}
-    
+
     {% url "page:terms_page" as terms_page %}
 
     <section class="py-10">
@@ -24,7 +24,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-12 col-12">
-                    
+
                     {{ flatpage.content|striptags|safe }}
                     <h2 class="fw-bold my-3">Modifications des conditions</h2>
 
@@ -35,7 +35,8 @@
                     </p>
 
                     <p class="fs-4 my-2">
-                        Si je modifie mes conditions d'utilisation, je publierais ces modifications sur cette page. Les utilisateurs enregistrés recevront un courriel décrivant les changements apportés aux conditions d'utilisation.
+                        Si je modifie mes conditions d'utilisation, je publierais ces modifications sur cette page.
+                        Les utilisateurs enregistrés recevront un courriel décrivant les changements apportés aux conditions d'utilisation.
                     </p>
 
                     <p class="fs-4 my-5">
