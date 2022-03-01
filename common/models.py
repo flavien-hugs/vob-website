@@ -4,7 +4,7 @@ import uuid
 
 from django.db import models
 from django.contrib import admin
-from django.utils import timezone
+from django.utils.timezone import now
 from django.core.validators import RegexValidator
 
 from embed_video.fields import EmbedVideoField
@@ -19,7 +19,7 @@ class BaseTimeStampModel(models.Model):
 
     created_at = models.DateTimeField(
         verbose_name='date de création',
-        db_index=True, default=timezone.now
+        db_index=True, default=now
     )
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -55,7 +55,7 @@ class UUIDSlugMixin(models.Model):
 class StatusAndPublishedMixin(models.Model):
 
     published = models.DateTimeField(
-        default=timezone.now,
+        default=now,
         auto_now_add=False, auto_now=False,
         verbose_name='date et de publication',
         help_text="Programmé la date et l'heure de la formation."
