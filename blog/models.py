@@ -48,7 +48,7 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
         (S, 'Spiritualité'),
         (E, 'Business & Entrepreneuriat')
     )
-    
+
     name = models.CharField(
         default=E,
         unique=True,
@@ -83,7 +83,7 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
 
     def __str__(self):
         return self.name
-    
+
     def get_image_url(self):
         if self.formatted_cover:
             return self.formatted_cover.url
@@ -113,7 +113,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         (G, 'Gratuit'),
         (Y, 'Payant')
     )
-    
+
     file_prepend = "article/upload/"
 
     category = models.ForeignKey(
@@ -185,7 +185,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def __str__(self):
         return self.name
-    
+
     def get_image_url(self):
         if self.formatted_cover:
             return self.formatted_cover.url
@@ -196,20 +196,20 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         if self.price > 0:
             return f"{self.price} frcfa".upper()
         return "article gratuit"
-    
+
     @admin.display(description="nombre de lecture")
     def post_count_viewed(self):
         return f"{self.view} lecture"
-    
+
     @admin.display(description="temps de lecture")
     def readtime(self):
         readtime_post = readtime.of_text(self.body)
         return readtime_post
-    
+
     def post_name(self):
         truncated_name = Truncator(self.name)
         return truncated_name.words(10)
-    
+
     def post_excerpt(self):
         truncated_subtitle = Truncator(self.subtitle)
         return truncated_subtitle.words(20)
@@ -242,7 +242,7 @@ class Comment(UUIDSlugMixin, BaseTimeStampModel):
         max_length=80
     )
     content = models.TextField(
-        max_length=180,
+        max_length=300,
         verbose_name='message'
     )
     post = models.ForeignKey(
@@ -250,6 +250,17 @@ class Comment(UUIDSlugMixin, BaseTimeStampModel):
         on_delete=models.CASCADE,
         related_name="articles",
         verbose_name="article"
+    )
+    parent_comment = models.ForeignKey(
+        to='self',
+        on_delete=models.CASCADE,
+        verbose_name="commentaire",
+        **NULL_AND_BLANK
+    )
+    is_enable = models.BooleanField(
+        verbose_name="active",
+        default=True,
+        **NULL_AND_BLANK
     )
 
     class Meta:
@@ -289,5 +300,3 @@ def delete_old_cover(sender, instance, *args, **kwargs):
             if old_formatted_cover and old_formatted_cover.url != instance.formatted_cover.url:
                 old_formatted_cover.delete(save=False)
         except: pass
-
-
