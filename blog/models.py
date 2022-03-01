@@ -183,6 +183,15 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         verbose_name_plural = 'articles'
         indexes = [models.Index(fields=['uuid'])]
 
+    def save(self, *args, **kwargs):
+        is_update_views = isinstance(
+            self, Post
+        ) and  'update_fields' in kwargs and kwargs['update_fields'] == ['view']
+
+        if is_update_views:
+            Post.objects.filter(pk=self.pk).update(view=self.view)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -197,9 +206,13 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             return f"{self.price} frcfa".upper()
         return "article gratuit"
 
+    def viewed(self):
+        self.view += 1
+        self.save(update_fields=['view'])
+
     @admin.display(description="nombre de lecture")
     def post_count_viewed(self):
-        return f"{self.view} lecture"
+        return f"{self.viewed} lecture"
 
     @admin.display(description="temps de lecture")
     def readtime(self):
@@ -229,6 +242,12 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
                 "slug": str(self.slug)
             }
         )
+
+    def next_article(self):
+        return Post.objects.published().filter(pk__gt=self.pk).order_by('pk').first()
+
+    def prev_article(self):
+        return Post.objects.published().filter(pk__lt=self.pk).first()
 
 
 class Comment(UUIDSlugMixin, BaseTimeStampModel):
