@@ -9,11 +9,18 @@ urlpatterns = [
     path("categorie/", include(([
         path(route='<slug>/', view=views.category_list, name='category_list'),
     ], 'blog'), namespace="categorie")),
-    
+
     path("",  include(([
         path(route='articles/', view=views.post_list_view, name='post_list'),
         path(route='article/<category_slug>/<slug>/', view=views.post_detail_view, name='post_detail'),
         path(route='payant/', view=views.post_paid_list_view, name='post_paid_list'),
         path(route='gratuit/', view=views.post_free_list_view, name='post_free_list'),
     ], 'blog'), namespace="post")),
+
+    path("", include(([
+        path(
+            route='<int:post_id>/comment/',
+            view=views.comment_post_view,
+            name='post_comment'),
+    ], 'blog'), namespace="comment")),
 ]
