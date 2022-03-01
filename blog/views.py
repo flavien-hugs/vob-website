@@ -7,7 +7,14 @@ from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404
 
-from blog.models import Post, Category
+from django.http import HttpResponseRedirect
+from django.core.exceptions import ValidationError
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+
+
+from blog.forms import CommentForm
+from blog.models import Post, Category, Comment
 
 
 class CategoryListView(
@@ -86,3 +93,49 @@ class PostDetailView(generic.DetailView):
 
 post_detail_view = PostDetailView.as_view()
 
+
+class CommentPostView(generic.edit.FormView):
+    form_class = CommentForm
+    template_name = "blog/_detail.html"
+
+    @method_decorator(csrf_protect)
+    def dispatch(self, *args, **kwargs):
+        return super(CommentPostView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        post_slug = self.kwargs['slug']
+
+        post = Post.objects.get(slug=post_slug)
+        path = post.get_absolute_url()
+        return HttpResponseRedirect(path + "#comments")
+
+    def form_invalid(self, form):
+        post_slug = self.kwargs['slug']
+        post = Post.objects.get(slug=post_slug)
+
+        return self.render_to_response({
+            'form': form,
+            'post': post
+        })
+
+    def form_valid(self, form):
+        post_slug = self.kwargs['slug']
+        post = Post.objects.get(slug=post_slug)
+
+        comment = form.save(False)
+        comment.post = post
+
+        if form.cleaned_data['parent_comment_id']:
+            parent_comment = Comment.objects.get(
+                pk=form.cleaned_data['parent_comment_id']
+            )
+            comment.parent_comment = parent_comment
+
+        comment.save(True)
+
+        return HttpResponseRedirect(
+            "%s#div-comment-%d"(post.get_absolute_url(), comment.pk)
+        )
+
+
+comment_post_view = CommentPostView.as_view()
