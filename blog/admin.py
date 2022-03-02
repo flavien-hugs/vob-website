@@ -5,7 +5,8 @@ from django.db import models
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from blog.models import Category, Post
+from blog.models import Category, Post, Comment
+
 from imagekit.admin import AdminThumbnail
 from django_summernote.admin import SummernoteModelAdmin
 
@@ -106,3 +107,28 @@ class PostAdmin(SummernoteModelAdmin):
         url = instance.get_absolute_url()
         response = format_html(f"""<a target="_blank" href="{url}">Voir l'article</a>""")
         return response
+
+
+def disable_comment_status(modeladmin, request, queryset):
+    queryset.update(is_enable=False)
+
+def enable_comment_status(modeladmin, request, queryset):
+    queryset.update(is_enable=True)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_per_page = 20
+    list_display = (
+        'id', 'name',
+        'link_to_post',
+        'is_enable', 'date'
+    )
+    list_display_links = ('id', 'name')
+    list_filter = ('post', 'is_enable')
+    actions = [disable_comment_status, enable_comment_status]
+
+    def link_to_post(self, obj):
+        info = (obj.post._meta.app_label, obj.post._meta.model_name)
+        link = reverse('admin:%s_%s_change' % info, args=(obj.post.pk,))
+        return format_html(f'<a href="{link}">{obj.post.name}</a>')
