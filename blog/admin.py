@@ -2,6 +2,7 @@
 
 from django.db import models
 
+from django.urls import reverse
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
@@ -109,25 +110,44 @@ class PostAdmin(SummernoteModelAdmin):
         return response
 
 
+@admin.display(description="Desactiver les commenatires")
 def disable_comment_status(modeladmin, request, queryset):
     queryset.update(is_enable=False)
 
+@admin.display(description="Activer les commenatires")
 def enable_comment_status(modeladmin, request, queryset):
     queryset.update(is_enable=True)
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
+    model = Comment
     list_per_page = 20
-    list_display = (
-        'id', 'name',
+    date_hierarchy = "created_at"
+    fieldsets = (
+        (
+            'Commentaire', {
+                'fields': (
+                    "post",
+                    "parent_comment",
+                    "name", "email",
+                    "content",
+                    "is_enable"
+                )
+            }
+        ),
+    )
+    list_display = [
+        'name',
         'link_to_post',
         'is_enable', 'date'
-    )
-    list_display_links = ('id', 'name')
-    list_filter = ('post', 'is_enable')
+    ]
+    list_display_links = ['name']
+    list_filter = ['post', 'is_enable']
+    exclude = ['created_at', 'updated_at']
     actions = [disable_comment_status, enable_comment_status]
 
+    @admin.display(description="lien vers l'article")
     def link_to_post(self, obj):
         info = (obj.post._meta.app_label, obj.post._meta.model_name)
         link = reverse('admin:%s_%s_change' % info, args=(obj.post.pk,))
