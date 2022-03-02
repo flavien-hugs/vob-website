@@ -5,6 +5,8 @@ For more information please see:
 https://docs.djangoproject.com/en/3.2/topics/http/urls/
 """
 
+import logging
+
 from django.contrib import admin
 from django.conf import settings
 from django.views import generic
@@ -14,6 +16,8 @@ from django.urls import path, include
 from django.contrib.sites.models import Site
 from django.conf.urls.static import static
 from django.contrib.auth.models import Group
+
+logger = logging.getLogger(__name__)
 
 admin.site.unregister(Site)
 admin.site.unregister(Group)
@@ -31,6 +35,13 @@ def handler404(request, exception, template_name='404.html'):
     }
     return render(request, template_name, context, status=404)
 
+
+def handler403(request, exception, template_name='500.html'):
+    if exception: logger.error(exception)
+    context = {
+        'page_title': 'Quelque chose a mal tourné.',
+    }
+    return render(request, template_name, context, status=403)
 
 def handler500(request, template_name='500.html'):
     context = {
@@ -69,6 +80,7 @@ urlpatterns = [
 ]
 
 handler404 = handler404
+handler403 = handler403
 handler500 = handler500
 
 if settings.DEBUG:
@@ -77,5 +89,6 @@ if settings.DEBUG:
 
     urlpatterns += [
         path('404/', handler404, {'exception': Exception("Page non trouvée !")}),
+        path('403/', handler403),
         path('500/', handler500),
     ]
