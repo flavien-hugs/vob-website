@@ -301,9 +301,9 @@ class Comment(UUIDSlugMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     is_enable = models.BooleanField(
-        verbose_name="active",
         default=True,
-        **NULL_AND_BLANK
+        verbose_name="active",
+        blank=False, null=False
     )
 
     class Meta:
