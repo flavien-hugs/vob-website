@@ -78,7 +78,20 @@ class PostDetailView(generic.DetailView):
     slug_url_kwarg = "slug"
     template_name = "blog/_detail.html"
 
+    def get_object(self, queryset=None):
+        post = super(PostDetailView, self).get_object()
+        post.viewed()
+        self.object = post
+        return post
+
     def get_context_data(self, **kwargs):
+        comment_form = CommentForm()
+        post_comments = self.object.comment_list()
+
+        kwargs['form'] = comment_form
+        kwargs['comments'] = post_comments
+        kwargs['comments_count'] = len(post_comments) if post_comments else 0
+
         post = self.get_object()
         kwargs['page_title'] = f"{post.name}"
 
@@ -87,7 +100,10 @@ class PostDetailView(generic.DetailView):
             instance=post)[:10], key=lambda x: random.random()
         )
 
+        kwargs['next_post'] = self.object.next_post
+        kwargs['prev_post'] = self.object.prev_post
         kwargs['post_similary'] = similar_post_filter
+
         return super().get_context_data(**kwargs)
 
 
