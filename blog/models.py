@@ -27,6 +27,7 @@ from common.models import(
     StatusAndPublishedMixin, BaseTimeStampModel,
     UUIDSlugMixin)
 
+logger = logging.getLogger(__name__)
 
 NULL_AND_BLANK = {'null': True, 'blank': True}
 
@@ -241,7 +242,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         return Comment.objects.filter(post=self)
 
     def comment_list(self):
-        cache_key = f"post_comments_{self.id}"
+        cache_key = f"post_comments_{self.pk}"
         value = cache.get(cache_key)
         if value:
             logger.info(f"get post comments:{self.pk}")
