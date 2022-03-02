@@ -1,5 +1,6 @@
 # blog.models.py
 
+import logging
 from itertools import chain
 
 from django.db import models
@@ -11,6 +12,7 @@ from django.core.validators import(
     MaxLengthValidator, MinLengthValidator,
     FileExtensionValidator
 )
+from django.core.cache import cache
 
 import readtime
 from blog.managers import PostManager
@@ -18,8 +20,12 @@ from blog.managers import PostManager
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, Adjust
 
-from common.utilitary import upload_image_to, unique_slug_generator
-from common.models import StatusAndPublishedMixin, BaseTimeStampModel, UUIDSlugMixin
+from common.utilitary import(
+    upload_image_to, unique_slug_generator,
+    cache_decorator)
+from common.models import(
+    StatusAndPublishedMixin, BaseTimeStampModel,
+    UUIDSlugMixin)
 
 
 NULL_AND_BLANK = {'null': True, 'blank': True}
@@ -195,6 +201,10 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def __str__(self):
         return self.name
 
+    def get_admin_url(self):
+        info = (self._meta.app_label, self._meta.model_name)
+        return reverse('admin:%s_%s_change' % info, args=(self.pk,))
+
     def get_image_url(self):
         if self.formatted_cover:
             return self.formatted_cover.url
@@ -230,6 +240,18 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def comments(self):
         return Comment.objects.filter(post=self)
 
+    def comment_list(self):
+        cache_key = f"post_comments_{self.id}"
+        value = cache.get(cache_key)
+        if value:
+            logger.info(f"get post comments:{self.pk}")
+            return value
+        else:
+            post_comments = self.comments().filter(is_enable=True)
+            cache.set(cache_key, post_comments, 60 * 100)
+            logger.info(f"set post comments:{self.pk}")
+            return post_comments
+
     @admin.display(description="nombre de commentaires")
     def comment_count(self):
         return self.comments().count()
@@ -243,10 +265,12 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             }
         )
 
-    def next_article(self):
+    @cache_decorator(expiration=60 * 100)
+    def next_post(self):
         return Post.objects.published().filter(pk__gt=self.pk).order_by('pk').first()
 
-    def prev_article(self):
+    @cache_decorator(expiration=60 * 100)
+    def prev_post(self):
         return Post.objects.published().filter(pk__lt=self.pk).first()
 
 
