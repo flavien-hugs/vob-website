@@ -9,6 +9,7 @@ from decimal import Decimal
 from django.db import models
 from django.urls import reverse
 from django.contrib import admin
+from django.utils.timezone import now
 from course.models import Course, Book
 from common.models import BaseTimeStampModel, UserBaseInfo
 
@@ -54,6 +55,10 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         related_name='books',
         verbose_name='livre',
     )
+    date_added = models.DateTimeField(
+        verbose_name="Date de la commande",
+        db_index=True, default=now
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -61,12 +66,24 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         verbose_name_plural = "commande de livre"
         indexes = [models.Index(fields=['uuid'])]
 
+    def clean(self):
+        if (
+            self.date_added.date() <= self.date_of_course.date()
+        ):
+            raise ValidationError(
+                {"date_added": "Cette formation est déjà passé !"}
+            )
+
     def __str__(self):
         return f"Commande - {self.id_checkout}"
 
     @admin.display(description="prix")
     def get_book_cost(self):
         return f"{self.book.price} frcfa".upper()
+
+    @admin.display(description="date de la commande")
+    def get_order_book(self):
+        return self.date_added.date()
 
     def get_absolute_url(self):
         return reverse(
@@ -89,6 +106,10 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
         related_name='courses',
         verbose_name='course',
     )
+    date_added = models.DateTimeField(
+        verbose_name="Date d'Inscription",
+        db_index=True, default=now
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -102,6 +123,10 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
     @admin.display(description="prix")
     def get_course_cost(self):
         return f"{self.course.price} frcfa".upper()
+
+    @admin.display(description="date d'inscription")
+    def get_signup_course(self):
+        return self.date_added.date()
 
     def get_absolute_url(self):
         return reverse(
