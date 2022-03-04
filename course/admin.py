@@ -44,6 +44,7 @@ class CourseAdmin(SummernoteModelAdmin):
     list_display = [
         "name",
         "course_price",
+        "course_date",
         "count_viewed",
         "show_course_url",
         "date_published",

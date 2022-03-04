@@ -1,11 +1,10 @@
 # course.models.py
 
-import datetime
-
 from django.db import models
 from django.urls import reverse
 from django.contrib import admin
 from django.dispatch import receiver
+from django.utils.timezone import now
 from django.utils.text import Truncator
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
@@ -57,7 +56,7 @@ class Course(
         help_text='Indiquer le côut de cette formation.'
     )
     date_of_course = models.DateField(
-        default=datetime.datetime.now,
+        default=now,
         auto_now_add=False, auto_now=False,
         verbose_name='date & heure de la formation',
         help_text="Indiquer la date & l'heure de la formation"
@@ -95,9 +94,9 @@ class Course(
     option = models.CharField(
         default=P,
         max_length=13,
-    	verbose_name="Option de la formation",
+    	verbose_name="Type de la formation",
     	choices=OPTION_COURSE_CHOICES,
-        help_text="Option de la formation"
+        help_text="Comment la formation se déroulera ? (En Présentiel ou En Ligne)"
     )
     tags = tagulous.models.TagField(
         verbose_name="mots clés",
@@ -177,9 +176,9 @@ class Course(
     def course_price(self):
         return f"{int(self.price)} frcfa".upper()
 
-    @admin.display(description="date")
+    @admin.display(description="début de la formation")
     def course_date(self):
-        return f"Le {self.date_of_course.date()}"
+        return f"Le {self.date_of_course.strftime('%d %B %Y')}"
 
     @admin.display(description="nombre de vues")
     def count_viewed(self):
