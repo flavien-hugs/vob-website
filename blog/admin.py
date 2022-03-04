@@ -87,7 +87,7 @@ class PostAdmin(SummernoteModelAdmin):
         "post_count_viewed",
         "post_price",
         "show_post_url",
-        "published",
+        "date_published",
     ]
     list_display_links = [
         'post_name',

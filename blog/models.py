@@ -215,7 +215,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def post_price(self):
         if self.price > 0:
             return f"{self.price} frcfa".upper()
-        return "article gratuit"
+        return "Gratuit"
 
     def viewed(self):
         self.view += 1
@@ -223,7 +223,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     @admin.display(description="nombre de lecture")
     def post_count_viewed(self):
-        return f"{self.viewed} lecture"
+        return f"{self.view} lectures"
 
     @admin.display(description="temps de lecture")
     def readtime(self):
@@ -232,7 +232,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
     def post_name(self):
         truncated_name = Truncator(self.name)
-        return truncated_name.words(10)
+        return truncated_name.words(8)
 
     def post_excerpt(self):
         truncated_subtitle = Truncator(self.subtitle)

@@ -149,9 +149,7 @@ class CommentPostView(generic.edit.FormView):
 
         comment.save(True)
 
-        return HttpResponseRedirect(
-            "%s#div-comment-%d"(post.get_absolute_url(), comment.pk)
-        )
+        return HttpResponseRedirect(f"{post.get_absolute_url()}#div-comment-{comment.pk}")
 
 
 comment_post_view = CommentPostView.as_view()
