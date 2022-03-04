@@ -26,7 +26,7 @@ class BaseTimeStampModel(models.Model):
     class Meta:
         abstract = True
 
-    @admin.display(description="date d'ajout")
+    @admin.display(description="date")
     def date(self):
         return self.created_at.date()
 
