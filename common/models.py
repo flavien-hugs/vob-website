@@ -64,7 +64,7 @@ class StatusAndPublishedMixin(models.Model):
     class Meta:
         abstract = True
 
-    @admin.display(description="publié le")
+    @admin.display(description="date de publication")
     def date_published(self):
         return self.published.date()
 
