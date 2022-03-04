@@ -3,10 +3,14 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from checkout.models import Checkout, RegisterCourse
+from checkout.ressources import CheckoutBookResource
+
+from import_export.formats import base_formats
+from import_export.admin import ExportActionMixin
 
 
 @admin.register(Checkout)
-class CheckoutAdmin(admin.ModelAdmin):
+class CheckoutAdmin(ExportActionMixin, admin.ModelAdmin):
     model = Checkout
     list_per_page = 10
     date_hierarchy = 'created_at'
@@ -42,6 +46,8 @@ class CheckoutAdmin(admin.ModelAdmin):
         'city', 'country', 'ip_address',
     ]
     list_display_links = ['id_checkout', 'full_name']
+    formats = [base_formats.XLSX]
+    resource_class = CheckoutBookResource
 
 
 @admin.register(RegisterCourse)
