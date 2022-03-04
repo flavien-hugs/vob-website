@@ -3,7 +3,9 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from checkout.models import Checkout, RegisterCourse
-from checkout.ressources import CheckoutBookResource
+from checkout.ressources import(
+    CheckoutBookResource, RegisterCourseBookResource
+)
 
 from import_export.formats import base_formats
 from import_export.admin import ExportActionMixin
@@ -32,7 +34,7 @@ class CheckoutAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = [
         'id_checkout', 'full_name',
         'book', 'get_book_cost',
-        'get_delivery', 'date',
+        'get_delivery', 'get_order_book',
     ]
     list_filter = ['created_at']
     search_fields = [
@@ -51,7 +53,7 @@ class CheckoutAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 @admin.register(RegisterCourse)
-class RegisterCourseAdmin(admin.ModelAdmin):
+class RegisterCourseAdmin(ExportActionMixin, admin.ModelAdmin):
     model = RegisterCourse
     list_per_page = 10
     date_hierarchy = 'created_at'
@@ -63,7 +65,6 @@ class RegisterCourseAdmin(admin.ModelAdmin):
                     ('first_name', 'last_name'),
                     'email',
                     ('phone', 'phone_two'),
-                    'address',
                     ('city', 'country'),
                     'ip_address',
                 )
@@ -73,17 +74,14 @@ class RegisterCourseAdmin(admin.ModelAdmin):
     list_display = [
         'id_checkout', 'full_name',
         'course', 'get_course_cost',
-        'city', 'date',
+        'city', 'get_signup_course',
     ]
     list_filter = ['course', 'created_at']
     search_fields = [
         'id_checkout',
         'phone',
     ]
-    readonly_fields = [
-        'course',
-        'first_name', 'last_name', 'email',
-        'phone', 'phone_two', 'address',
-        'city', 'country', 'ip_address',
-    ]
+
     list_display_links = ['id_checkout', 'full_name']
+    formats = [base_formats.CSV]
+    resource_class = RegisterCourseBookResource

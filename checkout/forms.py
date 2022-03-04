@@ -14,6 +14,7 @@ class CheckoutForm(forms.ModelForm):
             'id_checkout',
             'ip_address',
             'created_at',
+            'date_added'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -32,6 +33,7 @@ class CourseRegisterForm(forms.ModelForm):
             'id_checkout',
             'ip_address',
             'created_at',
+            'date_added',
         ]
 
     def __init__(self, *args, **kwargs):
