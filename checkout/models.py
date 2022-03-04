@@ -44,7 +44,7 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
     id_checkout = models.CharField(
         max_length=8,
-        verbose_name='ID Commande',
+        verbose_name='N° Commande',
         editable=False, unique=True,
         default=random_checkout_code
     )
@@ -93,7 +93,7 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
     class Meta:
         ordering = ['-created_at']
         get_latest_by = ['-created_at']
-        verbose_name_plural = "inscrptions"
+        verbose_name_plural = "inscriptions"
         indexes = [models.Index(fields=['uuid'])]
 
     def __str__(self):
