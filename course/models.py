@@ -133,6 +133,19 @@ class Course(
         verbose_name_plural = 'formations'
         indexes = [models.Index(fields=['uuid'])]
 
+    def save(self, *args, **kwargs):
+        is_update_views = isinstance(
+            self, Course
+        ) and 'update_fields' in kwargs and kwargs['update_fields'] == ['view']
+
+        if is_update_views:
+            Course.objects.filter(pk=self.pk).update(view=self.view)
+        super().save(*args, **kwargs)
+
+    def viewed(self):
+        self.view += 1
+        self.save(update_fields=['view'])
+
     def clean(self):
         if (
             self.published.date() <= self.date_of_course
@@ -182,7 +195,7 @@ class Course(
 
     @admin.display(description="nombre de vues")
     def count_viewed(self):
-        return f"{self.view} vues"
+        return f"{self.viewed()} vues"
 
     def course_option(self):
         return self.get_option_display()
@@ -246,6 +259,19 @@ class Book(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         get_latest_by = ['-created_at']
         verbose_name_plural = 'livres'
         indexes = [models.Index(fields=['uuid'])]
+
+    def save(self, *args, **kwargs):
+        is_update_views = isinstance(
+            self, Book
+        ) and 'update_fields' in kwargs and kwargs['update_fields'] == ['view']
+
+        if is_update_views:
+            Book.objects.filter(pk=self.pk).update(view=self.view)
+        super().save(*args, **kwargs)
+
+    def viewed(self):
+        self.view += 1
+        self.save(update_fields=['view'])
 
     def __str__(self):
         return self.name
