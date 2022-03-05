@@ -106,14 +106,6 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         indexes = [models.Index(fields=['uuid'])]
         unique_together = (('transaction_code', 'id_checkout'),)
 
-    def clean(self):
-        if (
-            self.date_added.date() <= self.date_of_course.date()
-        ):
-            raise ValidationError(
-                {"date_added": "Cette formation est déjà passé !"}
-            )
-
     def __str__(self):
         return f"Commande - {self.id_checkout}"
 
@@ -162,6 +154,14 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
         verbose_name="Date d'Inscription",
         db_index=True, default=now
     )
+
+    def clean(self):
+        if (
+            self.date_added.date() <= self.course.date_of_course
+        ):
+            raise ValidationError(
+                {"date_added": "Cette formation est déjà passé !"}
+            )
 
     class Meta:
         ordering = ['-created_at']

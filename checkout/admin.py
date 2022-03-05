@@ -84,7 +84,12 @@ class RegisterCourseAdmin(ExportActionMixin, admin.ModelAdmin):
         'id_checkout',
         'phone',
     ]
-
+    readonly_fields = [
+        'course',
+        'first_name', 'last_name', 'email',
+        'phone', 'phone_two',
+        'city', 'country', 'ip_address',
+    ]
     list_display_links = ['id_checkout', 'full_name']
     formats = [base_formats.CSV]
     resource_class = RegisterCourseBookResource

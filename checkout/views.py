@@ -102,8 +102,8 @@ course_register_view = course_register_view
 
 def checkout_success(request, id_checkout):
 
-    checkout_id = request.session.get('id_checkout', 0)
-    checkout = Checkout.objects.filter(id_checkout=checkout_id).first()
+    order_id = request.session.get('id_checkout', 0)
+    checkout = Checkout.objects.filter(id_checkout=order_id)
     print(checkout)
 
     context = {
