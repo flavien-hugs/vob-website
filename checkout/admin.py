@@ -23,6 +23,8 @@ class CheckoutAdmin(ExportActionMixin, admin.ModelAdmin):
                     'book',
                     ('first_name', 'last_name'),
                     'email',
+                    'payment',
+                    ('transaction_number', 'transaction_code'),
                     ('phone', 'phone_two'),
                     'address',
                     ('city', 'country'),
@@ -33,6 +35,7 @@ class CheckoutAdmin(ExportActionMixin, admin.ModelAdmin):
     )
     list_display = [
         'id_checkout', 'full_name',
+        'get_payment_type',
         'book', 'get_book_cost',
         'get_delivery', 'get_order_book',
     ]

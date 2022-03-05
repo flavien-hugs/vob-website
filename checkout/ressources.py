@@ -9,6 +9,13 @@ from checkout.models import Checkout, RegisterCourse
 class CheckoutBookResource(resources.ModelResource):
 
     id_checkout = Field(attribute="id_checkout", column_name="N° Commande")
+    payment = Field(attribute="payment", column_name="Moyen de paiement")
+    transaction_number = Field(
+        attribute="transaction_number",
+        column_name="Numéro de la Transaction")
+    transaction_code = Field(
+        attribute="transaction_code",
+        column_name="ID de la Transaction")
     book = Field(attribute="book", column_name="Livre")
     price = Field(attribute="price", column_name="Prix (FRCFA)")
     first_name = Field(attribute="first_name", column_name="Nom")
@@ -23,7 +30,10 @@ class CheckoutBookResource(resources.ModelResource):
     class Meta:
         model = Checkout
         fields = (
-            "id_checkout", "book", "price",
+            "id_checkout",
+            "payment", "transaction_number",
+            "transaction_code",
+            "book", "price",
             "first_name", "last_name",
             "phone", "phone_two",
             "city", "country",

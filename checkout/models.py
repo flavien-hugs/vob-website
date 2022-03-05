@@ -10,6 +10,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib import admin
 from django.utils.timezone import now
+from django.core.validators import RegexValidator
+
 from course.models import Course, Book
 from common.models import BaseTimeStampModel, UserBaseInfo
 
@@ -43,17 +45,54 @@ class ModelCheckoutRegisterMixin(models.Model):
 
 class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
+    WAVE = "Wave"
+    MTN = "MTN Money"
+    MOOV = "Moov Money"
+    ORANGE = "Orange Money"
+
+    PAYMENT_CHOICES = (
+        (WAVE, 'Wave'),
+        (MTN, 'MTN Money'),
+        (MOOV, 'Moov Money'),
+        (ORANGE, 'Orange Money')
+    )
+
     id_checkout = models.CharField(
         max_length=8,
         verbose_name='N° Commande',
         editable=False, unique=True,
         default=random_checkout_code
     )
+    payment = models.CharField(
+        default=WAVE,
+        max_length=12,
+    	choices=PAYMENT_CHOICES,
+    	verbose_name="Moyen de paiement",
+        help_text="Choisir le moyen de paiment."
+    )
     book = models.ForeignKey(
         to=Book,
         on_delete=models.CASCADE,
         related_name='books',
         verbose_name='livre',
+    )
+    transaction_number = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex='^\+?1?\d{9,15}$',
+                message="Le numéro de téléphone de la transaction.",
+                code='invalid_transaction_number'
+            ),
+        ],
+        verbose_name='numéro de téléphone de la transaction',
+        **NULL_AND_BLANK
+    )
+    transaction_code = models.CharField(
+        unique=True, max_length=25,
+        verbose_name="Identifiant du dépôt",
+        help_text="référence de la transaction",
+        **NULL_AND_BLANK
     )
     date_added = models.DateTimeField(
         verbose_name="Date de la commande",
@@ -65,6 +104,7 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         get_latest_by = ['-created_at']
         verbose_name_plural = "commande de livre"
         indexes = [models.Index(fields=['uuid'])]
+        unique_together = (('transaction_code', 'id_checkout'),)
 
     def clean(self):
         if (
@@ -76,6 +116,18 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
     def __str__(self):
         return f"Commande - {self.id_checkout}"
+
+    @admin.display(description="moyen de paiment")
+    def get_payment_type(self):
+        return self.get_payment_display()
+
+    @admin.display(description="numéro de la transaction")
+    def get_transaction_number(self):
+        return int(self.transaction_number)
+
+    @admin.display(description="ID de la transaction")
+    def get_transaction_code(self):
+        return int(self.transaction_code)
 
     @admin.display(description="prix")
     def get_book_cost(self):

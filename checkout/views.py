@@ -48,7 +48,7 @@ def checkout_view(request, slug):
         'page_title': book.name,
         'breadcrumb_title': "Paiement"
     }
-    template = 'checkout/form.html'
+    template = 'checkout/_book_checkout_form.html'
 
     return render(request, template, context)
 
@@ -92,7 +92,7 @@ def course_register_view(request, slug):
         'page_title': course.name,
         'breadcrumb_title': "Inscription",
     }
-    template = 'checkout/form.html'
+    template = 'checkout/checkout_base.html'
 
     return render(request, template, context)
 
