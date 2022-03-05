@@ -1,0 +1,37 @@
+{% load widget_tweaks %}
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="mb-0">
+            Information sur la transaction
+        </h3>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+                <label class="form-label" for="{{ form.payment.id_for_label }}">
+                    {{ form.payment.label }}
+                </label>
+
+                {% render_field form.payment placeholder=form.payment.label %}
+            </div>
+
+            <div class="mb-3 col-12 col-md-12">
+                <label class="form-label" for="{{ form.transaction_number.id_for_label }}">
+                    {{ form.transaction_number.label }}
+                </label>
+
+                {% render_field form.transaction_number placeholder=form.transaction_number.label %}
+            </div>
+
+            <div class="mb-3 col-12 col-md-12">
+                <label class="form-label" for="{{ form.transaction_code.id_for_label }}">
+                    {{ form.transaction_code.label }}
+                </label>
+
+                {% render_field form.transaction_code placeholder=form.transaction_code.label %}
+            </div>
+        </div>  
+    </div>
+</div>

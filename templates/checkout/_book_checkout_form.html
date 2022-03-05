@@ -1,0 +1,12 @@
+{% extends "checkout/checkout_base.html" %}
+
+
+{% block form_content %}
+    {% include "checkout/paths/_book_field.html" with form=form %}
+
+    <div class="mb-4 col-md-12 col-12 d-grid gap-2">
+        <button type="submit" class="btn btn-md btn-block btn-danger text-uppercase shadow-none">
+            valider votre commande
+        </button>
+    </div>
+{% endblock form_content %}

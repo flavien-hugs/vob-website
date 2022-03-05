@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+
+{% load humanize widget_tweaks %}
+
+{% block head_title %}
+    {{ block.super }}
+{% endblock head_title %}
+
+{% block __body__ %}
+
+    <div class="py-lg-5 py-4 bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div>
+                        <h1 class="text-white display-4 mb-0">
+                            {{ breadcrumb_title|capfirst }}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-12 col-12">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% include "checkout/paths/_default_field.html" with form=form %}
+
+                        {% block form_content %}
+                            <div class="mb-4 col-md-12 col-12 d-grid gap-2">
+                                <button type="submit" class="btn btn-md btn-block btn-danger text-uppercase shadow-none">
+                                    Je m'inscris
+                                </button>
+                            </div>
+                        {% endblock form_content %}
+
+                        <div class="col-md-12 col-12">
+                            <small class="mb-0">
+                                En cliquant sur commander, vous acceptez nos <a href="#">conditions d'utilisation et notre politique de confidentialité.</a>
+                            </small>
+                        </div>
+                    </form>
+                </div>
+
+                {% include "checkout/paths/_card.html" with object=object  %}
+            </div>
+        </div>
+    </section>
+{% endblock __body__%}
