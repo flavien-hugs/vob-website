@@ -64,6 +64,14 @@
 
                 {% render_field form.country placeholder=form.country.label %}
             </div>
+
+            <div class="col-12 col-md-12">
+                <label class="form-label" for="{{ form.address.id_for_label }}">
+                    {{ form.address.label }}
+                </label>
+
+                {% render_field form.address placeholder=form.address.label %}
+            </div>
         </div>
     </div>
 </div>
