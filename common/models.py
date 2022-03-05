@@ -106,7 +106,7 @@ class UserBaseInfo(models.Model):
                 regex='^\+?1?\d{9,15}$',
                 message="Le numéro de téléphone doit être saisi dans le format\
                 '+225'. Jusqu'à 10 chiffres sont autorisés.",
-                code='invalid_phone_number'
+                code='invalid_phone'
             ),
         ],
         verbose_name='téléphone',
@@ -118,7 +118,7 @@ class UserBaseInfo(models.Model):
                 regex='^\+?1?\d{9,15}$',
                 message="Le numéro de téléphone doit être saisi dans le format\
                 '+225'. Jusqu'à 10 chiffres sont autorisés.",
-                code='invalid_phone_number'
+                code='invalid_phone_two'
             ),
         ],
         verbose_name='téléphone 2 (facultatif)',
