@@ -7,9 +7,9 @@ from checkout import views
 
 urlpatterns = [
     # checkout book urls
-    path("checkout/", include(([
+    path("checkout/book/", include(([
         path(
-            route='book/<slug>/',
+            route='<slug>/process/order/',
             view=views.checkout_book_view,
             name='checkout_path'),
         path(
@@ -19,10 +19,14 @@ urlpatterns = [
     ], 'checkout'), namespace='checkout_book')),
 
     # courses register urls
-    path("register/", include(([
+    path("register/course/", include(([
         path(
-            route="course/<slug>/",
+            route="<slug>/process/",
             view=views.course_register_view,
-            name='register_course_path')
+            name='register_course_path'),
+        path(
+            route='success/<id_checkout>/',
+            view=views.register_success_view,
+            name='register_success_path'),
     ], 'checkout'), namespace='register_course')),
 ]
