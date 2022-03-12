@@ -31,7 +31,12 @@ class ModelCheckoutRegisterMixin(models.Model):
         primary_key=True,
         verbose_name='uuid'
     )
-
+    id_checkout = models.CharField(
+        max_length=8,
+        verbose_name='ID',
+        editable=False, unique=True,
+        default=random_checkout_code
+    )
     ip_address = models.GenericIPAddressField(
         max_length=180,
         protocol='both',
@@ -57,12 +62,6 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         (ORANGE, 'Orange Money')
     )
 
-    id_checkout = models.CharField(
-        max_length=8,
-        verbose_name='N° Commande',
-        editable=False, unique=True,
-        default=random_checkout_code
-    )
     payment = models.CharField(
         default=WAVE,
         max_length=12,
@@ -135,15 +134,15 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
             kwargs={"slug": self.book.slug}
         )
 
+    def get_success_url(self):
+        return reverse(
+            "checkout_book:checkout_success_path",
+            kwargs={"id_checkout": str(self.id_checkout)}
+        )
+
 
 class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
-    id_checkout = models.CharField(
-        max_length=8,
-        verbose_name='ID Inscription',
-        editable=False, unique=True,
-        default=random_checkout_code
-    )
     course = models.ForeignKey(
         to=Course,
         on_delete=models.CASCADE,
@@ -155,7 +154,7 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
         db_index=True, default=now
     )
 
-    def clean(self):
+    def clean__date_added(self):
         if (
             self.date_added.date() <= self.course.date_of_course
         ):
@@ -184,4 +183,10 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
         return reverse(
             "register_course:course_path",
             kwargs={"slug": self.book.slug}
+        )
+
+    def get_success_url(self):
+        return reverse(
+            "register_course:register_success_path",
+            kwargs={"id_checkout": str(self.id_checkout)}
         )
