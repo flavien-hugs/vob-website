@@ -408,3 +408,9 @@ DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'dbbackup'}
 CRONJOBS = [
     ('*/120 * * * *', 'common.cron.create_backups_scheduled_job')
 ]
+
+# Celery Configuration Options
+
+CELERY_TIMEZONE = "Africa/Abidjan"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
