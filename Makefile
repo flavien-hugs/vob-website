@@ -65,6 +65,10 @@ crontabadd: ## Add all defined jobs from CRONJOB to crontab
 crontabshow: ## Show current active jobs of this project
 	$(MANAGE) crontab show
 
+.PHONY: celery-worker
+celery-worker: ## Starting the worker process
+	celery -A core worker -l INFO
+
 .PHONY: coverage
 coverage: ## Test with coverage and generate htmlcov
 	coverage run --source "blog,course" manage.py test -v 2

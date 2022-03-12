@@ -29,7 +29,7 @@ whoosh = "*"
 django-tagulous = "*"
 django-dbbackup = "*"
 django-crontab = "*"
-celery = "*"
+celery = {extras = ["redis"], version = "*"}
 
 [dev-packages]
 flake8 = "*"
