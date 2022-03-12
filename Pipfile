@@ -27,6 +27,9 @@ django-imagekit = "*"
 django-haystack = {extras = ["elasticsearch"], version = "*"}
 whoosh = "*"
 django-tagulous = "*"
+django-dbbackup = "*"
+django-crontab = "*"
+celery = "*"
 
 [dev-packages]
 flake8 = "*"
