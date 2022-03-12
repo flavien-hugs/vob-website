@@ -2,8 +2,7 @@
 
 from django.urls import reverse
 from django.views import generic
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from course.models import Course, Book
 
@@ -32,13 +31,8 @@ def checkout_view(request, slug):
             checkout.ip_address = get_client_ip(request)
 
             checkout.save()
-
-            return HttpResponseRedirect(
-                reverse(
-                    'checkout_book:checkout_success_path',
-                    kwargs={'id_checkout': checkout.id_checkout}
-                )
-            )
+            request.session['id_checkout'] = str(checkout.pk)
+            return redirect(checkout.get_success_url())
     else:
         form = CheckoutForm()
 
@@ -77,12 +71,8 @@ def course_register_view(request, slug):
 
             register.save()
 
-            return HttpResponseRedirect(
-                reverse(
-                    'checkout_book:checkout_success_path',
-                    kwargs={'id_checkout': register.id_checkout}
-                )
-            )
+            request.session['id_checkout'] = str(register.pk)
+            return redirect(register.get_success_url())
     else:
         form = CourseRegisterForm()
 
@@ -102,16 +92,46 @@ course_register_view = course_register_view
 
 def checkout_success(request, id_checkout):
 
-    order_id = request.session.get('id_checkout', 0)
-    checkout = Checkout.objects.filter(id_checkout=order_id)
-    print(checkout)
+    id_checkout = request.session.get('id_checkout')
+    checkout = get_object_or_404(Checkout, pk=id_checkout)
+
+    message = f"""
+        Hello <strong>{checkout.full_name()}</strong>,<br> votre commande du livre <strong class="fs-italic">'{checkout.book.name}'</strong>.<br>
+        Votre identifiant de commande est le <strong>{checkout.id_checkout}</strong>.<br>
+        Veuillez le noté pour le retrait de votre livre.<br><br>
+
+        Merci, Valère Obeï.
+    """
 
     context = {
-        'object': checkout,
-        'page_title': 'Succès',
+        'message': message,
+        'page_title': 'Success',
     }
     template = 'checkout/checkout_success.html'
     return render(request, template, context)
 
 
 checkout_success_view = checkout_success
+
+
+def register_success(request, id_checkout):
+
+    id_checkout = request.session.get('id_checkout')
+    checkout = get_object_or_404(RegisterCourse, pk=id_checkout)
+    message = f"""
+        Hello {checkout.full_name()},<br> merci pour votre intéret pour ce cours {checkout.course.name}.<br><br>
+        Votre identifiant d'enregistrement est le <strong>{checkout.id_checkout}</strong>.<br>
+        Veuillez le noté pour accéder au cours.<br><br>
+
+        Merci, Valère Obeï.
+    """
+
+    context = {
+        'message': message,
+        'page_title': 'Success',
+    }
+    template = 'checkout/checkout_success.html'
+    return render(request, template, context)
+
+
+register_success_view = register_success
