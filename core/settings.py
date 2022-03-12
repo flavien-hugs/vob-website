@@ -69,6 +69,9 @@ PACKAGE_APPS = [
 
     'imagekit',
     'compressor',
+
+    'dbbackup',
+    'django_crontab',
 ]
 
 LOCAL_APPS = [
@@ -393,3 +396,15 @@ HAYSTACK_CONNECTIONS = {
         'SILENTLY_FAIL': True,
     },
 }
+
+# Configuration
+# https://django-dbbackup.readthedocs.io/en/master/installation.html
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'dbbackup'}
+
+# https://pypi.org/project/django-crontab/
+
+CRONJOBS = [
+    ('*/120 * * * *', 'common.cron.create_backups_scheduled_job')
+]
