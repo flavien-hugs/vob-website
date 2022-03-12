@@ -15,7 +15,17 @@ from celery import Celery
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
-app = Celery('core')
+app = Celery(
+        'core',
+        broker='redis://localhost',
+        backend='redis://localhost',
+    )
+
+# You can add the following property when instantiating
+# The execution result is put into redis and discarded if
+# no one takes it for an hour
+
+app.conf.update(result_expires=3600)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

@@ -6,9 +6,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 import re
 from pathlib import Path
-from decouple import config
+
+from dotenv import dotenv_values
+
 from django.contrib.messages import constants as messages
 from django.core.management.utils import get_random_secret_key
+
+config_credentials = dotenv_values(".env")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -16,17 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config_credentials['DEBUG']
+
 TEMPLATE_DEBUG = DEBUG
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 # SECURITY WARNING: keep the secret key used in production secret!
 
-if DEBUG:
-    SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
-else:
-    SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config_credentials['SECRET_KEY']
 
 ALLOWED_HOSTS = []
 
@@ -34,7 +36,7 @@ ADMIN_URL = 'admin/'
 APPEND_SLASH = True
 THOUSAND_SEPARATOR = ' '
 USE_THOUSAND_SEPARATOR = True
-DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'valereobei@pm.me'
+
 
 # Application definition
 
@@ -152,9 +154,9 @@ if os.environ.get('GITHUB_WORKFLOW'):
 DATABASES = {
     'default': {
         'ENGINE': "django.db.backends.postgresql",
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'NAME': config_credentials['DATABASE_NAME'],
+        'USER': config_credentials['DATABASE_USER'],
+        'PASSWORD': config_credentials['DATABASE_PASSWORD'],
         'HOST': '127.0.0.1',
         'PORT': 5432,
         'ATOMIC_REQUESTS': True
@@ -414,3 +416,14 @@ CRONJOBS = [
 CELERY_TIMEZONE = "Africa/Abidjan"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# Config email
+# https://docs.djangoproject.com/fr/4.0/topics/email/
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config_credentials['HOST_USER']
+EMAIL_HOST_PASSWORD = config_credentials['HOST_PASSWORD']
+DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'no-reply@valereobei.com'
