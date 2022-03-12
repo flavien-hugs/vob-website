@@ -11,7 +11,6 @@ pillow = "*"
 django-redis = "*"
 django-filter = "*"
 gunicorn = "*"
-python-decouple = "*"
 argon2-cffi = "*"
 django-widget-tweaks = "*"
 django-import-export = "*"
@@ -29,6 +28,7 @@ whoosh = "*"
 django-tagulous = "*"
 django-dbbackup = "*"
 django-crontab = "*"
+python-dotenv = "*"
 celery = {extras = ["redis"], version = "*"}
 
 [dev-packages]
