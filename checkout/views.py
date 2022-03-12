@@ -7,6 +7,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from course.models import Course, Book
 
 from common.utilitary import get_client_ip
+from checkout.tasks import(
+    send_email_for_checkout,
+    send_email_for_register_course
+)
 from checkout.models import Checkout, RegisterCourse
 from checkout.forms import CheckoutForm, CourseRegisterForm
 
@@ -31,6 +35,9 @@ def checkout_view(request, slug):
             checkout.ip_address = get_client_ip(request)
 
             checkout.save()
+
+            send_email_for_checkout.delay(checkout.pk)
+
             request.session['id_checkout'] = str(checkout.pk)
             return redirect(checkout.get_success_url())
     else:
@@ -70,6 +77,8 @@ def course_register_view(request, slug):
             register.ip_address = get_client_ip(request)
 
             register.save()
+
+            send_email_for_register_course.delay(register.pk)
 
             request.session['id_checkout'] = str(register.pk)
             return redirect(register.get_success_url())
@@ -118,8 +127,10 @@ def register_success(request, id_checkout):
 
     id_checkout = request.session.get('id_checkout')
     checkout = get_object_or_404(RegisterCourse, pk=id_checkout)
+
     message = f"""
-        Hello {checkout.full_name()},<br> merci pour votre intéret pour ce cours {checkout.course.name}.<br><br>
+        Hello {checkout.full_name()}, <br>
+        merci pour votre intéret pour ce cours {checkout.course.name}.<br><br>
         Votre identifiant d'enregistrement est le <strong>{checkout.id_checkout}</strong>.<br>
         Veuillez le noté pour accéder au cours.<br><br>
 
