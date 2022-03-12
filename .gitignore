@@ -74,3 +74,4 @@ media/
 staticfiles
 debug
 */migrations/*.py
+*/dbbackup/*.dump
