@@ -142,7 +142,7 @@ class UserBaseInfo(models.Model):
 
     @admin.display(description="nom & prénom")
     def full_name(self):
-        return f"{self.first_name} {self.last_name} ({self.phone})"
+        return f"{self.first_name} {self.last_name}"
 
     @admin.display(description="livraison")
     def get_delivery(self):
