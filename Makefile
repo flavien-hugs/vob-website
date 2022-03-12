@@ -57,6 +57,14 @@ haystack-rebuild-index: ## haystack rebuild index
 haystack-update-index: ## haystack update index
 	$(MANAGE) update_index
 
+.PHONY: crontabadd
+crontabadd: ## Add all defined jobs from CRONJOB to crontab
+	$(MANAGE) crontab add
+
+.PHONY: crontabshow
+crontabshow: ## Show current active jobs of this project
+	$(MANAGE) crontab show
+
 .PHONY: coverage
 coverage: ## Test with coverage and generate htmlcov
 	coverage run --source "blog,course" manage.py test -v 2
