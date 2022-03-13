@@ -1,8 +1,9 @@
 # checkout.forms.py
 
+from django.utils.translation import gettext_lazy as _
 from django import forms
 
-from checkout.models import Checkout, RegisterCourse
+from checkout.models import Checkout, RegisterCourse, Voucher
 
 
 class CheckoutForm(forms.ModelForm):
@@ -41,3 +42,15 @@ class CourseRegisterForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control shadow-none'})
+
+
+class VoucherForm(forms.Form):
+
+    code = forms.CharField(
+        label="Code promo",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control shadow-none',
+                'placeholder': 'Entrer le code promo',
+                'autocomplete': 'false'
+            }))
