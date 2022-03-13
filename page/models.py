@@ -104,7 +104,7 @@ class Testimonial(BaseTimeStampModel):
         source='cover',
         processors=[
             Adjust(contrast=1.2, sharpness=1.1),
-            ResizeToFill(923, 498)
+            ResizeToFill(256, 256)
         ],
         format='JPEG',
         options={'quality': 90}
