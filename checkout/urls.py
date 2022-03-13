@@ -18,6 +18,14 @@ urlpatterns = [
             name='checkout_success_path'),
     ], 'checkout'), namespace='checkout_book')),
 
+    # voucher url
+    path("codepromo/", include(([
+        path(
+            route="apply/process/",
+            view=views.apply_voucher,
+            name='apply_voucher')
+    ], 'checkout'), namespace='voucher')),
+
     # courses register urls
     path("register/course/", include(([
         path(
