@@ -16,7 +16,7 @@ from checkout.tasks import(
 from checkout.models import Checkout, RegisterCourse
 from checkout.forms import(
     CheckoutForm, CourseRegisterForm,
-    VoucherForm
+    VoucherApplyForm
 )
 
 
@@ -157,7 +157,7 @@ register_success_view = register_success
 def apply_voucher(request):
 
     date_today = timezone.now()
-    form = VoucherForm(request.POST)
+    form = VoucherApplyForm(request.POST)
 
     if form.is_valid():
         code = form.cleaned_data['code']

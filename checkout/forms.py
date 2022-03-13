@@ -44,7 +44,7 @@ class CourseRegisterForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({'class': 'form-control shadow-none'})
 
 
-class VoucherForm(forms.Form):
+class VoucherApplyForm(forms.Form):
 
     code = forms.CharField(
         label="Code promo",
