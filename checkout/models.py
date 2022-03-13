@@ -3,7 +3,6 @@
 import uuid
 import string
 import random
-import datetime
 from decimal import Decimal
 
 from django.db import models
@@ -96,6 +95,20 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         help_text="référence de la transaction",
         **NULL_AND_BLANK
     )
+    voucher = models.ForeignKey(
+        to='Voucher',
+        on_delete=models.SET_NULL,
+        related_name="vouchers",
+        **NULL_AND_BLANK
+    )
+    discount = models.IntegerField(
+        default=0,
+        verbose_name="code promo",
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100)
+        ]
+    )
     date_added = models.DateTimeField(
         verbose_name="Date de la commande",
         db_index=True, default=now
@@ -131,6 +144,10 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
     def get_order_book(self):
         return self.date_added.date()
 
+    def get_total_cost(self):
+        price = self.book.price
+        return total_cost - (price * (self.discount / Decimal('100')))
+
     def get_absolute_url(self):
         return reverse(
             "checkout_book:checkout_path",
@@ -143,7 +160,7 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
             kwargs={"id_checkout": str(self.id_checkout)}
         )
 
-    
+
 class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
     course = models.ForeignKey(
@@ -209,18 +226,19 @@ class Voucher(BaseTimeStampModel):
     )
     valid_from = models.DateTimeField(
         verbose_name="Valable à partir de",
-        default=datetime.datetime.now
+        default=now
     )
     valid_to = models.DateTimeField(
         verbose_name="Valable jusqu'à",
-        default=datetime.datetime.now
+        default=now
     )
     discount = models.IntegerField(
         verbose_name="remise",
         validators=[
             MinValueValidator(0),
             MaxValueValidator(100)
-        ]
+        ],
+        help_text="Indiquer la remise compris entre 0 et 100."
     )
     active = models.BooleanField(
         verbose_name="active",
