@@ -95,7 +95,7 @@ class PostDetailView(generic.DetailView):
         post = self.get_object()
         kwargs['page_title'] = f"{post.name}"
 
-        # List for similary articles
+        # List of similar posts
         similar_post_filter = sorted(self.model.objects.related(
             instance=post)[:10], key=lambda x: random.random()
         )
