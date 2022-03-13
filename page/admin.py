@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.flatpages.admin import FlatPageAdmin
 
-from page.models import Contact
+from page.models import Contact, Testimonial, Partner
 from django_summernote.admin import SummernoteModelAdmin
 
 
@@ -28,6 +28,62 @@ class ContactAdmin(admin.ModelAdmin):
         'subject',
         'message',
     )
+
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    model = Testimonial
+    date_hierarchy = 'created_at'
+    list_display = [
+        'name',
+        'status',
+        'is_active',
+        'date'
+    ]
+    fieldsets = (
+        (
+            'Témoignage', {
+                'fields': (
+                    "name", "status",
+                    "content", "cover",
+                    "is_active",
+                )
+            }
+        ),
+    )
+    list_per_page = 10
+    search_fields = ['full_name']
+    empty_value_display = '-empty-'
+    list_display_links = ('name',)
+    list_filter = ['created_at', 'is_active']
+
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    model = Partner
+    date_hierarchy = 'created_at'
+    list_display = [
+        'name',
+        'is_active',
+        'date'
+    ]
+    fieldsets = (
+        (
+            'Témoignage', {
+                'fields': (
+                    "name",
+                    "cover",
+                    "is_active",
+                )
+            }
+        ),
+    )
+    list_per_page = 10
+    search_fields = ['name']
+    empty_value_display = '-empty-'
+    list_display_links = ('name',)
+    list_filter = ['created_at', 'is_active']
+
 
 class FlatPageAdmin(SummernoteModelAdmin, FlatPageAdmin):
     fieldsets = (
