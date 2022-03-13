@@ -60,7 +60,7 @@ def checkout_view(request, slug):
     context = {
         'form': form,
         'object': book,
-        'page_title': f"Finalisation de votre commande du livre '{book.name}'",
+        'page_title': f"Page de paiement",
         'voucher_form': voucher_apply_form,
         'breadcrumb_title': f"Finalisation de votre commande"
     }
@@ -104,7 +104,7 @@ def course_register_view(request, slug):
         'form': form,
         'object': course,
         'page_title': course.name,
-        'breadcrumb_title': "Inscription",
+        'breadcrumb_title': "Page d'inscription",
     }
     template = 'checkout/checkout_base.html'
 
