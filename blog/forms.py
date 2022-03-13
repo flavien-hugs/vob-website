@@ -10,6 +10,16 @@ class CommentForm(forms.ModelForm):
     parent_comment_id = forms.IntegerField(
         widget=forms.HiddenInput, required=False
     )
+    content = forms.CharField(
+        required=True,
+        label="Votre message",
+        widget=forms.Textarea(
+            attrs={
+                "rows": "8vh",
+                'cols': '8vw',
+            }
+        ),
+    )
 
     class Meta:
         model = Comment
