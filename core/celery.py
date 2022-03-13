@@ -16,10 +16,10 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
 app = Celery(
-        'core',
-        broker='redis://localhost',
-        backend='redis://localhost',
-    )
+    'core',
+    broker='redis://localhost',
+    backend='redis://localhost',
+)
 
 # You can add the following property when instantiating
 # The execution result is put into redis and discarded if
