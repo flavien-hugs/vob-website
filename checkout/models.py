@@ -107,7 +107,8 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
         validators=[
             MinValueValidator(0),
             MaxValueValidator(100)
-        ]
+        ],
+        blank=True
     )
     date_added = models.DateTimeField(
         verbose_name="Date de la commande",
@@ -117,7 +118,7 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
     class Meta:
         ordering = ['-created_at']
         get_latest_by = ['-created_at']
-        verbose_name_plural = "commande de livre"
+        verbose_name_plural = "commandes"
         indexes = [models.Index(fields=['uuid'])]
         unique_together = (('transaction_code', 'id_checkout'),)
 
