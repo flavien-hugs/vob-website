@@ -18,7 +18,8 @@ class CourseAdmin(SummernoteModelAdmin):
             'Information sur la formation', {
                 'fields': (
                     "name", "subtitle",
-                    "price", "date_of_course",
+                    "price", "discount_percentage",
+                    "date_of_course",
                 )
             }
         ),
@@ -44,6 +45,7 @@ class CourseAdmin(SummernoteModelAdmin):
     list_display = [
         "name",
         "course_price",
+        "discount_price",
         "course_date",
         "count_viewed",
         "show_course_url",

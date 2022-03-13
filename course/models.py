@@ -53,7 +53,17 @@ class Course(
     price = models.PositiveIntegerField(
         default=5000,
         verbose_name='côut de la formation',
-        help_text='Indiquer le côut de cette formation.'
+        help_text='Indiquer le côut de cette formation.',
+        error_messages={
+            "name": {
+                "max_length": "The price must be between 0 and 999999",
+            },
+        },
+    )
+    discount_percentage = models.IntegerField(
+        default=0,
+        verbose_name="pourcentage de remise",
+        **NULL_AND_BLANK
     )
     date_of_course = models.DateField(
         default=now,
@@ -188,6 +198,13 @@ class Course(
     @admin.display(description="côut")
     def course_price(self):
         return f"{int(self.price)} frcfa".upper()
+
+    def discount_price(self):
+        if self.discount_percentage > 0:
+            price = self.price - ((self.price * self.discount_percentage) / 100)
+            return round(price, 2)
+
+    discount_price = property(discount_price)
 
     @admin.display(description="début de la formation")
     def course_date(self):
