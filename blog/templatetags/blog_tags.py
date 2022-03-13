@@ -3,6 +3,7 @@
 import random
 
 from django import template
+from django.db.models import Count
 
 from blog.models import Category, Post
 
@@ -21,3 +22,13 @@ def post_news_list(count=3):
     posts = Post.objects.published()[:count]
     post_random = sorted(posts, key=lambda x: random.random())
     return {'article_object_list': post_random}
+
+
+@register.simple_tag
+def get_most_commented_posts(count=5):
+
+    most_commented_posts = Post.objects.published().annotate(
+        total_comments=Count('comments')
+    ).order_by('-total_comments')[:count]
+
+    return most_commented_posts
