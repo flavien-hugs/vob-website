@@ -106,8 +106,8 @@ class VoucherAdmin(admin.ModelAdmin):
         ('Coupons',
             {
                 'fields': (
-                    'code', 'valid_from',
-                    'valid_to', 'discount',
+                    'code', 'discount', 
+                    'valid_from', 'valid_to', 
                     'active'
                 )
             }
