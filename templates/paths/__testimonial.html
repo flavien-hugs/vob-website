@@ -1,0 +1,46 @@
+{% if testimonials_list %}
+	<section class="py-5 py-lg-8 bg-white">
+		<div class="container">
+			<div class="row mb-5 justify-content-center">
+				<div class="col-lg-8 col-md-12 col-12 text-center">
+					<span class="text-primary mb-3 d-block text-uppercase fw-semi-bold ls-xl">
+						Ce qu'en pensent mes clients
+					</span>
+					<h2 class="mb-2 display-4 fw-bold">
+						Ce que disent nos apprenants
+					</h2>
+					<p class="lead">
+						12+ millions de personnes apprennent déjà sur Geeks
+					</p>
+				</div>
+			</div>
+			
+			<div class="row">
+				{% for object in testimonials_list %}
+					<div class="col-md-6 col-12 mb-4 mb-lg-0">
+						<div class="card shadow-lg">
+							<div class="card-body p-8 text-center">
+								<i class="mdi mdi-48px mdi-format-quote-open text-light-primary lh-1 mb-3 d-block"></i>
+									<p class="fs-3 text-dark fw-semi-bold">
+										{{ object.content|safe }}
+									</p>
+								<i class="mdi mdi-48px mdi-format-quote-open text-light-primary lh-1 mb-3 d-block"></i>
+							</div>
+							<div class="card-footer bg-primary text-center border-top-0">
+								<div class="mt-n8">
+									<img src="{{ object.get_image_url }}" alt="{{ object.name|slugify }}" class="rounded-circle border-primary avatar-xl border border-4">
+								</div>
+								<div class="mt-2 text-white">
+									<h3 class="text-white mb-0">{{ object.name|title }}</h3>
+									<p class="text-white-50 mb-1">
+										{{ object.status|title }}
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+{% endif %}
