@@ -1,5 +1,7 @@
 {% extends "index.html" %}
 
+{% load humanize widget_tweaks %}
+
 {% block head_title %}
     {{ block.super }}
 {% endblock head_title %}
@@ -35,7 +37,7 @@
                     <figure>
                         <img
                             loading="lazy"
-                            src="{{ object.cover.url }}"
+                            src="{{ object.get_image_url }}"
                             alt="{{ object.name|slugify }}"
                             class="img-fluid rounded-3">
                     </figure>
@@ -66,6 +68,42 @@
                             <a href="#" class="ms-2 text-muted "><i class="mdi mdi-facebook"></i></a>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-xl-8 col-lg-8 col-md-12 col-12 mb-2">
+                      <form method="POST" action="{{ object.get_absolute_url }}" class="row">
+                        
+                        <div class="mb-3 col-12 col-md-6">
+                            <label class="form-label" for="{{ form.name.id_for_label }}">
+                                {{ form.name.label }}
+                            </label>
+
+                            {% render_field form.name placeholder=form.name.label %}
+                        </div>
+                        
+                        <div class="mb-3 col-12 col-md-6">
+                            <label class="form-label" for="{{ form.email.id_for_label }}">
+                                {{ form.email.label }}
+                            </label>
+
+                            {% render_field form.email placeholder=form.email.label %}
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="text-dark form-label"for="{{ form.content.id_for_label }}">
+                                Laisser votre commantaire :
+                            </label>
+                            
+                            {% render_field form.content placeholder=form.content.label %}
+                        </div>
+                        
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success btn-block">
+                                Envoyer
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </article>
