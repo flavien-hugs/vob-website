@@ -286,7 +286,7 @@ class Comment(UUIDSlugMixin, BaseTimeStampModel):
 
     email = models.EmailField(
         max_length=80,
-        verbose_name='adresse de messagerie'
+        verbose_name='email'
     )
     name = models.CharField(
         verbose_name='nom & prénom',
