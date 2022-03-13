@@ -241,6 +241,13 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
     def comments(self):
         return Comment.objects.filter(post=self)
 
+    def average_rating(self):
+        reviews = self.comments().aggregate(average=Avg('pk'))
+        avg = 0
+        if reviews['average'] is not None:
+            avg = int(reviews['average'])
+        return avg
+
     def comment_list(self):
         cache_key = f"post_comments_{self.pk}"
         value = cache.get(cache_key)
