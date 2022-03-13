@@ -3,14 +3,15 @@
 import json
 import random
 
+from django.http import Http404
 from django.urls import reverse
 from django.views import generic
-from django.shortcuts import get_object_or_404
 
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import redirect, get_object_or_404
 
 
 from blog.forms import CommentForm
@@ -72,25 +73,32 @@ post_paid_list_view = PostPaidListView.as_view(
 )
 
 
-class PostDetailView(generic.DetailView):
+class PostDetailView(generic.DetailView, generic.edit.FormView):
     model = Post
     slug_field = "slug"
     slug_url_kwarg = "slug"
+    form_class = CommentForm
     template_name = "blog/_detail.html"
 
-    def get_object(self, queryset=None):
-        post = super(PostDetailView, self).get_object()
-        post.viewed()
-        self.object = post
-        return post
+    def get_object(self):
+        try:
+            my_object = Post.objects.get(
+                slug=self.kwargs.get('slug')
+            )
+            return my_object
+        except self.model.DoesNotExist:
+            raise Http404("No MyModel matches the given query.")
+
+    def get_success_url(self):
+        return reverse(self.get_object().get_absolute_url())
 
     def get_context_data(self, **kwargs):
-        comment_form = CommentForm()
-        post_comments = self.object.comment_list()
+        
+        comments = self.object.comment_list()
 
-        kwargs['form'] = comment_form
-        kwargs['comments'] = post_comments
-        kwargs['comments_count'] = len(post_comments) if post_comments else 0
+        kwargs['form'] = self.form_class()
+        kwargs['comments'] = comments
+        kwargs['comments_count'] = len(comments) if comments else 0
 
         post = self.get_object()
         kwargs['page_title'] = f"{post.name}"
@@ -106,6 +114,19 @@ class PostDetailView(generic.DetailView):
 
         return super().get_context_data(**kwargs)
 
+    def post(self, form):
+        
+        self.object = self.get_object()
+        form = self.get_form()
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        return super(PostDetailView, self).form_valid(form)
+
 
 post_detail_view = PostDetailView.as_view()
 
@@ -119,16 +140,17 @@ class CommentPostView(generic.edit.FormView):
         return super(CommentPostView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        post_slug = self.kwargs['slug']
 
-        post = Post.objects.get(slug=post_slug)
-        path = post.get_absolute_url()
-        return HttpResponseRedirect(path + "#comments")
+        post = Post.objects.get(slug=self.kwargs['slug'])
+        return redirect(post.get_absolute_url())
+
+    def get_success_url(self):
+        post = Post.objects.get(slug=self.kwargs['slug'])
+        return reverse_lazy(post.get_absolute_url())
 
     def form_invalid(self, form):
-        post_slug = self.kwargs['slug']
-        post = Post.objects.get(slug=post_slug)
-
+        
+        post = Post.objects.get(slug=self.kwargs['slug'])
         return self.render_to_response({
             'form': form,
             'post': post
@@ -149,7 +171,7 @@ class CommentPostView(generic.edit.FormView):
 
         comment.save(True)
 
-        return HttpResponseRedirect(f"{post.get_absolute_url()}#div-comment-{comment.pk}")
+        return redirect(post.get_absolute_url())
 
 
 comment_post_view = CommentPostView.as_view()
