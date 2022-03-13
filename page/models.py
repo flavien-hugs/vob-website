@@ -95,7 +95,7 @@ class Testimonial(BaseTimeStampModel):
         upload_to=upload_image_to,
         verbose_name="ajouter une image",
         validators=[
-            FileExtensionValidator(['jpeg', 'jpg', 'png'])
+            FileExtensionValidator(['jpeg', 'jpg', 'png', 'svg'])
         ],
         help_text="ajouter une photo de profile",
         **NULL_AND_BLANK
@@ -151,7 +151,7 @@ class Partner(BaseTimeStampModel):
         upload_to=upload_image_to,
         verbose_name="ajouter une image",
         validators=[
-            FileExtensionValidator(['jpeg', 'jpg', 'png'])
+            FileExtensionValidator(['jpeg', 'jpg', 'png', 'svg'])
         ],
         help_text="ajouter une photo de profile",
         **NULL_AND_BLANK
