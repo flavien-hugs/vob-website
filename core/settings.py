@@ -233,11 +233,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Messages built-in framework
 
 MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-secondary',
     messages.INFO: 'alert-info',
+    messages.ERROR: 'alert-danger',
+    messages.DEBUG: 'alert-secondary',
     messages.SUCCESS: 'alert-success',
     messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
 }
 
 # Default primary key field type
