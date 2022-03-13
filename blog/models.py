@@ -113,12 +113,12 @@ class Category(UUIDSlugMixin, BaseTimeStampModel):
 
 class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
 
-    G = 'Gratuit'
-    Y = 'Payant'
+    FREE = 'Gratuit'
+    PAID = 'Payant'
 
     PAID_CHOICES = (
-        (G, 'Gratuit'),
-        (Y, 'Payant')
+        (FREE, 'Gratuit'),
+        (PAID, 'Payant')
     )
 
     file_prepend = "article/upload/"
@@ -175,7 +175,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
         verbose_name="nombre de lecture"
     )
     reading = models.CharField(
-        default=G,
+        default=FREE,
         max_length=10,
     	choices=PAID_CHOICES,
     	verbose_name="Option de lecture",
