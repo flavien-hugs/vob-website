@@ -10,6 +10,9 @@ from common.models import BaseTimeStampModel
 from common.utilitary import upload_image_to
 from page.managers import PageQuerySetManager
 
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill, Adjust
+
 NULL_AND_BLANK = {'null': True, 'blank': True}
 
 
@@ -73,15 +76,20 @@ class Testimonial(BaseTimeStampModel):
         primary_key=True,
         verbose_name='uuid'
     )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="nom & prénoms",
+        help_text='Entrer le nom & prénoms',
+    )
     status = models.CharField(
         max_length=100,
-        verbose_name="status",
-        help_text='Entrer la prefession du client',
+        verbose_name="Profession",
+        help_text='Entrer la profession',
     )
     content = models.TextField(
         max_length=200,
         verbose_name="message",
-        help_text='Entrer le message du client'
+        help_text='Entrer le message'
     )
     cover = models.ImageField(
         upload_to=upload_image_to,
@@ -91,6 +99,15 @@ class Testimonial(BaseTimeStampModel):
         ],
         help_text="ajouter une photo de profile",
         **NULL_AND_BLANK
+    )
+    formatted_cover = ImageSpecField(
+        source='cover',
+        processors=[
+            Adjust(contrast=1.2, sharpness=1.1),
+            ResizeToFill(923, 498)
+        ],
+        format='JPEG',
+        options={'quality': 90}
     )
     is_active = models.BooleanField(
         default=False,
@@ -109,7 +126,69 @@ class Testimonial(BaseTimeStampModel):
     def __str__(self):
         return f"{self.name} - {self.status}"
 
+    def get_image_url(self):
+        if self.formatted_cover:
+            return self.formatted_cover.url
+        return 'https://via.placeholder.com/923x498'
 
+
+class Partner(BaseTimeStampModel):
+
+    file_prepend = "partner/upload/"
+
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        primary_key=True,
+        verbose_name='uuid'
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="nom de l'entreprise",
+        help_text="Entrer le nom l'entreprise",
+    )
+    cover = models.ImageField(
+        upload_to=upload_image_to,
+        verbose_name="ajouter une image",
+        validators=[
+            FileExtensionValidator(['jpeg', 'jpg', 'png'])
+        ],
+        help_text="ajouter une photo de profile",
+        **NULL_AND_BLANK
+    )
+    formatted_cover = ImageSpecField(
+        source='cover',
+        processors=[
+            Adjust(contrast=1.2, sharpness=1.1),
+            ResizeToFill(120, 39)
+        ],
+        format='JPEG',
+        options={'quality': 90}
+    )
+    is_active = models.BooleanField(
+        default=False,
+        verbose_name="rendre visible ?",
+        help_text='rendre visible cet témoignage ?'
+    )
+
+    objects = PageQuerySetManager()
+
+    class Meta:
+        ordering = ['-created_at']
+        get_latest_by = ['-created_at']
+        verbose_name_plural = 'Partenaires'
+        indexes = [models.Index(fields=['uuid'])]
+
+    def __str__(self):
+        return self.name
+
+    def get_image_url(self):
+        if self.formatted_cover:
+            return self.formatted_cover.url
+        return 'https://via.placeholder.com/120x39'
+
+
+@receiver([models.signals.pre_save], sender=Partner)
 @receiver([models.signals.pre_save], sender=Testimonial)
 def delete_old_image(sender, instance, *args, **kwargs):
     if instance.pk:
