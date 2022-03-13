@@ -17,10 +17,13 @@ from django.conf.urls.static import static
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import Group
 
+from django_summernote.models import Attachment
+
 logger = logging.getLogger(__name__)
 
 # admin.site.unregister(Site)
 # admin.site.unregister(Group)
+admin.site.unregister(Attachment)
 
 admin.site.site_header = admin.site.site_title = "Valere Obei"
 admin.site.index_title = "Bienvenu sur votre tableau d'administration".capitalize()
