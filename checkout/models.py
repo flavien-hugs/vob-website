@@ -143,7 +143,7 @@ class Checkout(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
             kwargs={"id_checkout": str(self.id_checkout)}
         )
 
-
+    
 class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampModel):
 
     course = models.ForeignKey(
