@@ -2,7 +2,9 @@
 
 from django.contrib import admin
 from django.utils.html import format_html
-from checkout.models import Checkout, RegisterCourse
+from checkout.models import(
+    Checkout, RegisterCourse, Voucher
+)
 from checkout.ressources import(
     CheckoutBookResource, RegisterCourseBookResource
 )
@@ -93,3 +95,34 @@ class RegisterCourseAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display_links = ['id_checkout', 'full_name']
     formats = [base_formats.CSV]
     resource_class = RegisterCourseBookResource
+
+
+@admin.register(Voucher)
+class VoucherAdmin(admin.ModelAdmin):
+    model = Voucher
+    list_per_page = 10
+    date_hierarchy = 'created_at'
+    fieldsets = (
+        ('Coupons',
+            {
+                'fields': (
+                    'code', 'valid_from',
+                    'valid_to', 'discount',
+                    'active'
+                )
+            }
+         ),
+    )
+    list_display = [
+        'code', 'valid_from',
+        'valid_to', 'discount', 'active'
+    ]
+    list_filter = ['active', 'valid_from', 'valid_to']
+    search_fields = ['code']
+
+    class Meta:
+        verbose_name = "CouponAdmin"
+        verbose_name_plural = "CouponAdmins"
+
+    def __str__(self):
+        return self.list_display

@@ -10,7 +10,10 @@ from django.db import models
 from django.urls import reverse
 from django.contrib import admin
 from django.utils.timezone import now
-from django.core.validators import RegexValidator
+from django.core.validators import(
+    RegexValidator, MinValueValidator,
+    MaxValueValidator
+)
 
 from course.models import Course, Book
 from common.models import BaseTimeStampModel, UserBaseInfo
@@ -154,14 +157,6 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
         db_index=True, default=now
     )
 
-    def clean__date_added(self):
-        if (
-            self.date_added.date() <= self.course.date_of_course
-        ):
-            raise ValidationError(
-                {"date_added": "Cette formation est déjà passé !"}
-            )
-
     class Meta:
         ordering = ['-created_at']
         get_latest_by = ['-created_at']
@@ -190,3 +185,53 @@ class RegisterCourse(ModelCheckoutRegisterMixin, UserBaseInfo, BaseTimeStampMode
             "register_course:register_success_path",
             kwargs={"id_checkout": str(self.id_checkout)}
         )
+
+    def clean__date_added(self):
+        if (
+            self.date_added.date() <= self.course.date_of_course
+        ):
+            raise ValidationError(
+                {"date_added": "Cette formation est déjà passé !"}
+            )
+
+
+class Voucher(BaseTimeStampModel):
+
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        primary_key=True,
+        verbose_name='uuid'
+    )
+    code = models.CharField(
+        verbose_name="code",
+        max_length=50, unique=True
+    )
+    valid_from = models.DateTimeField(
+        verbose_name="Valable à partir de",
+        default=datetime.datetime.now
+    )
+    valid_to = models.DateTimeField(
+        verbose_name="Valable jusqu'à",
+        default=datetime.datetime.now
+    )
+    discount = models.IntegerField(
+        verbose_name="remise",
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100)
+        ]
+    )
+    active = models.BooleanField(
+        verbose_name="active",
+        default=False
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+        get_latest_by = ['-created_at']
+        verbose_name_plural = "Coupons"
+        indexes = [models.Index(fields=['uuid'])]
+
+    def __str__(self):
+        return self.code
