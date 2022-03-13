@@ -2,6 +2,8 @@
 
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
+from django.views.decorators.http import require_POST
 from django.shortcuts import render, redirect, get_object_or_404
 
 from course.models import Course, Book
@@ -12,7 +14,10 @@ from checkout.tasks import(
     send_email_for_register_course
 )
 from checkout.models import Checkout, RegisterCourse
-from checkout.forms import CheckoutForm, CourseRegisterForm
+from checkout.forms import(
+    CheckoutForm, CourseRegisterForm,
+    VoucherForm
+)
 
 
 def checkout_view(request, slug):
@@ -146,3 +151,26 @@ def register_success(request, id_checkout):
 
 
 register_success_view = register_success
+
+
+@require_POST
+def apply_voucher(request):
+
+    date_today = timezone.now()
+    form = VoucherForm(request.POST)
+
+    if form.is_valid():
+        code = form.cleaned_data['code']
+        try:
+            voucher = Voucher.objects.get(
+                code__iexact=code, valid_from__lte=date_today,
+                valid_to__gte=date_today, active=True
+            )
+            request.session['id_voucher'] = voucher.pk
+        except Voucher.DoesNotExist:
+            request.session['id_voucher'] = None
+
+    return redirect('panier:detail_panier')
+
+
+apply_voucher = apply_voucher
