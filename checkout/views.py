@@ -13,6 +13,7 @@ from checkout.tasks import(
     send_email_for_checkout,
     send_email_for_register_course
 )
+from checkout.voucher import ApplyVoucher
 from checkout.models import Checkout, RegisterCourse
 from checkout.forms import(
     CheckoutForm, CourseRegisterForm,
@@ -23,6 +24,10 @@ from checkout.forms import(
 def checkout_view(request, slug):
 
     book = get_object_or_404(Book, slug=slug)
+
+    voucher = ApplyVoucher(request)
+
+    voucher_apply_form = VoucherApplyForm()
 
     if request.method == "POST":
         data = request.POST.copy()
@@ -35,6 +40,10 @@ def checkout_view(request, slug):
 
             form.instance.book = book
             checkout = form.save(commit=False)
+
+            if voucher.voucher:
+                checkout.voucher = voucher.voucher
+                checkout.discount = voucher.voucher.discount
 
             checkout.book = book
             checkout.ip_address = get_client_ip(request)
@@ -51,8 +60,9 @@ def checkout_view(request, slug):
     context = {
         'form': form,
         'object': book,
-        'page_title': book.name,
-        'breadcrumb_title': "Paiement"
+        'page_title': f"Finalisation de votre commande du livre '{book.name}'",
+        'voucher_form': voucher_apply_form,
+        'breadcrumb_title': f"Finalisation de votre commande"
     }
     template = 'checkout/_book_checkout_form.html'
 
@@ -104,6 +114,29 @@ def course_register_view(request, slug):
 course_register_view = course_register_view
 
 
+@require_POST
+def apply_voucher(request):
+
+    date_today = timezone.now()
+    form = VoucherApplyForm(request.POST)
+
+    if form.is_valid():
+        code = form.cleaned_data['code']
+        try:
+            voucher = Voucher.objects.get(
+                code__iexact=code, valid_from__lte=date_today,
+                valid_to__gte=date_today, active=True
+            )
+            request.session['id_voucher'] = voucher.pk
+        except Voucher.DoesNotExist:
+            request.session['id_voucher'] = None
+
+    return redirect(reverse(request.META.get('HTTP_REFERER')))
+
+
+apply_voucher = apply_voucher
+
+
 def checkout_success(request, id_checkout):
 
     id_checkout = request.session.get('id_checkout')
@@ -151,26 +184,3 @@ def register_success(request, id_checkout):
 
 
 register_success_view = register_success
-
-
-@require_POST
-def apply_voucher(request):
-
-    date_today = timezone.now()
-    form = VoucherApplyForm(request.POST)
-
-    if form.is_valid():
-        code = form.cleaned_data['code']
-        try:
-            voucher = Voucher.objects.get(
-                code__iexact=code, valid_from__lte=date_today,
-                valid_to__gte=date_today, active=True
-            )
-            request.session['id_voucher'] = voucher.pk
-        except Voucher.DoesNotExist:
-            request.session['id_voucher'] = None
-
-    return redirect('panier:detail_panier')
-
-
-apply_voucher = apply_voucher
