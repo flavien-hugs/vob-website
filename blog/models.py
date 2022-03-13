@@ -255,7 +255,7 @@ class Post(UUIDSlugMixin, StatusAndPublishedMixin, BaseTimeStampModel):
             logger.info(f"get post comments:{self.pk}")
             return value
         else:
-            post_comments = self.comments().filter(is_enable=True)
+            post_comments = self.comments.filter(is_enable=True)
             cache.set(cache_key, post_comments, 60 * 100)
             logger.info(f"set post comments:{self.pk}")
             return post_comments
