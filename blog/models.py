@@ -292,7 +292,7 @@ class Comment(UUIDSlugMixin, BaseTimeStampModel):
     post = models.ForeignKey(
         to=Post,
         on_delete=models.CASCADE,
-        related_name="articles",
+        related_name="comments",
         verbose_name="article"
     )
     parent_comment = models.ForeignKey(
@@ -302,9 +302,7 @@ class Comment(UUIDSlugMixin, BaseTimeStampModel):
         **NULL_AND_BLANK
     )
     is_enable = models.BooleanField(
-        default=True,
-        verbose_name="active",
-        blank=False, null=False
+        default=True, verbose_name="active"
     )
 
     class Meta:
