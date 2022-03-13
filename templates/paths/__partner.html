@@ -1,0 +1,22 @@
+{% if partners_list %}
+	<div class="bg-white py-lg-16 py-8">
+		<div class="container">
+			<div class="row mb-6 justify-content-center">
+				<div class="col-lg-8 col-md-12 col-12 text-center">
+					<span class="text-primary mb-3 d-block text-uppercase fw-semi-bold ls-xl">
+						Ils me soutiennent
+					</span>
+				</div>
+			</div>
+			<div class="row">
+				{% for object in partners_list %}
+					<div class="col-lg-2 col-md-4 col-6">
+						<div class="mb-4 text-center align-middle">
+							<img src="{{ object.get_image_url }}" alt="{{ object.name|slugify }}">
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endif %}
