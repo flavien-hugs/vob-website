@@ -30,6 +30,7 @@ django-dbbackup = "*"
 django-crontab = "*"
 python-dotenv = "*"
 celery = {extras = ["redis"], version = "*"}
+flower = "*"
 
 [dev-packages]
 flake8 = "*"

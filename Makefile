@@ -67,7 +67,11 @@ crontabshow: ## Show current active jobs of this project
 
 .PHONY: celery-worker
 celery-worker: ## Starting the worker process
-	celery -A core worker -l INFO
+	celery -A core worker -l INFO --logfile=logs/celery.log
+
+.PHONY: flower
+flower: ## Starting monitoring
+	celery -A core flower --port=5555 --broker=redis://redis:6379/1
 
 .PHONY: coverage
 coverage: ## Test with coverage and generate htmlcov
