@@ -333,34 +333,6 @@ SUMMERNOTE_CONFIG = {
     },
 }
 
-# Configure as cache backend
-# https://pypi.org/project/django-redis/
-
-CACHE_TTL = 60 * 15
-CACHE_TIMEOUT = 60 * 60
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "COMPRESSOR": "django_redis.compressors.zstd.ZStdCompressor",
-            "CONNECTION_POOL_KWARGS": {
-                "max_connections": 100,
-                "retry_on_timeout": True
-            },
-            "PICKLE_VERSION": -1,
-            "IGNORE_EXCEPTIONS": True,
-            "SOCKET_CONNECT_TIMEOUT": 5,
-            "SOCKET_TIMEOUT": 5,
-        }
-    }
-}
-
-DJANGO_REDIS_IGNORE_EXCEPTIONS = True
-DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
-
 # https://radiac.net/projects/django-tagulous/documentation/installation/
 
 TAGULOUS_WEIGHT_MAX = 1
@@ -411,11 +383,54 @@ CRONJOBS = [
     ('*/120 * * * *', 'common.cron.create_backups_scheduled_job')
 ]
 
+# Configure as cache backend
+# https://pypi.org/project/django-redis/
+
+CACHE_TTL = 60 * 15
+CACHE_TIMEOUT = 60 * 60
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "COMPRESSOR": "django_redis.compressors.zstd.ZStdCompressor",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 100,
+                "retry_on_timeout": True
+            },
+            "PICKLE_VERSION": -1,
+            "IGNORE_EXCEPTIONS": True,
+            "SOCKET_CONNECT_TIMEOUT": 5,
+            "SOCKET_TIMEOUT": 5,
+        }
+    }
+}
+
+DJANGO_REDIS_IGNORE_EXCEPTIONS = True
+DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
+
 # Celery Configuration Options
 
 CELERY_TIMEZONE = "Africa/Abidjan"
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_TASK_EAGER_PROPAGATES = True
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+CELERY_BROKER = 'redis://localhost:6379/1'
+
+CELERY_BROKER_URL = os.environ.get(
+    config_credentials["CELERY_BROKER"],
+    CELERY_BROKER
+)
+CELERY_RESULT_BACKEND = os.environ.get(
+    config_credentials["CELERY_BROKER"],
+    CELERY_BROKER
+)
 
 # Config email
 # https://docs.djangoproject.com/fr/4.0/topics/email/
