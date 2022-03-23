@@ -6,11 +6,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 import re
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 from dotenv import dotenv_values
-
-from django.contrib.messages import constants as messages
-from django.core.management.utils import get_random_secret_key
 
 config_credentials = dotenv_values(".env")
 
