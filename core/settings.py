@@ -145,7 +145,7 @@ if os.environ.get('GITHUB_WORKFLOW'):
             'PASSWORD': 'postgres',
             'HOST': '127.0.0.1',
             'PORT': 5432,
-            'ATOMIC_REQUESTS': True
+            'ATOMIC_REQUESTS': True,
         }
     }
 
@@ -157,7 +157,12 @@ DATABASES = {
         'PASSWORD': config_credentials['DATABASE_PASSWORD'],
         'HOST': '127.0.0.1',
         'PORT': 5432,
-        'ATOMIC_REQUESTS': True
+        'ATOMIC_REQUESTS': True,
+        'AUTOCOMMIT': True,
+        'CONN_MAX_AGE': 0,
+        'OPTIONS': {
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 
