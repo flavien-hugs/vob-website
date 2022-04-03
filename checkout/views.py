@@ -62,7 +62,7 @@ def checkout_view(request, slug):
         'object': book,
         'page_title': f"Page de paiement",
         'voucher_form': voucher_apply_form,
-        'breadcrumb_title': f"Finalisation de votre commande"
+        'breadcrumb_title': "Finalisation de votre commande"
     }
     template = 'checkout/_book_checkout_form.html'
 
