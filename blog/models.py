@@ -345,7 +345,4 @@ def delete_old_cover(sender, instance, *args, **kwargs):
             old_cover = Klass.objects.get(pk=instance.pk).cover
             if old_cover and old_cover.url != instance.cover.url:
                 old_cover.delete(save=False)
-
-            if old_formatted_cover and old_formatted_cover.url != instance.formatted_cover.url:
-                old_formatted_cover.delete(save=False)
         except: pass
