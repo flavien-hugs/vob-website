@@ -25,6 +25,7 @@ class CheckoutForm(forms.ModelForm):
             if self.fields["payment"]:
                 self.fields["payment"].widget.attrs.update({'class': 'form-select shadow-none'})
 
+
 class CourseRegisterForm(forms.ModelForm):
 
     class Meta:
