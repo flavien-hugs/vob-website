@@ -160,9 +160,6 @@ DATABASES = {
         'ATOMIC_REQUESTS': True,
         'AUTOCOMMIT': True,
         'CONN_MAX_AGE': 0,
-        'OPTIONS': {
-            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
     }
 }
 
