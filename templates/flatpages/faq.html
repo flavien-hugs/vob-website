@@ -1,5 +1,36 @@
 {% extends 'flatpages/default.html' %}
 
 {% block __body__ %}
+    <section class="py-10">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-12 col-12">
+                    <div class="text-center">
+                        <h1 class="display-3 fw-bold">
+                        	{{ flatpage.title }}
+                        </h1>
+                        <p class="lead px-8">
+                            Voici les différentes questions liées à mes formations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section class="pb-10">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-12 col-12">
+                    
+                    {{ flatpage.content|striptags|safe }}
+
+                    <p class="fs-4 my-5">
+                        Vous avez des questions ? Veuillez m'envoyer un email à
+                        <a href="mailto:{{ addr_email|safe }}">{{ addr_email|safe }}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock __body__ %}
