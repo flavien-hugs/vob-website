@@ -4,6 +4,7 @@ import os
 import logging
 from hashlib import sha256
 
+from django.core.cache import cache
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 
