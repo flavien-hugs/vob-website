@@ -30,7 +30,7 @@ test: ## Run tests
 	$(MANAGE) --verbosity=0 --parallel --failfast
 
 .PHONY: createsuperuser
-createsuperuser: ## Run the Django server
+createsuperuser: ## Create super-user
 	$(MANAGE) createsuperuser --username="valereobei@pm.me" --email="valereobei@pm.me"
 
 .PHONY: tox-test
