@@ -43,7 +43,7 @@ django-widget-tweaks==1.4.12
 django==3.2.12
 elasticsearch==5.5.3
 et-xmlfile==1.1.0; python_version >= '3.6'
-flower==1.0.0
+flower==1.2.0
 gunicorn==20.1.0
 humanize==4.0.0; python_version >= '3.7'
 idna==3.3; python_version >= '3'
